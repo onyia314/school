@@ -15,7 +15,7 @@
 
                     <li class="nav-item">
                     <a class="nav-link btn btn-block btn-primary" href="{{ url('settings/showsession/' .$schoolSession->id )}}"><span
-                        class="nav-link-text">{{ $schoolSession->name }}</span></a>
+                        class="nav-link-text">{{ $schoolSession->session_name }}</span></a>
                     </li>
 
                     @endforeach

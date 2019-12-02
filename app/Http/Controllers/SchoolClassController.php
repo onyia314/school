@@ -28,7 +28,7 @@ class SchoolClassController extends Controller
         // validate
 
         $data = $request->validate([
-            'name' => 'required|string|max:20',
+            'class_name' => 'required|string|max:20',
             'group' => 'required|string|max:20',
         ]);
 

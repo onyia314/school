@@ -15,11 +15,11 @@
 
             var id = document.getElementById('class_id').value;
             var group = document.getElementById('class_group').value;
-            var section = document.getElementById('name').value;
+            var section = document.getElementById('section_name').value;
             var token = document.getElementsByName('_token')[0].value;
 
             var data = {
-                name: section,
+                section_name: section,
                 class_id: id,
                 class_group: group,
                 _token: token
@@ -99,7 +99,7 @@
                         <?php 
 
                                 foreach ($class as $value) {
-                                    $class_name = $value['name'];
+                                    $class_name = $value['class_name'];
                                     $class_id = $value['id'];
                                     $class_group = $value['group'];
                                 }
@@ -113,10 +113,10 @@
                                 
                                 <div class="form-group row">
 
-                                    <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('add section') }}</label>
+                                    <label for="section_name" class="col-md-4 col-form-label text-md-right">{{ __('add section') }}</label>
     
                                     <div class="col-md-6">
-                                        <input id="name" name="name" type="text" class="form-control" value="{{ old('name') }}"  autocomplete="name" autofocus placeholder="A,B,C...Z">        
+                                        <input id="section_name" name="section_name" type="text" class="form-control" value="{{ old('section_name') }}"  autocomplete="section_name" autofocus placeholder="A,B,C...Z">        
                                     </div>
                                 </div>
 
@@ -183,7 +183,7 @@
                     @foreach ($class as $value)
 
                         @foreach ($value['sections'] as $sections)
-                        <a>{{ $sections->name}}<a>
+                        <a>{{ $sections->section_name}}<a>
                         @endforeach
             
                     @endforeach

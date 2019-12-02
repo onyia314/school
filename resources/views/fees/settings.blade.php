@@ -14,13 +14,13 @@
                 document.getElementById('msg').style.color = 'black';
                 document.getElementById('msg').innerHTML = 'please wait.....'
 
-                var fee = document.getElementById('name').value;
+                var fee = document.getElementById('fee_name').value;
                 var id = document.getElementById('semester_id').value;
                 var fee_amount = document.getElementById('amount').value;
                 var token = document.getElementsByName('_token')[0].value;
     
                 var data = {
-                    name: fee,
+                    fee_name: fee,
                     semester_id: id,
                     amount: fee_amount,
                     _token: token
@@ -104,10 +104,10 @@
                                 
                                 <div class="form-group row">
 
-                                    <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('add fee') }}</label>
+                                    <label for="fee_name" class="col-md-4 col-form-label text-md-right">{{ __('add fee') }}</label>
 
                                     <div class="col-md-6">
-                                        <input id="name" name="name" type="text" class="form-control" value="{{ old('name') }}"  autocomplete="name" autofocus placeholder=" eg. tuition, accomodation">
+                                        <input id="fee_name" name="fee_name" type="text" class="form-control" value="{{ old('fee_name') }}"  autocomplete="fee_name" autofocus placeholder=" eg. tuition, accomodation">
                                         
                                     </div>
                                     

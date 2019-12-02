@@ -23,12 +23,12 @@
                             
 
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('add semester') }}</label>
+                                <label for="semester_name" class="col-md-4 col-form-label text-md-right">{{ __('add semester') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"  autocomplete="name" autofocus placeholder="2013/2014 2019/2020">
+                                    <input id="semester_name" type="text" class="form-control @error('semester_name') is-invalid @enderror" name="semester_name" value="{{ old('semester_name') }}"  autocomplete="semester_name" autofocus placeholder="2013/2014 2019/2020">
 
-                                    @error('name')
+                                    @error('semester_name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

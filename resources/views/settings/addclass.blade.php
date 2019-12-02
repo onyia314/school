@@ -23,12 +23,12 @@
                             
 
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('add class') }}</label>
+                                <label for="class_name" class="col-md-4 col-form-label text-md-right">{{ __('add class') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"  autocomplete="name" autofocus placeholder="jss1 jss2 etc">
+                                    <input id="class_name" type="text" class="form-control @error('class_name') is-invalid @enderror" name="class_name" value="{{ old('class_name') }}"  autocomplete="class_name" autofocus placeholder="jss1 jss2 etc">
 
-                                    @error('name')
+                                    @error('class_name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

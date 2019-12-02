@@ -27,7 +27,7 @@
                     <div class="card-header text-center">{{ 'Register' . ' ' . session('register_role') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ url('register/' .session('register_role') ) }}" enctype="multipart/form-data">
+                        <form method="POST" novalidate action="{{ url('register/' .session('register_role') ) }}" enctype="multipart/form-data">
                             @csrf
                             
                         
@@ -227,7 +227,7 @@
                                             
                                             @foreach ( $sections as $section)
 
-                                                <option value="{{$section->id}}">{{$section->schoolClass->name .' : ' .$section->schoolClass->group . ' : ' .$section->name}}</option>
+                                                <option value="{{$section->id}}">{{$section->schoolClass->class_name .' : ' .$section->schoolClass->group . ' : ' .$section->section_name}}</option>
                                                 
                                             @endforeach
 
@@ -250,7 +250,7 @@
                                         <select name="session_id" id="session_id" class = "form-control  @error('session_id') is-invalid @enderror" required>
                                             <option value="">select session</option>
                                             @foreach ($schoolSessions as $schoolSession)
-                                                <option value="{{$schoolSession->id}}">{{$schoolSession->name}}</option>
+                                                <option value="{{$schoolSession->id}}">{{$schoolSession->session_name}}</option>
                                             @endforeach
                                         </select>
 

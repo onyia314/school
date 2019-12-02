@@ -17,7 +17,7 @@ class FeeController extends Controller
 
         
         $validator = Validator::make($request->all() , [
-            'name' => 'required|string|max:225',
+            'fee_name' => 'required|string|max:225',
             'semester_id' => 'required|integer',
             'amount' => 'required|integer',
         ]);

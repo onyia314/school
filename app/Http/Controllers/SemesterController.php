@@ -12,7 +12,7 @@ class SemesterController extends Controller
 
         
         $validator = Validator::make($request->all() , [
-            'name' => 'required|string|max:30',
+            'semester_name' => 'required|string|max:30',
             'session_id' => 'required|integer',
         ]);
 
@@ -26,14 +26,14 @@ class SemesterController extends Controller
 
         //check for unique if semester with session exists
         $num = Semester::where([
-            'name' => $request->name,
+            'semester_name' => $request->semester_name,
             'session_id' => $request->session_id,
             ])->count();
 
         if($num == 0){
 
             Semester::create([
-                'name' => $request->name,
+                'semester_name' => $request->semester_name,
                 'session_id' => $request->session_id,
             ]);
 
@@ -42,7 +42,7 @@ class SemesterController extends Controller
         }
 
         if($num > 0){
-            return response()->json( ['semester_exists' => 'this session already has a ' .strtoupper($request->name) .' semester' ]);
+            return response()->json( ['semester_exists' => 'this session already has a ' .strtoupper($request->semester_name) .' semester' ]);
         }
 
 

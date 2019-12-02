@@ -15,7 +15,7 @@
 
                     <li class="nav-item">
                     <a class="nav-link btn btn-block btn-primary" href="{{ url('settings/showclass/' .$class->id )}}"><span
-                        class="nav-link-text">{{ $class->id . ' ' .$class->name . ' ' .$class->group}}</span></a>
+                        class="nav-link-text">{{ $class->id . ' ' .$class->class_name . ' ' .$class->group}}</span></a>
                     </li>
 
                     @endforeach

@@ -13,12 +13,12 @@
             document.getElementById('msg').style.color = 'black';
             document.getElementById('msg').innerHTML = 'please wait.....'
 
-            var semester = document.getElementById('name').value;
+            var semester = document.getElementById('semester_name').value;
             var id = document.getElementById('session_id').value;
             var token = document.getElementsByName('_token')[0].value;
 
             var data = {
-                name: semester,
+                semester_name: semester,
                 session_id: id,
                 _token: token
             }
@@ -97,7 +97,7 @@
                         <?php 
 
                                 foreach ($schoolSession as $value) {
-                                    $session_name = $value['name'];
+                                    $session_name = $value['session_name'];
                                     $session_id = $value['id'];
                             
                                 }
@@ -111,10 +111,10 @@
                                 
                                 <div class="form-group row">
 
-                                    <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('add semester') }}</label>
+                                    <label for="semester_name" class="col-md-4 col-form-label text-md-right">{{ __('add semester') }}</label>
     
                                     <div class="col-md-6">
-                                        <input id="name" name="name" type="text" class="form-control" value="{{ old('name') }}"  autocomplete="name" autofocus placeholder="1st , 2nd , 3rd">  
+                                        <input id="semester_name" name="semester_name" type="text" class="form-control" value="{{ old('semester_name') }}"  autocomplete="semester_name" autofocus placeholder="1st , 2nd , 3rd">  
                                     </div>
                                 </div>
 
@@ -173,7 +173,7 @@
 
                         @foreach ($value['semesters'] as $semester)
                         <li class = "nav-item">
-                            <strong>{{ $semester->name}}</strong>
+                            <strong>{{ $semester->semester_name}}</strong>
                         <a class="btn btn-success" href="{{ url('fees/addfee/' .$semester->id)}}" role="button">fees</a>
                         </li>
                         

@@ -14,7 +14,7 @@ class SectionController extends Controller
 
         
         $validator = Validator::make($request->all() , [
-            'name' => 'required|string|max:2',
+            'section_name' => 'required|string|max:2',
             'class_id' => 'required|integer',
             'class_group' => 'required|string|max:20',
         ]);
@@ -29,7 +29,7 @@ class SectionController extends Controller
 
         //check for unique class room
         $num = Section::where([
-            'name' => $request->name,
+            'section_name' => $request->section_name,
             'class_id' => $request->class_id,
             'class_group' => $request->class_group,
             ])->count();
@@ -37,7 +37,7 @@ class SectionController extends Controller
         if($num == 0){
 
             Section::create([
-                'name' => $request->name,
+                'section_name' => $request->section_name,
                 'class_id' => $request->class_id,
                 'class_group' => $request->class_group,
             ]);
@@ -47,7 +47,7 @@ class SectionController extends Controller
         }
 
         if($num > 0){
-            return response()->json( ['class_exists' => 'this class already has a ' .'group ' .$request->class_group .' and section ' .strtoupper($request->name) ]);
+            return response()->json( ['class_exists' => 'this class already has a ' .'group ' .$request->class_group .' and section ' .strtoupper($request->section_name) ]);
         }
 
 

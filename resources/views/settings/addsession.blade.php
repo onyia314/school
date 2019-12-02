@@ -23,12 +23,12 @@
                             
 
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('add session') }}</label>
+                                <label for="session_name" class="col-md-4 col-form-label text-md-right">{{ __('add session') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"  autocomplete="name" autofocus placeholder="2013/2014 2019/2020">
+                                    <input id="session_name" type="text" class="form-control @error('session_name') is-invalid @enderror" name="session_name" value="{{ old('session_name') }}"  autocomplete="session_name" autofocus placeholder="2013/2014 2019/2020">
 
-                                    @error('name')
+                                    @error('session_name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

@@ -25,7 +25,7 @@ class SchoolSessionController extends Controller
     public function store(Request $request){
 
         $data = $request->validate([
-            'name' => 'required|string|max:40|unique:sessions',
+            'session_name' => 'required|string|max:40|unique:sessions',
         ]);
 
         try {

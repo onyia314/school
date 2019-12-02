@@ -73,7 +73,7 @@ Route::middleware(['auth' , 'admin.master'])->group(function(){
 
 Route::middleware(['auth' , 'admin'])->group(function(){
     Route::get('settings' , function(){
-        return view('settings.settings');
+        return view('settings.index');
     })->name('settings');
 });
 
@@ -83,14 +83,14 @@ Route::middleware(['auth' , 'admin'])->group(function(){
         Route::get('addclass', 'SchoolClassController@create');
         Route::post('addclass' , 'SchoolClassController@store');
         Route::get('viewclasses' , 'SchoolClassController@index');
-        Route::get('showclass/{id}' , 'SchoolClassController@show');
+        Route::get('showclass/{id}' , 'SchoolClassController@show'); // takes you to where you can add section of a class room
 
         Route::post('addsection' , 'SectionController@store');
 
         Route::get('addsession' , 'SchoolSessionController@create');
         Route::post('addsession' , 'SchoolSessionController@store');
         Route::get('viewsessions' , 'SchoolSessionController@index');
-        Route::get('showsession/{id}' , 'SchoolSessionController@show');
+        Route::get('showsession/{id}' , 'SchoolSessionController@show'); //takes you to where you can add semester
 
         
         Route::post('addsemester' , 'SemesterController@store');

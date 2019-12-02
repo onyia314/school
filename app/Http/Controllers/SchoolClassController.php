@@ -21,7 +21,7 @@ class SchoolClassController extends Controller
 
 
     public function create(){
-        return view('settings.addclass');
+        return view('schoolclasses.addclass');
     }
 
     public function store(Request $request){

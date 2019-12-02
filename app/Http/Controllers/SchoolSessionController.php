@@ -19,7 +19,7 @@ class SchoolSessionController extends Controller
     }
 
     public function create(){
-        return view('settings.addsession');
+        return view('sessions.addsession');
     }
 
     public function store(Request $request){

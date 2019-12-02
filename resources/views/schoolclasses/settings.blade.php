@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+    {{--
+        here you can add sections (arm) for each class_id    
+    --}}
 @section('content')
 
 <script>

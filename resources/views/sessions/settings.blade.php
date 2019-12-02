@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+    {{--
+        here you can add semester (term) for each session_id    
+    --}}
 @section('content')
 
 <script>

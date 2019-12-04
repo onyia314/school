@@ -12,6 +12,10 @@ class Semester extends Model
         return $this->belongsTo('App\SchoolSession' , 'session_id');
     }
 
+    public function courses(){
+        return $this->hasMany('App\Course');
+    }
+
     public function fees(){
         return $this->hasMany('App\Fee');
     }

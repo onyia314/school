@@ -27,7 +27,12 @@
                                     <li class="nav-item">
                                         <a class="nav-link btn btn-block" href="{{ url('settings/viewsessions')}}"><span
                                               class="nav-link-text">create semester</span></a>
-                                        </li>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link btn btn-block" href="{{ route('viewclasses.addcourse') }}"><span
+                                              class="nav-link-text">create courses</span></a>
+                                    </li>
 
                                     <li class="nav-item">
                                     <a class="nav-link btn btn-block" href="{{url('register/student')}}"><span

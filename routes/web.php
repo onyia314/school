@@ -79,7 +79,9 @@ Route::middleware(['auth' , 'admin'])->group(function(){
 
 
 Route::middleware(['auth' , 'admin'])->group(function(){
+
     Route::prefix('settings')->group(function(){
+
         Route::get('addclass', 'SchoolClassController@create');
         Route::post('addclass' , 'SchoolClassController@store');
         Route::get('viewclasses' , 'SchoolClassController@index');
@@ -92,8 +94,16 @@ Route::middleware(['auth' , 'admin'])->group(function(){
         Route::get('viewsessions' , 'SchoolSessionController@index');
         Route::get('showsession/{id}' , 'SchoolSessionController@show'); //takes you to where you can add semester
 
-        
         Route::post('addsemester' , 'SemesterController@store');
+
+        /**
+         * add courses
+         */
+        Route::get('viewclasses/addcourse' , 'CourseController@index')->name('viewclasses.addcourse');
+        Route::get('addcourse/{class_id}' , 'CourseController@addCourse');
+        Route::post('addcourse' , 'CourseController@store');
+
+
     });
 
 });

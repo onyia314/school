@@ -38,7 +38,7 @@
 
         public static function updateUser($id , $data){
 
-            User::where('id' , $id)->update([
+            return User::where('id' , $id)->update([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'phone_number' =>$data['phone_number'],
@@ -47,10 +47,10 @@
         }
 
         public static function updateStudentInfo($data){
-            StudentInfo::updateOrCreate(['user_id' => $data['user_id'] ], $data);
+            return StudentInfo::updateOrCreate(['user_id' => $data['user_id'] ], $data);
         }
 
         public static function updateStaffInfo($data){
-            StaffInfo::updateOrCreate(['user_id' => $data['user_id'] ], $data);
+            return StaffInfo::updateOrCreate(['user_id' => $data['user_id'] ], $data);
         }
     }

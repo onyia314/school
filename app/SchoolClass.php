@@ -13,4 +13,8 @@ class SchoolClass extends Model
     public function sections(){
         return $this->hasMany('App\Section' , 'class_id');
     }
+
+    public function courses(){
+        return $this->hasMany('App\Course' , 'class_id');
+    }
 }

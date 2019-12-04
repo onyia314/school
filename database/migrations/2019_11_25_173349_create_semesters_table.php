@@ -16,7 +16,7 @@ class CreateSemestersTable extends Migration
         Schema::create('semesters', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('semester_name');
-            $table->string('session_id');
+            $table->unsignedInteger('session_id');
             $table->timestamps();
         });
     }

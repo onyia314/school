@@ -16,7 +16,7 @@ class CreateFeesTable extends Migration
         Schema::create('fees', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('fee_name');
-            $table->string('semester_id');
+            $table->unsignedInteger('semester_id');
             $table->string('amount');
             $table->timestamps();
         });

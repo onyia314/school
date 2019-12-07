@@ -9,15 +9,7 @@
         <div class="col-md-8">
 
                 @if( session()->exists('courseAdded') )
-                <div class="alert alert-success text-center">course added</div>
-                @endif
-
-                @if( session()->exists('courseNotAdded') )
-                        <div class="alert alert-danger text-center">course could not be added please contact master</div>
-                @endif
-
-                @if( session()->exists('courseExists') )
-                        <div class="alert alert-danger text-center">this course exists for this class in this semester </div>
+                <div class="alert alert-success text-center">course updated</div>
                 @endif
 
             <div class="card">
@@ -27,18 +19,23 @@
                     <form method="POST" action="{{ url('settings/addcourse')}}">
                         @csrf
                         
-                        <ul>
-                            @foreach ($suggestedCourses as $suggestedCourse)
-                               <li>{{$suggestedCourse}}</li>
-                            @endforeach
-                        </ul>
+                        
+                        <div class="form-group-row">
+
+                            <ul>
+                                @foreach ($suggestedCourses as $suggestedCourse)
+                                    <li>{{$suggestedCourse .' : '}}<input name = "course_name[]" type="checkbox" @error('course_name') is-invalid @enderror value = "{{$suggestedCourse}}"></li>
+                                @endforeach
+                            </ul>
+                            
+                        </div>
                         
 
                         <div class="form-group row">
                             <label for="course_name" class="col-md-4 col-form-label text-md-right">{{ __('add course') }}</label>
 
                             <div class="col-md-6">
-                                <input name="course_name" id="course_name" type="text" class="form-control @error('course_name') is-invalid @enderror"  value="{{ old('course_name') }}"  autocomplete="course_name" autofocus placeholder="biology chemistry etc">
+                                <input name="course_name[]" id="course_name" type="text" class="form-control @error('course_name') is-invalid @enderror"  value=""  autocomplete="course_name" autofocus placeholder="biology chemistry etc">
 
                                 @error('course_name')
                                     <span class="invalid-feedback" role="alert">
@@ -55,19 +52,22 @@
                         </div>
 
                         <div class="form-group row">
-                                <label for="semester_id" class="col-md-4 col-form-label text-md-right">{{ __("select section and semester") }}</label>
-                                <div class="col-md-6">
-                                    <select name="semester_id" id="semester_id" class="form-control @error('semester_id') is-invalid @enderror">
-                                        <option value=""> select semester</option>
-                                        @foreach ($schoolSessions as $schoolSession)
-    
-                                            <optgroup label="{{$schoolSession->session_name}}">
-                                                @foreach($schoolSession->semesters as $semester)
-                                                    <option value="{{$semester->id}}">{{$semester->semester_name}}</option>
-                                                @endforeach
-                                            </optgroup>
-
+                                <label for="semester_id" class="col-md-4 col-form-label text-md-right">
+                                        @foreach($schoolSession as $currentSession)
+                                          {{ 'select semester for ' .$currentSession->session_name }}
                                         @endforeach
+                                </label>
+                                <div class="col-md-6">
+
+                                    <select name="semester_id" id="semester_id" class="form-control @error('semester_id') is-invalid @enderror" required>
+                                    <option value="">select semester</option>
+                                  
+                                                @foreach($schoolSession as $currentSession)
+                                                    @foreach ($currentSession->semesters as $semester)
+                                                        <option value="{{$semester->id}}">{{$semester->semester_name}}</option>
+                                                    @endforeach
+                                                @endforeach
+                            
                                     </select>
 
                                     @error('semester_id')

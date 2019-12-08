@@ -52,29 +52,9 @@
                         </div>
 
                         <div class="form-group row">
-                                <label for="semester_id" class="col-md-4 col-form-label text-md-right">
-                                        @foreach($schoolSession as $currentSession)
-                                          {{ 'select semester for ' .$currentSession->session_name }}
-                                        @endforeach
-                                </label>
+                                
                                 <div class="col-md-6">
-
-                                    <select name="semester_id" id="semester_id" class="form-control @error('semester_id') is-invalid @enderror" required>
-                                    <option value="">select semester</option>
-                                  
-                                                @foreach($schoolSession as $currentSession)
-                                                    @foreach ($currentSession->semesters as $semester)
-                                                        <option value="{{$semester->id}}">{{$semester->semester_name}}</option>
-                                                    @endforeach
-                                                @endforeach
-                            
-                                    </select>
-
-                                    @error('semester_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+                                    <input id="semester_id" name="semester_id" type="hidden" class="form-control" value="{{$semester_id}}">
                                 </div>
                         </div>
 

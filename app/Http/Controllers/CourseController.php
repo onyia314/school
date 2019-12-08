@@ -13,7 +13,7 @@ use App\Semester;
 class CourseController extends Controller
 {
     public function index(){
-        $schoolSessions = SchoolSession::all();
+        $schoolSessions = SchoolSession::with('semesters')->get();
         $schoolClasses = SchoolClass::all();
         return view('courses.index')->with(['schoolClasses' => $schoolClasses, 'schoolSessions' => $schoolSessions ]);
     }
@@ -71,10 +71,9 @@ class CourseController extends Controller
         return Course::whereIn('semester_id' , [] )->where(['class_id' => $class_id])->pluck('course_name')->unique();
     }
 
-    public function addCourse( $session_id , $class_id ){
+    public function addCourse( $session_id , $class_id , $semester_id){
         $suggestedCourses = $this->suggestCourses($class_id);
-        $schoolSession = SchoolSession::with('semesters')->where('id' , $session_id)->get();
-        return view('courses.addcourse')->with([ 'schoolSession' => $schoolSession, 'class_id' => $class_id, 'suggestedCourses' => $suggestedCourses, ]);
+        return view('courses.addcourse')->with([ 'class_id' => $class_id, 'semester_id' => $semester_id , 'suggestedCourses' => $suggestedCourses, ]);
     }
 
     public function store(Request $request){

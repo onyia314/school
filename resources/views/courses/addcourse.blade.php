@@ -6,14 +6,14 @@
     
     <div class="row justify-content-center">
         @include('include.left-menu')
-        <div class="col-md-8">
+        <div class="col-md-6">
 
                 @if( session()->exists('courseAdded') )
                 <div class="alert alert-success text-center">course updated</div>
                 @endif
 
             <div class="card">
-            <div class="card-header"></div>
+            <div class="card-header text-center">add courses</div>
             <div class="card-body">
 
                     <form method="POST" action="{{ url('settings/addcourse')}}">
@@ -22,11 +22,16 @@
                         
                         <div class="form-group-row">
 
-                            <ul>
-                                @foreach ($suggestedCourses as $suggestedCourse)
-                                    <li>{{$suggestedCourse .' : '}}<input name = "course_name[]" type="checkbox" @error('course_name') is-invalid @enderror value = "{{$suggestedCourse}}"></li>
-                                @endforeach
-                            </ul>
+                            @if ($suggestedCourses->count())
+
+                                <strong>here are the list of course suggestions</strong>
+                                <ul>
+                                    @foreach ($suggestedCourses as $suggestedCourse)
+                                        <li>{{$suggestedCourse .' : '}}<input name = "course_name[]" type="checkbox" @error('course_name') is-invalid @enderror value = "{{$suggestedCourse}}"></li>
+                                    @endforeach
+                                </ul>
+                                
+                            @endif
                             
                         </div>
                         
@@ -71,6 +76,25 @@
                     
             </div>
         </div>
+        </div>
+
+        <div class="col-md-2">
+
+                <div class="card">
+                        <div class="card-header text-center">list of courses made for this semester</div>
+                        <div class="card-body">
+                            @if ($coursesMadeInSelectedSemester->count())
+                            <ul>
+                                @foreach ($coursesMadeInSelectedSemester as $course)
+                                    <li>{{$course}}</li>
+                                @endforeach
+                            </ul>
+                            @else
+                                <h4>no course has been added for this class in this semester</h4>
+                            @endif
+                        </div>
+                </div>
+            
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 <div class="col-md-4">
         <div class="card">
-            <div class="card-header">Dashboard</div>
+            <div class="card-header text-center">Dashboard</div>
 
             <div class="card-body">
                     <ul class="nav flex-column">

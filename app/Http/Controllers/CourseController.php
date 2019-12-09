@@ -59,7 +59,9 @@ class CourseController extends Controller
 
                 //get the latest session and suggest courses if and only if at least a semester of this session has course(s) 
                 if( Course::whereIn('semester_id' , $this->semestersOfLatestSession() )->where(['class_id' => $class_id])->exists() ){
-                    return Course::whereIn('semester_id' , $this->semestersOfLatestSession())->where(['class_id' => $class_id])->pluck('course_name')->unique();
+                    //merge both semesterd of immediate previous session and semester of latest session 
+                    $semesters = array_merge($this->semestersOfLatestSession() , $this->semestersOfPreviousSession());
+                    return Course::whereIn('semester_id' , $semesters)->where(['class_id' => $class_id])->pluck('course_name')->unique();
                 }else{
                     //if semester of the this latest session has no courses then suggest from previous session
                     return Course::whereIn('semester_id' , $this->semestersOfPreviousSession())->where(['class_id' => $class_id])->pluck('course_name')->unique();
@@ -72,8 +74,10 @@ class CourseController extends Controller
     }
 
     public function addCourse( $session_id , $class_id , $semester_id){
-        $suggestedCourses = $this->suggestCourses($class_id);
-        return view('courses.addcourse')->with([ 'class_id' => $class_id, 'semester_id' => $semester_id , 'suggestedCourses' => $suggestedCourses, ]);
+        $coursesMadeInSelectedSemester = Course::where(['class_id' => $class_id , 'semester_id' => $semester_id])->pluck('course_name');
+        //take away any course that has been added for the selected semester from suggested courses.
+        $suggestedCourses = $this->suggestCourses($class_id)->diff($coursesMadeInSelectedSemester); 
+        return view('courses.addcourse')->with([ 'class_id' => $class_id, 'semester_id' => $semester_id , 'suggestedCourses' => $suggestedCourses, 'coursesMadeInSelectedSemester' => $coursesMadeInSelectedSemester]);
     }
 
     public function store(Request $request){

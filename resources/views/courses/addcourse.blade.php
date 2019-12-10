@@ -25,9 +25,11 @@
                             @if ($suggestedCourses->count())
 
                                 <strong>here are the list of course suggestions</strong>
+                                
                                 <ul>
+                                    <li>select all : <input type="checkbox" id = "selectAll"></li>
                                     @foreach ($suggestedCourses as $suggestedCourse)
-                                        <li>{{$suggestedCourse .' : '}}<input name = "course_name[]" type="checkbox" @error('course_name') is-invalid @enderror value = "{{$suggestedCourse}}"></li>
+                                        <li>{{$suggestedCourse .' : '}}<input name = "course_name[]" class = "selectCourse"type="checkbox" @error('course_name') is-invalid @enderror value = "{{$suggestedCourse}}"></li>
                                     @endforeach
                                 </ul>
                                 
@@ -78,7 +80,7 @@
         </div>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-3">
 
                 <div class="card">
                         <div class="card-header text-center">list of courses made for this semester</div>
@@ -98,4 +100,18 @@
         </div>
     </div>
 </div>
+<script>
+
+    document.addEventListener('DOMContentLoaded' , () => {
+
+        var selectAll = document.getElementsByClassName('selectCourse');
+        document.getElementById('selectAll').addEventListener('click' , (e) => {
+            for ( var i=0; i<selectAll.length; i++) {
+                selectAll[i].checked = e.target.checked;
+            }
+        });
+
+    });
+
+</script>
 @endsection

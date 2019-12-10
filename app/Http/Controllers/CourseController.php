@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Course\CourseService;
 use App\SchoolSession;
 use App\SchoolClass;
 use App\Course;
-use App\Semester;
 
 class CourseController extends Controller
 {
@@ -18,65 +18,10 @@ class CourseController extends Controller
         return view('courses.index')->with(['schoolClasses' => $schoolClasses, 'schoolSessions' => $schoolSessions ]);
     }
 
-    private function semestersOfLatestSession(){
-
-         $semesters = [];
-
-         $latestSession = SchoolSession::orderBy('created_at' , 'desc')->first();
-         $semestersOfLatestSession = Semester::where('session_id' , $latestSession->id)->get();
-
-         foreach( $semestersOfLatestSession as $semester){
-            $semesters[] = $semester->id;
-        }
-
-        return $semesters;
-    }
-
-    private function semestersOfPreviousSession(){
-
-        $semesters = [];
-
-        $previousSession = SchoolSession::orderBy('created_at' , 'desc')->skip(1)->first();
-
-        $semestersOfPreviousSession = Semester::where('session_id' , $previousSession->id)->get();
-
-        foreach( $semestersOfPreviousSession as $semester){
-            $semesters[] = $semester->id;
-        }
-        return $semesters;
-    }
-
-    private function suggestCourses($class_id){
-        
-         //check if at least a session session exists
-         if( $numberOfSessions = SchoolSession::count() ){
-        
-            //if only one session exists then suggest courses based on the semester(s) of this session 
-            if($numberOfSessions == 1){
-                return Course::whereIn('semester_id' , $this->semestersOfLatestSession() )->where(['class_id' => $class_id])->pluck('course_name')->unique();
-            }
-            else{ // more than one session
-
-                //get the latest session and suggest courses if and only if at least a semester of this session has course(s) 
-                if( Course::whereIn('semester_id' , $this->semestersOfLatestSession() )->where(['class_id' => $class_id])->exists() ){
-                    //merge both semesterd of immediate previous session and semester of latest session 
-                    $semesters = array_merge($this->semestersOfLatestSession() , $this->semestersOfPreviousSession());
-                    return Course::whereIn('semester_id' , $semesters)->where(['class_id' => $class_id])->pluck('course_name')->unique();
-                }else{
-                    //if semester of the this latest session has no courses then suggest from previous session
-                    return Course::whereIn('semester_id' , $this->semestersOfPreviousSession())->where(['class_id' => $class_id])->pluck('course_name')->unique();
-                }
-            }
-         }
-         
-         //if no sesssion exists use empty array of semester
-        return Course::whereIn('semester_id' , [] )->where(['class_id' => $class_id])->pluck('course_name')->unique();
-    }
-
     public function addCourse( $session_id , $class_id , $semester_id){
         $coursesMadeInSelectedSemester = Course::where(['class_id' => $class_id , 'semester_id' => $semester_id])->pluck('course_name');
         //take away any course that has been added for the selected semester from suggested courses.
-        $suggestedCourses = $this->suggestCourses($class_id)->diff($coursesMadeInSelectedSemester); 
+        $suggestedCourses = CourseService::suggestCourses($class_id)->diff($coursesMadeInSelectedSemester); 
         return view('courses.addcourse')->with([ 'class_id' => $class_id, 'semester_id' => $semester_id , 'suggestedCourses' => $suggestedCourses, 'coursesMadeInSelectedSemester' => $coursesMadeInSelectedSemester]);
     }
 

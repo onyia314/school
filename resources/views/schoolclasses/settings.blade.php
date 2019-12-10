@@ -16,14 +16,12 @@
             document.getElementById('msg').innerHTML = 'please wait.....'
 
             var id = document.getElementById('class_id').value;
-            var group = document.getElementById('class_group').value;
             var section = document.getElementById('section_name').value;
             var token = document.getElementsByName('_token')[0].value;
 
             var data = {
                 section_name: section,
                 class_id: id,
-                class_group: group,
                 _token: token
             }
            
@@ -122,12 +120,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-        
-                                        <div class="col-md-6">
-                                            <input type="hidden" name = "class_group" id = "class_group" value = "{{$class_group}}">
-                                        </div>
-                                </div>
 
                                 <div class="form-group row">
         

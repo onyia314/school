@@ -17,7 +17,6 @@ class CreateSectionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('class_id');
             $table->string('section_name');
-            $table->string('class_group');
             $table->timestamps();
         });
     }

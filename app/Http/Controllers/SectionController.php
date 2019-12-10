@@ -16,7 +16,6 @@ class SectionController extends Controller
         $validator = Validator::make($request->all() , [
             'section_name' => 'required|string|max:2',
             'class_id' => 'required|integer',
-            'class_group' => 'required|string|max:20',
         ]);
 
         if($validator->fails()){
@@ -31,7 +30,6 @@ class SectionController extends Controller
         $num = Section::where([
             'section_name' => $request->section_name,
             'class_id' => $request->class_id,
-            'class_group' => $request->class_group,
             ])->count();
 
         if($num == 0){
@@ -39,7 +37,6 @@ class SectionController extends Controller
             Section::create([
                 'section_name' => $request->section_name,
                 'class_id' => $request->class_id,
-                'class_group' => $request->class_group,
             ]);
 
             return response()->json( [ 'success' => 'section created'] );
@@ -47,7 +44,7 @@ class SectionController extends Controller
         }
 
         if($num > 0){
-            return response()->json( ['class_exists' => 'this class already has a ' .'group ' .$request->class_group .' and section ' .strtoupper($request->section_name) ]);
+            return response()->json( ['class_exists' => 'this class already has this section ' .strtoupper($request->section_name) ]);
         }
 
 

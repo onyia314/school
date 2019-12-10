@@ -14,6 +14,10 @@
                         <div class="alert alert-danger text-center">class could not be added please contact master</div>
                 @endif
 
+                @if( session()->exists('classExists') )
+                        <div class="alert alert-danger text-center">class with this group already exists</div>
+                @endif
+
                 <div class="card">
                     <div class="card-header text-center">Add class</div>
 

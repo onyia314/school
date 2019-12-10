@@ -26,18 +26,25 @@ class SchoolClassController extends Controller
 
     public function store(Request $request){
         // validate
-
         $data = $request->validate([
             'class_name' => 'required|string|max:20',
             'group' => 'required|string|max:20',
         ]);
 
-        try {
-            SchoolClass::create($data);
-            return back()->with('classAdded');
-        } catch (\exception $e) {
-            Log::info($e->getMessage());
-            return back()->with('classNotAdded');
+        $num = SchoolClass::where(['class_name' => $data['class_name'] , 'group' => $data['group'], ])->count();
+
+        if($num == 0){
+            try {
+                SchoolClass::create($data);
+                return back()->with('classAdded');
+            } catch (\exception $e) {
+                Log::info($e->getMessage());
+                return back()->with('classNotAdded');
+            }
+        }
+
+        if($num > 0){
+            return back()->with('classExists');
         }
     }
 }

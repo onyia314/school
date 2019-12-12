@@ -14,22 +14,24 @@ class CourseController extends Controller
 {
     public function index(){
         $schoolSessions = SchoolSession::with('semesters')->get();
-        $schoolClasses = SchoolClass::all();
+        $schoolClasses = SchoolClass::with('sections')->get();
         return view('courses.index')->with(['schoolClasses' => $schoolClasses, 'schoolSessions' => $schoolSessions ]);
     }
 
-    public function addCourse( $session_id , $class_id , $semester_id){
-        $coursesMadeInSelectedSemester = Course::where(['class_id' => $class_id , 'semester_id' => $semester_id])->pluck('course_name');
+    public function addCourse( $class_id , $section_id , $session_id , $semester_id){
+        $coursesMadeInSelectedSemester = Course::where(['section_id' => $section_id , 'semester_id' => $semester_id])->pluck('course_name');
         //take away any course that has been added for the selected semester from suggested courses.
         $suggestedCourses = CourseService::suggestCourses($class_id)->diff($coursesMadeInSelectedSemester); 
-        return view('courses.addcourse')->with([ 'class_id' => $class_id, 'semester_id' => $semester_id , 'suggestedCourses' => $suggestedCourses, 'coursesMadeInSelectedSemester' => $coursesMadeInSelectedSemester]);
+        return view('courses.addcourse')->with([ 'class_id' => $class_id, 'section_id' => $section_id , 'session_id' => $session_id, 'semester_id' => $semester_id , 'suggestedCourses' => $suggestedCourses, 'coursesMadeInSelectedSemester' => $coursesMadeInSelectedSemester]);
     }
 
     public function store(Request $request){
 
         $validator = Validator::make($request->all() , [
+            'session_id' => 'required|integer',
             'semester_id' => 'required|integer',
             'class_id' => 'required|integer',
+            'section_id' => 'required|integer',
             'course_name' => [function($attribute, $value , $fail){
 
                if(!empty($value)){
@@ -71,9 +73,9 @@ class CourseController extends Controller
 
             //in case the user inputs existing course per class per semester
             Course::updateOrCreate(
-                [ 'course_name' => $value , 'semester_id' => $request->semester_id , 'class_id' => $request->class_id ],
+                [ 'course_name' => $value , 'semester_id' => $request->semester_id , 'class_id' => $request->class_id , 'section_id' => $request->section_id , 'session_id' => $request->session_id ],
                 
-                [ 'course_name' => $value , 'semester_id' => $request->semester_id , 'class_id' => $request->class_id ]
+                [ 'course_name' => $value , 'semester_id' => $request->semester_id , 'class_id' => $request->class_id , 'section_id' => $request->section_id , 'session_id' => $request->session_id ]
             );
         }
 

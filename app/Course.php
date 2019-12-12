@@ -12,7 +12,11 @@ class Course extends Model
         return $this->belongsTo('App\SchoolClass' , 'class_id');
     }
 
+    public function section(){
+        return $this->belongsTo('App\Section');
+    }
+
     public function semester(){
-        return $this->belongsTo('App\semester');
+        return $this->belongsTo('App\Semester');
     }
 }

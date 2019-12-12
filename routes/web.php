@@ -100,7 +100,7 @@ Route::middleware(['auth' , 'admin'])->group(function(){
          * add courses
          */
         Route::get('viewclasses/addcourse' , 'CourseController@index')->name('viewclasses.addcourse');
-        Route::get('addcourse/session/{session_id}/class/{class_id}/semester/{semester_id}' , 'CourseController@addCourse')->name('addcourse');
+        Route::get('addcourse/class/{class_id}/section/{section_id}/session/{session_id}/semester/{semester_id}' , 'CourseController@addCourse')->name('addcourse');
         Route::post('addcourse' , 'CourseController@store');
 
 

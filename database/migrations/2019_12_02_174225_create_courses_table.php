@@ -18,8 +18,10 @@ class CreateCoursesTable extends Migration
             $table->string('course_name');
             $table->enum('course_type' , ['core' , 'elective']);
             $table->unsignedInteger('class_id');
-            $table->unsignedInteger('teacher_id')->default(0);
+            $table->unsignedInteger('section_id');
+            $table->unsignedInteger('session_id');
             $table->unsignedInteger('semester_id');
+            $table->unsignedInteger('teacher_id')->default(0);
             $table->timestamps();
         });
     }

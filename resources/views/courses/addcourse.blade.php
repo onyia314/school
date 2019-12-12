@@ -57,6 +57,16 @@
                                 <input id="class_id" name="class_id" type="hidden" class="form-control" value="{{ $class_id }}">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <input id="section_id" name="section_id" type="hidden" class="form-control" value="{{ $section_id }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <input id="session_id" name="session_id" type="hidden" class="form-control" value="{{ $session_id }}">
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                                 
@@ -92,7 +102,7 @@
                                 @endforeach
                             </ul>
                             @else
-                                <h4>no course has been added for this class in this semester</h4>
+                                <h4>no course has been added for this section in this semester</h4>
                             @endif
                         </div>
                 </div>

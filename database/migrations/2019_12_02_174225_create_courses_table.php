@@ -16,12 +16,13 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('course_name');
+            $table->string('course_time');
             $table->enum('course_type' , ['core' , 'elective']);
             $table->unsignedInteger('class_id');
             $table->unsignedInteger('section_id');
             $table->unsignedInteger('session_id');
             $table->unsignedInteger('semester_id');
-            $table->unsignedInteger('teacher_id')->default(0);
+            $table->unsignedInteger('teacher_id');
             $table->timestamps();
         });
     }

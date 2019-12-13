@@ -9,6 +9,7 @@ use App\Services\Course\CourseService;
 use App\SchoolSession;
 use App\SchoolClass;
 use App\Course;
+use App\User;
 
 class CourseController extends Controller
 {
@@ -18,68 +19,40 @@ class CourseController extends Controller
         return view('courses.index')->with(['schoolClasses' => $schoolClasses, 'schoolSessions' => $schoolSessions ]);
     }
 
-    public function addCourse( $class_id , $section_id , $session_id , $semester_id){
-        $coursesMadeInSelectedSemester = Course::where(['section_id' => $section_id , 'semester_id' => $semester_id])->pluck('course_name');
+    public function addCourse( $class_id , $section_id , $session_id , $semester_id ){
+        $teachers = User::where('role' , 'teacher')->get();
+        $coursesMadeInSelectedSemester = Course::where(['section_id' => $section_id , 'semester_id' => $semester_id])->get();
         //take away any course that has been added for the selected semester from suggested courses.
-        $suggestedCourses = CourseService::suggestCourses($class_id)->diff($coursesMadeInSelectedSemester); 
-        return view('courses.addcourse')->with([ 'class_id' => $class_id, 'section_id' => $section_id , 'session_id' => $session_id, 'semester_id' => $semester_id , 'suggestedCourses' => $suggestedCourses, 'coursesMadeInSelectedSemester' => $coursesMadeInSelectedSemester]);
+        $suggestedCourses = CourseService::suggestCourses($class_id)->diff( Course::whereIn('course_name' , $coursesMadeInSelectedSemester->pluck('course_name')->toArray() )->get() );
+        return view('courses.addcourse')->with([ 'class_id' => $class_id, 'section_id' => $section_id , 'session_id' => $session_id, 'semester_id' => $semester_id , 'suggestedCourses' => $suggestedCourses, 'coursesMadeInSelectedSemester' => $coursesMadeInSelectedSemester , 'teachers' => $teachers ,]);
     }
 
     public function store(Request $request){
 
-        $validator = Validator::make($request->all() , [
+        $data = $request->validate([
             'session_id' => 'required|integer',
             'semester_id' => 'required|integer',
             'class_id' => 'required|integer',
             'section_id' => 'required|integer',
-            'course_name' => [function($attribute, $value , $fail){
-
-               if(!empty($value)){
-
-                    //when the checkbox is not checked, it wont be present in the request array
-                    //but the input type text is present regardless of the data type
-                    if( count($value) == 1){
-                        if(!$value[0]){
-                            $fail('you must input at least one course name');
-                        }
-                        if( strlen($value[0]) > 50){
-                            $fail('input must not exceed 50 char');
-                        }
-                    }else{
-                        foreach($value as $arrayElement){
-                            if(strlen($arrayElement) > 50){
-                                $fail('input must not exceed 50 char'); 
-                            }
-                        }
-                    }
-
-               }else{
-                    $fail($attribute);
-               }
-
-            }],
+            'course_name' => 'required|string|max:100',
+            'course_type' => 'required|string|max:50',
+            'course_time' => 'required|string|max:100',
+            'teacher_id' => 'required|integer',
         ]);
-
-        if($validator->fails()){
-            return back()->withErrors($validator)->withInput();
+        
+        $num = Course::where( [ 'course_name' => $data['course_name'] , 'section_id' => $data['section_id'] , 'semester_id' => $data['semester_id'] ] )->count();
+        
+        if($num){
+            return back()->with('courseExists');
         }
 
-        // take-off the null value if present (when the text input value is 'null')
-        $data = array_filter($request->course_name , function($value){
-            return ( $value === null ) ? false : true ;  
-        });
-
-        foreach($data as $value){
-
-            //in case the user inputs existing course per class per semester
-            Course::updateOrCreate(
-                [ 'course_name' => $value , 'semester_id' => $request->semester_id , 'class_id' => $request->class_id , 'section_id' => $request->section_id , 'session_id' => $request->session_id ],
-                
-                [ 'course_name' => $value , 'semester_id' => $request->semester_id , 'class_id' => $request->class_id , 'section_id' => $request->section_id , 'session_id' => $request->session_id ]
-            );
+        try {
+            Course::create($data);
+            return back()->with('courseAdded');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage());
+            return back()->with('courseNotAdded');
         }
-
-         return back()->with('courseAdded');
 
     }
 }

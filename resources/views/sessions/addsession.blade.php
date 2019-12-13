@@ -7,7 +7,7 @@
             <div class="col-md-8">
 
                 @if( session()->exists('sessionAdded') )
-                        <div class="alert alert-success text-center">session added</div>
+            <div class="alert alert-success text-center">session added value. click on this link to create semesters for this session {{session('sessionAdded')}}</div>
                 @endif
 
                 @if( session()->exists('sessionNotAdded') )
@@ -15,7 +15,7 @@
                 @endif
 
                 <div class="card">
-                    <div class="card-header text-center">Add class</div>
+                    <div class="card-header text-center">Add session</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ url('settings/addsession')}}">

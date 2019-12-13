@@ -29,8 +29,8 @@ class SchoolSessionController extends Controller
         ]);
 
         try {
-            SchoolSession::create($data);
-            return back()->with('sessionAdded');
+            $schoolSession = SchoolSession::create($data);
+            return back()->with('sessionAdded' , $schoolSession['id']);
         } catch (\Exception $e) {
             Log::info($e->getMessage());
             return back()->with('sessionNotAdded'); 

@@ -35,8 +35,8 @@ class SchoolClassController extends Controller
 
         if($num == 0){
             try {
-                SchoolClass::create($data);
-                return back()->with('classAdded');
+                $schoolClass = SchoolClass::create($data);
+                return back()->with('classAdded' , $schoolClass['id']);
             } catch (\exception $e) {
                 Log::info($e->getMessage());
                 return back()->with('classNotAdded');

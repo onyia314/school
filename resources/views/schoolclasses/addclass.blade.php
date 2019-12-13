@@ -7,7 +7,7 @@
             <div class="col-md-8">
 
                 @if( session()->exists('classAdded') )
-                        <div class="alert alert-success text-center">class added</div>
+                        <div class="alert alert-success text-center">class added value is {{session('classAdded')}}.. A classroom does not exist if you don't make SECTION.. click on the link to add section</div>
                 @endif
 
                 @if( session()->exists('classNotAdded') )

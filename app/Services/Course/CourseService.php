@@ -7,33 +7,13 @@
     class CourseService{
 
         private static function semestersOfLatestSession(){
-
-            $semesters = [];
-   
             $latestSession = SchoolSession::orderBy('created_at' , 'desc')->first();
-            $semestersOfLatestSession = Semester::where('session_id' , $latestSession->id)->get();
-   
-            foreach( $semestersOfLatestSession as $semester){
-               $semesters[] = $semester->id;
-           }
-   
-           return $semesters;
-       }
-
-
+            return Semester::where('session_id' , $latestSession->id)->pluck('id')->toArray();
+        }
 
        private static function semestersOfPreviousSession(){
-
-            $semesters = [];
-
             $previousSession = SchoolSession::orderBy('created_at' , 'desc')->skip(1)->first();
-
-            $semestersOfPreviousSession = Semester::where('session_id' , $previousSession->id)->get();
-
-            foreach( $semestersOfPreviousSession as $semester){
-                $semesters[] = $semester->id;
-            }
-            return $semesters;
+            return Semester::where('session_id' , $previousSession->id)->pluck('id')->toArray();
         }
 
 
@@ -44,24 +24,24 @@
            
                //if only one session exists then suggest courses based on the semester(s) of this session 
                if($numberOfSessions == 1){
-                   return Course::whereIn('semester_id' , CourseService::semestersOfLatestSession() )->where(['class_id' => $class_id])->pluck('course_name')->unique();
+                   return Course::whereIn('semester_id' , CourseService::semestersOfLatestSession() )->where(['class_id' => $class_id])->get()->unique('course_name');
                }
                else{ // more than one session
    
-                   //get the latest session and suggest courses if and only if at least a semester of this session has course(s) 
+                   //if at least a semester of latest session has course(s) 
                    if( Course::whereIn('semester_id' , CourseService::semestersOfLatestSession() )->where(['class_id' => $class_id])->exists() ){
-                       //merge both semesterd of immediate previous session and semester of latest session 
+                       //merge both semesters of immediate previous session and semesters of latest session 
                        $semesters = array_merge(CourseService::semestersOfLatestSession() , CourseService::semestersOfPreviousSession());
-                       return Course::whereIn('semester_id' , $semesters)->where(['class_id' => $class_id])->pluck('course_name')->unique();
+                       return Course::whereIn('semester_id' , $semesters)->where(['class_id' => $class_id])->get()->unique('course_name');
                    }else{
                        //if semester of the this latest session has no courses then suggest from previous session
-                       return Course::whereIn('semester_id' , CourseService::semestersOfPreviousSession())->where(['class_id' => $class_id])->pluck('course_name')->unique();
+                       return Course::whereIn('semester_id' , CourseService::semestersOfPreviousSession())->where(['class_id' => $class_id])->get()->unique('course_name');
                    }
                }
             }
             
             //if no sesssion exists use empty array of semester
-           return Course::whereIn('semester_id' , [] )->where(['class_id' => $class_id])->pluck('course_name')->unique();
+           return Course::whereIn('semester_id' , [] )->where(['class_id' => $class_id])->get()->unique('course_name');
        }
 
 

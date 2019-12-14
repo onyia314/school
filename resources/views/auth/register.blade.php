@@ -16,7 +16,7 @@
                 @endif
 
                 @if( ( session()->exists('userRegistered') ) && !( session()->exists('infoRegistered') ) )
-                        <div class="alert alert-danger text-center">{{ session('register_role') . ' ' . 'registered ' .'but biography not updated... please update user biography...if this issue continues contact our support team'}}</div>
+                        <div class="alert alert-warning text-center">{{ session('register_role') . ' ' . 'registered ' .'but biography not updated... please update user biography...if this issue continues contact our support team'}}</div>
                 @endif
 
                 @if( session()->exists('userNotRegistered') )
@@ -120,7 +120,7 @@
                                 <label for="birthday" class="col-md-4 col-form-label text-md-right ">{{ __('birthday') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="birthday" type="date" class="form-control  @error('birthday') is-invalid @enderror" name="birthday" value="{{ old('birthday') }}" required>
+                                    <input id="birthday" type="date" class="form-control  @error('birthday') is-invalid @enderror" name="birthday" value="{{ old('birthday') }}" placeholder = "YEAR-MONTH-DAY eg 1996-03-25" required>
                                     @error('birthday')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

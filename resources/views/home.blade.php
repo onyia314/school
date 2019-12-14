@@ -8,7 +8,7 @@
         
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Dashboard</div>
+            <div class="card-header text-center"><strong>{{ Auth::user()->name .' - ' .Auth::user()->reg_number .' Dashboard'}}</strong></div>
 
                 <div class="card-body">
                     @if (session('status'))

@@ -30,7 +30,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a class="nav-link btn btn-block" href="{{ route('viewclasses.addcourse') }}"><span
+                                        <a class="nav-link btn btn-block" href="{{ route('section.addcourse') }}"><span
                                               class="nav-link-text">create courses</span></a>
                                     </li>
 

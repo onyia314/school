@@ -79,6 +79,21 @@
                             </li>
 
                         @endif
+
+                        @if (Auth::user()->role == 'teacher')
+                            <li class="nav-item">
+                            <a class="nav-link btn btn-block btn-primary" href="{{route('teacher.viewcourses')}}"><span
+                                  class="nav-link-text">my courses</span></a>
+                            </li>
+                        @endif
+
+                        @if (Auth::user()->role == 'student')
+                            <li class="nav-item">
+                            <a class="nav-link btn btn-block btn-primary" href="{{route('student.viewcourses')}}"><span
+                                  class="nav-link-text">my courses</span></a>
+                            </li>
+                        @endif
+
                     </ul>
             </div>
         </div>

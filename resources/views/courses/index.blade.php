@@ -9,91 +9,91 @@
         @include('include.left-menu')
 
         <div class="col-md-8">
+
+            @if (Auth::user()->role == 'teacher')
             
-            <div id="accordion">
-
-                    @foreach ($schoolClasses as $schoolClass)
-
-                        <div class="card">
-                        <div class="card-header" id="{{'heading-' .$schoolClass->id}}">
-                                <h5 class="mb-0">
-                                <a class="collapsed" role="button" data-toggle="collapse" href="{{'#school'.$schoolClass->class_name .$schoolClass->id}}" aria-expanded="false" aria-controls="{{'school' .$schoolClass->class_name .$schoolClass->id}}">
-                                        {{$schoolClass->class_name .' : ' .$schoolClass->group}}
-                                    </a>
-                                </h5>
-                        </div>
-
-                        <div id="{{'school' .$schoolClass->class_name .$schoolClass->id}}" class="collapse" data-parent="#accordion" aria-labelledby="{{'heading-' .$schoolClass->id}}">
-                               
-                                <div class="card-body">
-
-                                    <div id="accordion-1">
-
-                                        <div class="card">
-
-                                            @foreach ($schoolClass->sections as $section)
-
-                                                <div class="card-header" id="{{'heading-' .$section->id}}">
-                                                    <h5 class="mb-0">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" href="{{'#section'.$section->id}}" aria-expanded="false" aria-controls="{{'section' .$section->id}}">
-                                                            {{$section->section_name}}
-                                                        </a>
-                                                    </h5>
-                                                </div>
-
-                                                <div id="{{'section' .$section->id}}" class="collapse" data-parent="#accordion-1" aria-labelledby="{{'heading-' .$section->id}}">
-                                                    <div class="card-body">
-
-                                                        <div id="accordion-2">
-                
-                                                            <div class="card">
-
-                                                                    @foreach ( $schoolSessions as $schoolSession )
-
-                                                                    <div class="card-header" id="{{'heading-' .$schoolSession->id}}">
-                                                                        <h5 class="mb-0">
-                                                                        <a class="collapsed" role="button" data-toggle="collapse" href="{{'#session'.$schoolSession->id}}" aria-expanded="false" aria-controls="{{'session' .$schoolSession->id}}">
-                                                                                {{$schoolSession->session_name}}
-                                                                            </a>
-                                                                        </h5>
-                                                                    </div>
-        
-                                                                    <div id="{{'session' .$schoolSession->id}}" class="collapse" data-parent="#accordion-2" aria-labelledby="{{'heading-' .$schoolSession->id}}">
-                                                                        
-                                                                        <div class="card-body">
-                                                                            <div id="accordion-3">
-                                                                                <div class="card">
-                                                                                    @foreach ($schoolSession->semesters as $semester)
-                                                                                        <a href="{{route('addcourse' , [ 'class_id' => $schoolClass->id , 'section_id' => $section->id ,'session_id' => $schoolSession->id , 'semester_id' => $semester->id])}}">{{$semester->semester_name}}</a>
-                                                                                    @endforeach
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                    @if ( $courses->count() )
                         
-                                                                    </div>
-        
-                                                                @endforeach
+                        <div class = "table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">course id</th>
+                                    <th scope="col">course name</th>
+                                    <th scope="col">course type</th>
+                                    <th scope="col">class name</th>
+                                    <th scope="col">class group</th>
+                                    <th scope="col">section</th>
+                                    <th scope="col">time</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                
+                                    @foreach ($courses as $course)
+                                        <tr>
+                                            <th scope="row">{{$course->id}}</th>
+                                            <td>{{$course->course_name}}</td>
+                                            <td>{{$course->course_type}}</td>
+                                            <td>{{$course->schoolClass->class_name}}</td>
+                                            <td>{{$course->schoolClass->group}}</td>
+                                            <td>{{$course->section->section_name}}</td>
+                                            <td>{{$course->course_time}}</td>
+                                        </tr>   
+                                        
+                                    @endforeach
+                                </tbody> 
+                            </table> 
+                        </div>     
+                    @else
+                        <h3>you have not been assigned to any course for this semester</h3>
+                    @endif
+                    
+            @endif
 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-    
-                                                </div>
 
-                                            @endforeach
+           @if (Auth::user()->role == 'student')
 
-                                    </div>
-                                    </div>
-                                </div>
-                        </div>
+                @if ($courses->count() )
 
-                        </div>
+                    <div class = "table-responsive">
 
-                    @endforeach
-
-            </div>
-                
+                    <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">course id</th>
+                                <th scope="col">course name</th>
+                                <th scope="col">course type</th>
+                                <th scope="col">class name</th>
+                                <th scope="col">class group</th>
+                                <th scope="col">section</th>
+                                <th scope="col">time</th>
+                                <th scope="col">teacher</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            
+                                @foreach ($courses as $course)
+                                    <tr>
+                                        <th scope="row">{{$course->id}}</th>
+                                        <td>{{$course->course_name}}</td>
+                                        <td>{{$course->course_type}}</td>
+                                        <td>{{$course->schoolClass->class_name}}</td>
+                                        <td>{{$course->schoolClass->group}}</td>
+                                        <td>{{$course->section->section_name}}</td>
+                                        <td>{{$course->course_time}}</td>
+                                        <td>{{$course->teacher->name}}</td>
+                                    </tr>   
+                                    
+                                @endforeach
+                            </tbody> 
+                        </table>
+                    </div>
+                @else
+                    <h3>the school has not added course for this section in this semester</h3> 
+                @endif
+            
+            @endif
+            
         </div>
     </div>
 </div>

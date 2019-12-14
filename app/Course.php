@@ -19,4 +19,13 @@ class Course extends Model
     public function semester(){
         return $this->belongsTo('App\Semester');
     }
+
+    /**
+     * since we don't have a teacher table let's get the teacher_id for a course
+     * by defininig a relationship of courses with user
+     */
+
+     public function teacher(){
+         return $this->belongsTo('App\User');
+     }
 }

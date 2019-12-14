@@ -99,13 +99,25 @@ Route::middleware(['auth' , 'admin'])->group(function(){
         /**
          * add courses
          */
-        Route::get('viewclasses/addcourse' , 'CourseController@index')->name('viewclasses.addcourse');
+        Route::get('section/addcourse' , 'CourseController@indexToSemester')->name('section.addcourse');
         Route::get('addcourse/class/{class_id}/section/{section_id}/session/{session_id}/semester/{semester_id}' , 'CourseController@addCourse')->name('addcourse');
         Route::post('addcourse' , 'CourseController@store');
 
-
     });
 
+});
+
+
+//courses for teachers
+Route::middleware(['auth' , 'teacher'])->group(function(){
+    Route::get('semester/teacher/viewcourse' , 'CourseController@indexTeacher')->name('teacher.viewcourses');
+    Route::get('courses/semester/{semester_id}/teacher/{teacher_id}' , 'CourseController@teacherCourses')->name('teacher.courses');
+});
+
+//courses for student
+Route::middleware(['auth' , 'student'])->group(function(){
+    Route::get('semester/student/viewcourse' , 'CourseController@indexStudent')->name('student.viewcourses');
+    Route::get('courses/section/{section_id}/semester/{semester_id}/student/{student_id}' , 'CourseController@studentCourses')->name('student.courses');
 });
 
 //fees

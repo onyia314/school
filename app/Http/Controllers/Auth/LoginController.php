@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -50,4 +51,15 @@ class LoginController extends Controller
         request()->merge([$field => $login]);
         return $field;
     }
+
+    /**
+     * add another authentication credential
+     */
+    public function credentials(Request $request)
+    {
+        $credentials = $request->only($this->username(), 'password');
+        $credentials = array_add($credentials, 'active', '1');
+        return $credentials;
+    }
+
 }

@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('role');
             $table->string('image')->nullable();
             $table->unsignedInteger('section_id')->nullable();
+            $table->unsignedTinyInteger('active');
             $table->rememberToken();
             $table->timestamps();
         });

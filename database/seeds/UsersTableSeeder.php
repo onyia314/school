@@ -17,6 +17,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('password'),
             'reg_number'=> '20131835853',
             'role'     => 'master',
+            'active'   => 1,
         ]);
 
         DB::table('users')->insert([
@@ -25,6 +26,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('password'),
             'reg_number'=> '20131835854',
             'role'     => 'admin',
+            'active'   => 1,
         ]);
 
         DB::table('users')->insert([
@@ -33,6 +35,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('password'),
             'reg_number'=> '20131835855',
             'role'     => 'student',
+            'active'   => 0,
         ]);
 
         

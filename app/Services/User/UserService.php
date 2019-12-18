@@ -18,6 +18,7 @@
                 'section_id' => (int)$data['section_id'],
                 'image' => $data['image'],
                 'role' => 'student',
+                'active' => 1,
                 'reg_number' => date('Ymd') . User::count() + 1, //remeber to fix duplicate issue that may arise due to this 
             ]);
         }
@@ -31,6 +32,7 @@
                  'password' => Hash::make($data['password']),
                  'image' => $data['image'],
                  'role' => 'teacher',
+                 'active' => 1,
                  'reg_number' => date('Ymd') . User::count() + 1, //remeber to fix duplicate issue that may arise due to this 
                  
              ]);

@@ -25,6 +25,7 @@
                                     <th scope="col">class group</th>
                                     <th scope="col">section</th>
                                     <th scope="col">time</th>
+                                    <th scope="col">attendance</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -38,6 +39,7 @@
                                             <td>{{$course->schoolClass->group}}</td>
                                             <td>{{$course->section->section_name}}</td>
                                             <td>{{$course->course_time}}</td>
+                                            <td><a class = "btn btn-primary" href="{{route('create.attendance' , [ 'course_id' => $course->id , 'section_id' => $course->section->id , 'semester_id' => $course->semester_id , 'user_id' => Auth::user()->id ] )}}">take attendance</a></td>
                                         </tr>   
                                         
                                     @endforeach

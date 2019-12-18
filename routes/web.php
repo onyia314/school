@@ -120,13 +120,22 @@ Route::middleware(['auth' , 'student'])->group(function(){
     Route::get('courses/section/{section_id}/semester/{semester_id}/student/{student_id}' , 'CourseController@studentCourses')->name('student.courses');
 });
 
+//attendance
+Route::middleware(['auth' , 'admin.teacher'])->group(function(){
+    //user_id parameter indicates who created an attendace (teacher or admin)
+    Route::get('attendance/course/{course_id}/section/{section_id}/semester/{semester_id}/user/{user_id}' , 'AttendanceController@create')->name('create.attendance');
+    Route::post('attendance' , 'AttendanceController@store')->name('attendance');
+});
+
+
+
+
 //fees
 
 Route::middleware(['auth' , 'admin'])->group(function(){
     Route::prefix('fees')->group(function(){
         Route::get('viewsessions' , 'SchoolSessionController@index');
-        Route::get('addfee/{semester_id}' , 'FeeController@create');
-        
+        Route::get('addfee/{semester_id}' , 'FeeController@create');    
         Route::post('addfee' , 'FeeController@store');
     });
 });

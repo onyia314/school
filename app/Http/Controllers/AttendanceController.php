@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Section;
 use App\Services\Attendance\AttendanceService;
+//use Illuminate\Database\Eloquent\Builder;
 
 class AttendanceController extends Controller
 {
@@ -12,9 +13,13 @@ class AttendanceController extends Controller
         
         $attPresent = [];
         $attAbsent =[];
-        $totalAtt = AttendanceService::totalCourseAttPerSemester($course_id , $semester_id , $section_id);
 
-        $sections = Section::where('id' , $section_id)->has('users')->with(['users', 'schoolClass'])->get();
+        $sections = Section::where('id' , $section_id)->has('users')->with([
+            'schoolClass' ,
+            'users' => function($query){
+                    $query->where('active' , 1);
+                 },
+        ])->get();
     
         foreach($sections as $section){
             foreach($section->users as $student){
@@ -31,7 +36,6 @@ class AttendanceController extends Controller
             'user_id' => $user_id,
             'attPresent' => $attPresent,
             'attAbsent' => $attAbsent,
-            'totalAtt' => $totalAtt,
         ]);  
     }
 

@@ -52,7 +52,7 @@
                                                             <input type="checkbox" name = "present[]" value = "{{$student->id}}" class = "present">
                                                             <input type="hidden" name = "students[]" value = "{{$student->id}}">
                                                         </th>
-                                                        <th>{{$totalAtt}}</th>
+                                                        <th>{{ $attPresent[$student->id] + $attAbsent[$student->id] }}</th>
                                                         <th>{{$attPresent[$student->id]}}</th>
                                                         <th>{{$attAbsent[$student->id]}}</th>
                                                     </tr>

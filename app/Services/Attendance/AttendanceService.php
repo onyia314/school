@@ -48,27 +48,6 @@ class AttendanceService{
         
     }
 
-    public static function totalCourseAttPerSemester($course_id , $semester_id , $section_id){
-        /**
-         * even though course_id is assigned to a particular teacher
-         * admin can take attendance for the course 
-         * so total attendance inludes ones taken by the course teacher and the admin conbined 
-         * 
-         */
-        $totalStudentsInSection = User::where('section_id' , $section_id)->count();
-
-        //to avoid error due to division by zero
-        if( $totalStudentsInSection == 0){
-            return 0;
-        }
-
-        return Attendance::where([
-            'course_id' => $course_id ,
-            'section_id' => $section_id ,
-            'semester_id' => $semester_id
-        ])->count() / $totalStudentsInSection;
-    }
-
     public static function individualAttPresent($course_id , $semester_id , $student_id){
         return Attendance::where(['course_id' => $course_id ,'semester_id' => $semester_id , 'student_id' => $student_id , 'status' => 1 ])->count();
     }

@@ -49,7 +49,7 @@ class CourseController extends Controller
     }
 
     public function addCourse( $class_id , $section_id , $session_id , $semester_id ){
-        $teachers = User::where('role' , 'teacher')->get();
+        $teachers = User::where(['role' => 'teacher', 'active' => 1 ])->get();
         $coursesMadeInSelectedSemester = Course::where(['section_id' => $section_id , 'semester_id' => $semester_id])->get();
         //take away any course that has been added for the section in the selected semester from suggested courses.
         $suggestedCourses = CourseService::suggestCourses($class_id)->diff( Course::whereIn('course_name' , $coursesMadeInSelectedSemester->pluck('course_name')->toArray() )->get() );

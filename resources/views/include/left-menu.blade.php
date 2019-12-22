@@ -8,13 +8,22 @@
                         @if(Auth::user()->role == 'admin')
 
                             <li class="nav-item">
-                              <a class="nav-link btn btn-block btn-primary" href=""><span
-                                  class="nav-link-text">Attendance</span></a>
+                            <a class="nav-link btn btn-block btn-primary" href=""><span
+                                  class="nav-link-text">Exams</span></a>
                             </li>
 
                             <li class="nav-item">
-                            <a class="nav-link btn btn-block btn-primary" href=""><span
-                                  class="nav-link-text">Exams</span></a>
+                              <div class="dropdown">
+                                    <a class="btn btn-secondary dropdown-toggle block" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      Attendance
+                                    </a>
+                                  
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="{{ url('settings/viewclasses') }}">student general</a>
+                                    <a class="dropdown-item" href="{{route('create.general.student.attendance' , ['section_id' => 1 , 'semester_id' => 1, 'user_id' => Auth::user()->id ])}}">take this off</a>
+                                    <a class="dropdown-item" href="{{route('create.staff.attendance' , ['semester_id' => 1 , 'takenBy_id' => Auth::user()->id ])}}">staff</a>
+                                    </div>
+                                  </div>
                             </li>
                             
                             <li class="nav-item">

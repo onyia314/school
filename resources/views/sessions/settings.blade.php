@@ -176,7 +176,6 @@
                         @foreach ($value['semesters'] as $semester)
                         <li class = "nav-item">
                             <strong>{{ $semester->semester_name}}</strong>
-                        <a class="btn btn-success" href="{{ url('fees/addfee/' .$semester->id)}}" role="button">fees</a>
                         </li>
                         
                         @endforeach

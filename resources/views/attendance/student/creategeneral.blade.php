@@ -14,28 +14,37 @@
                 <h3 class="text-center">{{$section->schoolClass->class_name .' : ' .$section->section_name}}</h3> 
             @endforeach
         
-            @if (session()->exists('attTaken'))
+            @if ( session()->exists('attTaken') && session()->exists('studentsDayAttTaken') )
                 <div class="alert alert-success text-center">Attendance taken</div>
+            @endif
+
+            @if ( !session()->exists('attTaken') && session()->exists('studentsDayAttTaken'))
+                <div class="alert alert-danger text-center">today's student general Attendance has been taken</div>
             @endif
 
             @if ( $sections->count() )
                         
                         <div class = "table-responsive">
-                            <form method="POST" action="{{route('attendance')}}">
+
+                            @if( !( session()->exists('studentsDayAttTaken') )) 
+
+                            <form method="POST" action="{{route('generalStudent.attendance')}}">
 
                                 @csrf
-                                <input type="hidden" name="course_id" value="{{$course_id}}">
                                 <input type="hidden" name="section_id" value="{{$section_id}}">
                                 <input type="hidden" name="semester_id" value="{{$semester_id}}">
-                                <input type="hidden" name="user_id" value="{{$user_id}}">
+                                <input type="hidden" name="takenBy_id" value="{{$takenBy_id}}">
+                           @endif
 
                                 <table class="table table-striped">
                                         <thead>
                                         <tr>
                                             <th scope="col">student id</th>
                                             <th scope="col">student name</th>
+                                            @if (!( session()->exists('studentsDayAttTaken') ))
                                             <th scope="col">present</th>
-                                            <th scope="col">total att for course</th>
+                                            @endif
+                                            <th scope="col">total general semester att</th>
                                             <th scope="col">total attended</th>
                                             <th scope="col">total missed</th>
                                         </tr>
@@ -48,33 +57,38 @@
                                                     <tr>
                                                         <th scope="row">{{$student->id}}</th>
                                                         <th>{{$student->name}}</th>
-                                                        <th>
-                                                            <input type="checkbox" name = "present[]" value = "{{$student->id}}" class = "present">
-                                                            <input type="hidden" name = "students[]" value = "{{$student->id}}">
-                                                        </th>
-                                                        <th>{{ $attPresent[$student->id] + $attAbsent[$student->id] }}</th>
+                                                        @if (!( session()->exists('studentsDayAttTaken') ))
+                                                            <th>
+                                                                <input type="checkbox" name = "present[]" value = "{{$student->id}}" class = "present">
+                                                                <input type="hidden" name = "users[]" value = "{{$student->id}}">
+                                                            </th>
+                                                        @endif
+    
+                                                        <th>{{$attPresent[$student->id] + $attAbsent[$student->id] }}</th>
                                                         <th>{{$attPresent[$student->id]}}</th>
                                                         <th>{{$attAbsent[$student->id]}}</th>
                                                     </tr>
                                                 @endforeach
                                                 
-                                                
                                             @endforeach
+
                                         </tbody> 
                                     </table>
 
                                     <div>
-                                        @error('present')
-                                            
-                                                    <strong>{{ $message }}</strong>
-                                            
+                                        @error('present')  
+                                            <strong>{{ $message }}</strong>
                                         @enderror
                                     </div>
-                                    
-                                    <button type="submit" class="btn btn-primary">
-                                            {{ __('take attendance') }}
-                                    </button>
+
+                           @if (!( session()->exists('studentsDayAttTaken') ))
+
+                                <button type="submit" class="btn btn-primary" >
+                                    {{ __('take attendance') }}
+                                </button>      
                             </form>
+
+                           @endif
                             
                         </div>     
                     @else

@@ -96,16 +96,6 @@
                     </div>
                     <div class="modal-body">
 
-                        <?php 
-
-                                foreach ($class as $value) {
-                                    $class_name = $value['class_name'];
-                                    $class_id = $value['id'];
-                                    $class_group = $value['group'];
-                                }
-
-                        ?>
-
                             <form id = "addSection" method="POST" action=" {{ url('settings/addsection') }} ">
                                 @csrf
                                 
@@ -174,10 +164,14 @@
             </h3>
             <div class="card-body">
                 <ul class="nav flex-column">
-                    @foreach ($class as $value)
+                    @foreach ($classes as $class)
 
-                        @foreach ($value['sections'] as $sections)
-                        <a>{{ $sections->section_name}}<a>
+                        @foreach ($class->sections as $section)
+                        <a>{{ $section->section_name}}<a>
+
+                        {{-- drop link to take general attendance for student --}}
+
+                        {{-- <a class = "btn btn-primary" href="{{ route( 'create.general.student.attendance' , ['section_id' => $section->id , 'user_id' => Auth::user()->id ] ) }}">take attendace</a> --}}
                         @endforeach
             
                     @endforeach

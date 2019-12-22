@@ -15,12 +15,12 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('course_id');
+            $table->unsignedInteger('course_id')->nullable();  // null for staff and student general attendace
             $table->unsignedInteger('semester_id');
-            $table->unsignedInteger('section_id');
-            $table->unsignedInteger('student_id');
+            $table->unsignedInteger('section_id')->nullable();  //null for staff
+            $table->unsignedInteger('user_id');
             $table->unsignedTinyInteger('status');
-            $table->unsignedInteger('user_id'); //who took the attendance? (any teacher or admin can)
+            $table->unsignedInteger('takenBy_id'); //who took the attendance? (any teacher or admin can)
             $table->timestamps();
         });
     }

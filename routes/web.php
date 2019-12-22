@@ -19,11 +19,10 @@ Auth::routes();
 
 // the default laravel route for register has been modified 
 
-
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-//accessible to only admin and master
+//registration
 Route::middleware(['auth' , 'admin.master'])->group(function(){
 
     Route::get('/register' , function(){
@@ -38,19 +37,12 @@ Route::middleware(['auth' , 'admin.master'])->group(function(){
 
     })->name('register');
 
-    /**
-     * group all the different route to register users based on their roles
-     */
+     //group all the different route to register users based on their roles
     Route::prefix('register')->group(function(){
 
         Route::get('student' , function(){
-
-            session([
-                'register_role' => 'student',
-                ]);
-
+            session(['register_role' => 'student']);
             return redirect()->route('register');
-            
         });
 
         Route::get('teacher' , function(){
@@ -62,14 +54,13 @@ Route::middleware(['auth' , 'admin.master'])->group(function(){
         Route::post('teacher' , 'UserController@storeTeacher');
 
     });
+
 });
 
-
-Route::middleware(['auth' , 'admin.master'])->group(function(){
+/* Route::middleware(['auth' , 'admin.master'])->group(function(){
     Route::get('user/edit/{id}' , 'UserController@edit')->name('user.edit');
     Route::post('user/edit/{id}/{role}' , 'UserController@update')->name('user.update');
-});
-
+}); */
 
 Route::middleware(['auth' , 'admin'])->group(function(){
     Route::get('settings' , function(){
@@ -85,7 +76,7 @@ Route::middleware(['auth' , 'admin'])->group(function(){
         Route::get('addclass', 'SchoolClassController@create');
         Route::post('addclass' , 'SchoolClassController@store');
         Route::get('viewclasses' , 'SchoolClassController@index');
-        Route::get('showclass/{id}' , 'SchoolClassController@show'); // takes you to where you can add section of a class room
+        Route::get('showclass/{id}' , 'SchoolClassController@show'); // takes you to where you can view and add section of a class room
 
         Route::post('addsection' , 'SectionController@store');
 
@@ -120,22 +111,20 @@ Route::middleware(['auth' , 'student'])->group(function(){
     Route::get('courses/section/{section_id}/semester/{semester_id}/student/{student_id}' , 'CourseController@studentCourses')->name('student.courses');
 });
 
-//attendance
-Route::middleware(['auth' , 'admin.teacher'])->group(function(){
-    //user_id parameter indicates who created an attendace (teacher or admin)
-    Route::get('attendance/course/{course_id}/section/{section_id}/semester/{semester_id}/user/{user_id}' , 'AttendanceController@create')->name('create.attendance');
-    Route::post('attendance' , 'AttendanceController@store')->name('attendance');
+//attendance for students courses
+Route::middleware(['auth' , 'teacher'])->group(function(){
+    //attendance for courses
+    Route::get('attendance/student/course/{course_id}/section/{section_id}/semester/{semester_id}/user/{takenBy_id}' , 'AttendanceController@createStudent')->name('create.student.attendance');
+    Route::post('attendance/student' , 'AttendanceController@storeCoursesAttendance')->name('courses.attendance');
 });
 
-
-
-
-//fees
-
+//general attendance
 Route::middleware(['auth' , 'admin'])->group(function(){
-    Route::prefix('fees')->group(function(){
-        Route::get('viewsessions' , 'SchoolSessionController@index');
-        Route::get('addfee/{semester_id}' , 'FeeController@create');    
-        Route::post('addfee' , 'FeeController@store');
-    });
+    //attendace for staff
+    Route::get('attendance/staff/semester/{semester_id}/user/{takenBy_id}' , 'AttendanceController@createStaff')->name('create.staff.attendance');
+    Route::post('attendance/staff' , 'AttendanceController@storeStaffAttendance')->name('staff.attendance');
+
+    //general attendace for student (NOT attendance for courses)
+    Route::get('attendance/general/student/section/{section_id}/semester/{semester_id}/user/{takenBy_id}' , 'AttendanceController@createGeneralStudent')->name('create.general.student.attendance');
+    Route::post('attendance/general/student' , 'AttendanceController@storeGeneralStudentAttendance')->name('generalStudent.attendance');
 });

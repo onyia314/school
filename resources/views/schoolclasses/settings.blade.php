@@ -112,28 +112,19 @@
 
 
                                 <div class="form-group row">
-        
-                                        <div class="col-md-6">
-                                
-                                            <input type="hidden" name = "class_id" id = "class_id" value = "{{$class_id}}">
-                             
-                                        </div>
+                                    <div class="col-md-6">                           
+                                        <input type="hidden" name = "class_id" id = "class_id" value = "{{$class->id}}">
+                                    </div>
                                 </div>
 
                                 <div class="form-group row">
-        
-                                        <div style="margin-left:auto; margin-right:auto;">
-                                
-                                            <span role="alert">
-                                                <strong id = "msg"></strong>
-                                            </span>
-                                        
-                                        </div>
-
+                                    <div style="margin-left:auto; margin-right:auto;">
+                                        <span role="alert">
+                                            <strong id = "msg"></strong>
+                                        </span>
+                                    </div>
                                 </div>
 
-    
-    
                                 <div class="form-group row mb-0">
                                     <div class="col-md-6 offset-md-4">
                                         <button type="submit" class="btn btn-primary btn-block">
@@ -158,25 +149,29 @@
         <div class="col-md-8">
             <div class="card">
             <h3 class="card-header text-center">
-                
-                    {{ $class_name .' '.$class_group }}
-                
+
+                 {{ $class->class_name .' '.$class->group }}  
+
             </h3>
             <div class="card-body">
+
+                @if ( $class->sections->count() )
                 <ul class="nav flex-column">
-                    @foreach ($classes as $class)
+             
+                    @foreach ($class->sections as $section)
+                    <a>{{ $section->section_name}}<a>
 
-                        @foreach ($class->sections as $section)
-                        <a>{{ $section->section_name}}<a>
+                    {{-- drop link to take general attendance for student --}}
 
-                        {{-- drop link to take general attendance for student --}}
-
-                        {{-- <a class = "btn btn-primary" href="{{ route( 'create.general.student.attendance' , ['section_id' => $section->id , 'user_id' => Auth::user()->id ] ) }}">take attendace</a> --}}
-                        @endforeach
-            
+                    {{-- <a class = "btn btn-primary" href="{{ route( 'create.general.student.attendance' , ['section_id' => $section->id , 'user_id' => Auth::user()->id ] ) }}">take attendace</a> --}}
                     @endforeach
+            
                 </ul>
 
+                @else
+                    <h3>No section has been made for this class</h3>
+                @endif
+                
                 <div>
                     <button type="button" class = "btn btn-primary btn-block "data-toggle="modal" data-target="#myModal" data-backdrop="static">add section</button>
                 </div>
@@ -187,4 +182,3 @@
 </div>
 
 @endsection
-

@@ -10,16 +10,24 @@
             <div class="card">
             <div class="card-header"></div>
             <div class="card-body">
-                <ul class="nav flex-column">
-                    @foreach ($classes as $class)
 
-                    <li class="nav-item">
-                    <a class="nav-link btn btn-block btn-primary" href="{{ url('settings/showclass/' .$class->id )}}"><span
-                        class="nav-link-text">{{ $class->id . ' ' .$class->class_name . ' ' .$class->group}}</span></a>
-                    </li>
+                    @if ( $classes->count() )
+                        <ul class="nav flex-column">
 
-                    @endforeach
-                </ul>
+                            @foreach ($classes as $class)
+
+                            <li class="nav-item">
+                            <a class="nav-link btn btn-block btn-primary" href="{{ url('settings/showclass/' .$class->id )}}"><span
+                                class="nav-link-text">{{ $class->id . ' ' .$class->class_name . ' ' .$class->group}}</span></a>
+                            </li>
+        
+                            @endforeach
+
+                        </ul>
+                    @else
+                        <h3>No class has been made for this school</h3>
+                    @endif
+
             </div>
         </div>
         </div>

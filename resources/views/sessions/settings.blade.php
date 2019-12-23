@@ -96,16 +96,6 @@
                     </div>
                     <div class="modal-body">
 
-                        <?php 
-
-                                foreach ($schoolSession as $value) {
-                                    $session_name = $value['session_name'];
-                                    $session_id = $value['id'];
-                            
-                                }
-
-                        ?>
-
                             <form id = "addSemester" method="POST" action=" {{ url('settings/addsemester') }} ">
                                 @csrf
                                 
@@ -123,7 +113,7 @@
                                 <div class="form-group row">
         
                                         <div class="col-md-6">
-                                            <input type="hidden" name = "session_id" id = "session_id" value = "{{$session_id}}">
+                                            <input type="hidden" name = "session_id" id = "session_id" value = "{{$schoolSession->id}}">
                                         </div>
                                 </div>
 
@@ -166,23 +156,23 @@
             <div class="card">
             <h3 class="card-header text-center">
                 
-                    {{ $session_name }}
+                    {{ $schoolSession->session_name }}
                 
             </h3>
             <div class="card-body">
-                <ul class="nav flex-column">
-                    @foreach ($schoolSession as $value)
 
-                        @foreach ($value['semesters'] as $semester)
-                        <li class = "nav-item">
-                            <strong>{{ $semester->semester_name}}</strong>
-                        </li>
-                        
-                        @endforeach
-            
-                    @endforeach
-                </ul>
-
+                    @if( $schoolSession->semesters->count() )
+                        <ul class="nav flex-column">
+                            @foreach ($schoolSession->semesters as $semester)
+                                <li class = "nav-item">
+                                    <strong>{{ $semester->semester_name}}</strong>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <h3>no semester has been made for this section</h3>
+                    @endif
+                
                 <div>
                     <button type="button" class = "btn btn-primary btn-block "data-toggle="modal" data-target="#myModal" data-backdrop="static">add semester</button>
                 </div>

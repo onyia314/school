@@ -55,7 +55,7 @@
 
            @if (Auth::user()->role == 'student')
 
-                @if ($courses->count() )
+                @if ( $courses->count() )
 
                     <div class = "table-responsive">
 

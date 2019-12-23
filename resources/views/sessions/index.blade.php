@@ -10,16 +10,21 @@
             <div class="card">
             <div class="card-header"></div>
             <div class="card-body">
-                <ul class="nav flex-column">
-                    @foreach ($schoolSessions as $schoolSession)
+                @if ( $schoolSessions->count() )
+                    <ul class="nav flex-column">
+                        @foreach ( $schoolSessions as $schoolSession )
 
-                    <li class="nav-item">
-                    <a class="nav-link btn btn-block btn-primary" href="{{ url('settings/showsession/' .$schoolSession->id )}}"><span
-                        class="nav-link-text">{{ $schoolSession->session_name }}</span></a>
-                    </li>
+                        <li class="nav-item">
+                        <a class="nav-link btn btn-block btn-primary" href="{{ url('settings/showsession/' .$schoolSession->id )}}"><span
+                            class="nav-link-text">{{ $schoolSession->session_name }}</span></a>
+                        </li>
 
-                    @endforeach
-                </ul>
+                        @endforeach
+                    </ul>
+                @else
+                    <h3>No session has been made for this school</h3>
+                @endif
+                
             </div>
         </div>
         </div>

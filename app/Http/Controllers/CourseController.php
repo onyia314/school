@@ -17,18 +17,17 @@ class CourseController extends Controller
         return view('courses.selectsemester')->with( [ 'schoolSessions' => $schoolSessions ] );
     }
 
+    /*  select the session and semester to view their courses
+    *   for students they can only view semesters of current session 
+                    IMPORTANT NOTE
+        students get promoted and section_id will change, therefore we give students 
+        only the option to view the courses of the current session this ensures that they don't view courses
+        in the wrong section
+
+        to solve this we can create a table to hold the record of sections of the student
+    */
     public function indexStudent(){
-        /**
-         * here the current school session is assumed to be the latest session created
-         * this is a temporal feature, current school session should be stated explicitly
-         * by the admin
-         * 
-         * so remember to add this current session functionality for the admin
-         *                      AND
-         * change the way current session is queried
-         * 
-         */
-        $currentSession = SchoolSession::with('semesters')->orderBy('created_at' , 'desc')->first();
+        $currentSession = SchoolSession::where('current' , 1 )->with('semesters')->first();
         return view('courses.selectsemester')->with( [ 'currentSession' => $currentSession ] );
     }
 

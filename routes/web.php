@@ -83,7 +83,21 @@ Route::middleware(['auth' , 'admin'])->group(function(){
         Route::get('addsession' , 'SchoolSessionController@create');
         Route::post('addsession' , 'SchoolSessionController@store');
         Route::get('viewsessions' , 'SchoolSessionController@index');
+        Route::get('editsession/{id}' , 'SchoolSessionController@edit');
+        Route::post('updatesession' , 'SchoolSessionController@update');
         Route::get('showsession/{id}' , 'SchoolSessionController@show'); //takes you to where you can add semester
+
+
+        //this takes care of quick disabling of a current school session
+        Route::get('disable/session/{id}' , function($id){
+            \App\SchoolSession::where('id' , $id)->update(['current' => 0]);
+            return back()->with('currentSessionDisabled');
+        })->name('disable.session');
+
+        Route::get('disable/close/session/{id}' , function($id){
+            \App\SchoolSession::where('id' , $id)->update(['current' => 0 , 'status' => 'closed']);
+            return back()->with('currentSessionDisabledAndClosed');
+        })->name('disableandclose.session');
 
         Route::post('addsemester' , 'SemesterController@store');
 

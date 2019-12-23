@@ -15,20 +15,8 @@ class SchoolClassController extends Controller
     }
 
     public function show($id){
-        $classes = SchoolClass::where('id' , $id)->with('sections')->get();
-
-        foreach ($classes as $class) {
-            $class_name = $class->class_name;
-            $class_id = $class->id;
-            $class_group = $class->group;
-        }
-
-        return view('schoolclasses.settings')->with([
-            'classes' => $classes ,
-            'class_name' => $class_name ,
-            'class_id' => $class_id,
-            'class_group' => $class_group,
-        ]);
+        $class = SchoolClass::where('id' , $id)->with('sections')->first();
+        return view('schoolclasses.settings')->with([ 'class' => $class]);
     }
 
 

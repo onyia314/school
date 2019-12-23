@@ -6,40 +6,12 @@
             @include('include.left-menu')
             <div class="col-md-8">
 
-                @if( session()->exists('currentSessionDisabled') )
-                 <div class="alert alert-success text-center">the session is no longer current</div>
-                @endif
-
-                @if( session()->exists('currentSessionDisabledAndClosed') )
-                 <div class="alert alert-success text-center">the session is closed and also no longer current</div>
-                @endif
-
-                @if( session()->has('currentExists') )
-                 <div class="alert alert-danger text-center">
-                     session not added because {{ session('currentExists')->session_name }} 
-                     is 'current'... please 
-                     <a href="{{route('disable.session' , [ 'id' => session('currentExists')->id, ] )}}">
-                        disable
-                    </a> it before you add a 'current' session. You can also
-                     <a href="{{route('disableandclose.session' , [ 'id' => session('currentExists')->id, ] )}}">
-                         disable &amp; close it
-                    </a> 
-                </div>
-                @endif
-
-                @if( session()->exists('sessionAdded') )
-                    <div class="alert alert-success text-center">session added value. click <a href="">here</a> to create semesters for this session {{session('sessionAdded')}}</div>
-                @endif
-
-                @if( session()->exists('sessionNotAdded') )
-                        <div class="alert alert-danger text-center">session could not be added please contact master</div>
-                @endif
 
                 <div class="card">
                     <div class="card-header text-center">Add session</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ url('settings/addsession')}}">
+                        <form method="POST" action="">
                             @csrf
                             
 

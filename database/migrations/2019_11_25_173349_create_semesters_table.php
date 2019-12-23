@@ -17,6 +17,8 @@ class CreateSemestersTable extends Migration
             $table->bigIncrements('id');
             $table->string('semester_name');
             $table->unsignedInteger('session_id');
+            $table->enum('status' , ['open' , 'closed'])->default('closed'); //editable?
+            $table->unsignedTinyInteger('current')->default(0); // is the current semester?
             $table->timestamps();
         });
     }

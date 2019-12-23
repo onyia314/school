@@ -18,12 +18,4 @@ class SchoolSessionService{
         SchoolSession::where('id' , $session_id)->update(['current' => 0 ]);
     }
 
-    public static function closeSession($session_id){
-        SchoolSession::where('id' , $session_id)->update(['status' => 'closed' ]);
-    }
-
-    public static function openSession($session_id){
-        SchoolSession::where('id' , $session_id)->update(['status' => 'open' ]);
-    }
-
 }

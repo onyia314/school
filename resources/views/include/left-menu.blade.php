@@ -19,8 +19,8 @@
                                     </a>
                                   
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="{{ url('settings/viewclasses') }}">student general</a>
-                                    <a class="dropdown-item" href="{{route('create.general.student.attendance' , ['section_id' => 1 , 'semester_id' => 1, 'user_id' => Auth::user()->id ])}}">take this off</a>
+                                    <a class="dropdown-item" href="{{ route('selectsection.attendance') }}">today student general att</a>
+                                    <a class="dropdown-item" href="">specific semester attendance</a>
                                     <a class="dropdown-item" href="{{route('create.staff.attendance' , ['semester_id' => 1 , 'takenBy_id' => Auth::user()->id ])}}">staff</a>
                                     </div>
                                   </div>

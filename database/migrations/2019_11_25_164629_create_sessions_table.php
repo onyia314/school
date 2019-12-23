@@ -16,7 +16,6 @@ class CreateSessionsTable extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('session_name');
-            $table->enum('status' , ['open' , 'closed'])->default('closed'); //editable?
             $table->unsignedTinyInteger('current')->default(0); // is it the current session?
             $table->timestamps();
         });

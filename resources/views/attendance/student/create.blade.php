@@ -18,6 +18,10 @@
                 <div class="alert alert-success text-center">Attendance taken</div>
             @endif
 
+            @if (session()->exists('semesterClosed'))
+                <div class="alert alert-danger text-center">oops semester is closed for taking attendance</div>
+            @endif
+
             @if ( $sections->count() )
                         
                         <div class = "table-responsive">

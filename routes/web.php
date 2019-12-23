@@ -125,20 +125,27 @@ Route::middleware(['auth' , 'student'])->group(function(){
     Route::get('courses/section/{section_id}/semester/{semester_id}/student/{student_id}' , 'CourseController@studentCourses')->name('student.courses');
 });
 
-//attendance for students courses
-Route::middleware(['auth' , 'teacher'])->group(function(){
-    //attendance for courses
-    Route::get('attendance/student/course/{course_id}/section/{section_id}/semester/{semester_id}/user/{takenBy_id}' , 'AttendanceController@createStudent')->name('create.student.attendance');
-    Route::post('attendance/student' , 'AttendanceController@storeCoursesAttendance')->name('courses.attendance');
-});
+/**
+ * Attendance
+ */
+Route::prefix('attendance')->group(function(){
+    //attendance for students courses
+    Route::middleware(['auth' , 'teacher'])->group(function(){
+        //attendance for courses
+        Route::get('student/course/{course_id}/section/{section_id}/semester/{semester_id}/user/{takenBy_id}' , 'AttendanceController@createStudent')->name('create.student.attendance');
+        Route::post('student' , 'AttendanceController@storeCoursesAttendance')->name('courses.attendance');
+    });
 
-//general attendance
-Route::middleware(['auth' , 'admin'])->group(function(){
-    //attendace for staff
-    Route::get('attendance/staff/semester/{semester_id}/user/{takenBy_id}' , 'AttendanceController@createStaff')->name('create.staff.attendance');
-    Route::post('attendance/staff' , 'AttendanceController@storeStaffAttendance')->name('staff.attendance');
+    //general attendance
+    Route::middleware(['auth' , 'admin'])->group(function(){
+        //attendace for staff
+        Route::get('staff/semester/{semester_id}/user/{takenBy_id}' , 'AttendanceController@createStaff')->name('create.staff.attendance');
+        Route::post('staff' , 'AttendanceController@storeStaffAttendance')->name('staff.attendance');
 
-    //general attendace for student (NOT attendance for courses)
-    Route::get('attendance/general/student/section/{section_id}/semester/{semester_id}/user/{takenBy_id}' , 'AttendanceController@createGeneralStudent')->name('create.general.student.attendance');
-    Route::post('attendance/general/student' , 'AttendanceController@storeGeneralStudentAttendance')->name('generalStudent.attendance');
+        //general attendace for student (NOT attendance for courses)
+        Route::get('selectsection' , 'AttendanceController@selectSection')->name('selectsection.attendance');
+        Route::get('general/student/section/{section_id}/semester/{semester_id}/user/{takenBy_id}' , 'AttendanceController@createGeneralStudent')->name('create.general.student.attendance');
+        Route::post('general/student' , 'AttendanceController@storeGeneralStudentAttendance')->name('generalStudent.attendance');
+    });
+
 });

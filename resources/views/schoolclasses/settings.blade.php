@@ -149,9 +149,7 @@
         <div class="col-md-8">
             <div class="card">
             <h3 class="card-header text-center">
-
                  {{ $class->class_name .' '.$class->group }}  
-
             </h3>
             <div class="card-body">
 
@@ -159,11 +157,7 @@
                 <ul class="nav flex-column">
              
                     @foreach ($class->sections as $section)
-                    <a>{{ $section->section_name}}<a>
-
-                    {{-- drop link to take general attendance for student --}}
-
-                    {{-- <a class = "btn btn-primary" href="{{ route( 'create.general.student.attendance' , ['section_id' => $section->id , 'user_id' => Auth::user()->id ] ) }}">take attendace</a> --}}
+                        <a>{{ $section->section_name}}<a>
                     @endforeach
             
                 </ul>

@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Section;
+use App\SchoolClass;
 use App\User;
 use Session;
 use App\Services\Attendance\AttendanceService;
+use App\Services\Semester\SemesterService;
 
 class AttendanceController extends Controller
 {
+
     private function getStudentsSection($section_id){
         return Section::where('id' , $section_id)->has('users')->with([
             'schoolClass' ,
@@ -18,6 +21,11 @@ class AttendanceController extends Controller
                     $query->where(['role' => 'student' , 'active' => 1]);
                  },
         ])->get();
+    }
+
+    public function selectSection(){
+        $schoolClasses = SchoolClass::with('sections')->get();
+        return view('attendance.student.selectsection')->with(['schoolClasses' => $schoolClasses]);
     }
 
     //create form for course attendance
@@ -47,9 +55,14 @@ class AttendanceController extends Controller
         ]);  
     }
 
+    
+    /**
+     * note that general student and staff attendace can only be made once in a day
+     */
     //create form for general student attendance
     public function createGeneralStudent($section_id , $semester_id , $takenBy_id){
 
+        //check if general attendance has been taken for the day
         if( AttendanceService::studentsDayAttCheck($section_id) ){
             Session::flash('studentsDayAttTaken');
         }
@@ -79,6 +92,7 @@ class AttendanceController extends Controller
     //create form for general staff attendance
     public function createStaff($semester_id , $takenBy_id){
 
+         //check if general attendance has been taken for the day
         if( AttendanceService::staffsDayAttCheck() ){
             Session::flash('staffsDayAttTaken');
         }
@@ -109,12 +123,24 @@ class AttendanceController extends Controller
         
     }
 
+
+
+
     public function storeCoursesAttendance(Request $request){
+
+        if( SemesterService::isSemesterClosed($request->semester_id) ){
+            return back()->with('semesterClosed');
+        }
+
         AttendanceService::takeAttendance($request);
         return back()->with('attTaken'); 
     }
 
     public function storeGeneralStudentAttendance(Request $request){
+
+        if( SemesterService::isSemesterClosed($request->semester_id) ){
+            return back()->with('semesterClosed');
+        }
         
         if( AttendanceService::studentsDayAttCheck($request->section_id) ){
             return back();
@@ -124,6 +150,10 @@ class AttendanceController extends Controller
     }
 
     public function storeStaffAttendance(Request $request){
+
+        if( SemesterService::isSemesterClosed($request->semester_id) ){
+            return back()->with('semesterClosed');
+        }
 
         if( AttendanceService::staffsDayAttCheck() ){
             return back();

@@ -42,7 +42,7 @@
                                                     <td>{{$section->section_name}}</td>
                                                     <td><a href="">vew today's attendance</a></td>
                                                     <td><a href="">view each student's attendance</a></td>
-                                                    <td><a href="{{route('create.general.student.attendance' , ['section_id' => $section->id , 'semester_id' => 1, 'user_id' => Auth::user()->id ])}}">take attendance</a></td>
+                                                    <td><a href="{{route('create.daily.attendance' , ['section_id' => $section->id, ])}}">take attendance</a></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

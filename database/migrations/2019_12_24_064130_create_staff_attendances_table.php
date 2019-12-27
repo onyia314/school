@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAttendancesTable extends Migration
+class CreateStaffAttendancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateAttendancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('staff_attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('course_id')->nullable();  // null for staff and student general attendace
-            $table->unsignedInteger('semester_id');
-            $table->unsignedInteger('section_id')->nullable();  //null for staff
+            $table->unsignedInteger('semester_id'); //semester_id of the attendance
             $table->unsignedInteger('user_id');
             $table->unsignedTinyInteger('status');
-            $table->unsignedInteger('takenBy_id'); //who took the attendance? (any teacher or admin can)
+            $table->unsignedInteger('takenBy_id'); //teacher teaching the course at that moment
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateAttendancesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attendances');
+        Schema::dropIfExists('staff_attendances');
     }
 }

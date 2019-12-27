@@ -36,16 +36,10 @@ class SchoolSessionController extends Controller
 
         $data = $request->validate([
             'session_name' => 'required|string|max:40|unique:sessions',
-            'status' => 'required|string|max:40',
-            'current' => 'required|integer',
+            'start_year' => 'required|integer',
+            'end_year' => 'required|integer',
         ]);
         
-        $currentSession = SchoolSessionService::currentSession();
-
-        if( $currentSession && $data['current'] == 1 ){
-            return back()->with('currentExists' , $currentSession);
-        }
-
         try {
             $schoolSession = SchoolSession::create($data);
             return back()->with('sessionAdded' , $schoolSession['id']);

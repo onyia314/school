@@ -19,7 +19,7 @@
                         @if($schoolSession->semesters->count())
                             <ul>
                                 @foreach ($schoolSession->semesters as $semester)
-                                    <li><a href="{{route('teacher.courses' , ['semester_id' => $semester->id , 'teacher_id' => Auth::user()->id ])}}">{{$semester->semester_name}}</a></li>
+                                    <li><a href="{{route( 'teacher.courses' , ['semester_id' => $semester->id] )}}">{{$semester->semester_name}}</a></li>
                                 @endforeach             
                             </ul> 
                         @else

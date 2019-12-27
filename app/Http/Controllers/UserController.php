@@ -20,7 +20,7 @@ class UserController extends Controller
             'birthday' => 'required|date',
             'nationality' => 'required|string|max:100',
             'state_of_origin' => 'required|string|max:100',
-            'gender' => 'required|string',
+            'gender' => 'required|in:male,female',
             'religion' => 'required|string',
             'address' => 'required|string|max:225',
             'section_id' => 'required|integer',

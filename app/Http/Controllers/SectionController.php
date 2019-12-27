@@ -15,7 +15,7 @@ class SectionController extends Controller
         
         $validator = Validator::make($request->all() , [
             'section_name' => 'required|string|max:2',
-            'class_id' => 'required|integer',
+            'class_id' => 'required|integer|exists:classes,id',
         ]);
 
         if($validator->fails()){

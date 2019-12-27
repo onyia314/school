@@ -4,16 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Attendance\AttendanceService;
+use App\Services\Semester\SemesterService;
+use App\Services\Section\SectionService;
+use App\Services\Course\CourseService;
 use App\Section;
 use App\SchoolClass;
 use App\User;
 use Session;
-use App\Services\Attendance\AttendanceService;
-use App\Services\Semester\SemesterService;
+use DateTime;
 
 class AttendanceController extends Controller
 {
-
+    public function validateAttendanceInput($request){
+        /**
+         * we also check the existance of a course,section,user, here
+         */
+        $request->validate([
+            'semester_id' => 'required|integer|exists:semesters,id',
+            'section_id' => 'sometimes|required|integer|exists:sections,id',
+            'course_id' => 'sometimes|required|integer|exists:courses,id',
+            'students.*' => 'sometimes|required|exists:users,id',
+            'staffs.*' => 'sometimes|required|exists:users,id',
+        ]);
+    }
     private function getStudentsSection($section_id){
         return Section::where('id' , $section_id)->has('users')->with([
             'schoolClass' ,
@@ -23,13 +38,14 @@ class AttendanceController extends Controller
         ])->get();
     }
 
+    //to select the section for student daily attendance
     public function selectSection(){
         $schoolClasses = SchoolClass::with('sections')->get();
         return view('attendance.student.selectsection')->with(['schoolClasses' => $schoolClasses]);
     }
 
     //create form for course attendance
-    public function createStudent($course_id , $section_id , $semester_id , $takenBy_id){
+    public function createStudent($course_id , $section_id , $semester_id){
 
         // total attendace present and total attendance absent for a course_id keyed with the id of the student
         $attPresent = [];
@@ -49,7 +65,6 @@ class AttendanceController extends Controller
             'course_id' => $course_id ,
             'section_id' => $section_id , 
             'semester_id' => $semester_id ,
-            'takenBy_id' => $takenBy_id, // who took the attendance
             'attPresent' => $attPresent,
             'attAbsent' => $attAbsent,
         ]);  
@@ -60,46 +75,53 @@ class AttendanceController extends Controller
      * note that general student and staff attendace can only be made once in a day
      */
     //create form for general student attendance
-    public function createGeneralStudent($section_id , $semester_id , $takenBy_id){
-
+    public function createDailyStudent($section_id){
+        
+        if( !SectionService::sectionExists($section_id) ){
+            Session::flash('sectionDoesNotExist');
+        }
         //check if general attendance has been taken for the day
-        if( AttendanceService::studentsDayAttCheck($section_id) ){
-            Session::flash('studentsDayAttTaken');
+        if( AttendanceService::studentsDailyAttCheck($section_id) ){
+            Session::flash('studentsDailyAttTaken' , $section_id);
         }
 
         $attPresent = [];
         $attAbsent =[];
         $sections = $this->getStudentsSection($section_id);
+        //admin does not explicitly select semester for student daily attendance,
+        // we use current time to match the the start_date
+        //and end_date of the semester
+        $semester_id = SemesterService::getCurrentSemester();
 
         foreach($sections as $section){
             foreach($section->users as $student){
-                $attPresent[$student->id] = AttendanceService::studentGeneralAttPresent($semester_id , $section_id ,  $student->id);
-                $attAbsent[$student->id] = AttendanceService::studentGeneralAttAbsent($semester_id , $section_id , $student->id);
+                $attPresent[$student->id] = AttendanceService::studentDailyAttPresent($semester_id , $section_id ,  $student->id);
+                $attAbsent[$student->id] = AttendanceService::studentDailyAttAbsent($semester_id , $section_id , $student->id);
             }
         }
 
-        return view('attendance.student.creategeneral')->with([ 
+        return view('attendance.student.createdaily')->with([ 
             'sections' => $sections , 
             'section_id' => $section_id , 
             'semester_id' => $semester_id ,
-            'takenBy_id' => $takenBy_id, // who took the attendance
             'attPresent' => $attPresent,
             'attAbsent' => $attAbsent,
         ]);
 
     }
 
-    //create form for general staff attendance
-    public function createStaff($semester_id , $takenBy_id){
+    //create form for staff attendance
+    public function createStaff(){
 
-         //check if general attendance has been taken for the day
-        if( AttendanceService::staffsDayAttCheck() ){
-            Session::flash('staffsDayAttTaken');
+        //check if attendance has been taken for the day
+        if( AttendanceService::staffsDailyAttCheck() ){
+            Session::flash('staffsDailyAttTaken');
         }
 
         // total attendace present and total attendance absent keyed with the id of the staff 
         $attPresent = [];
         $attAbsent =[];
+        $semester_id = SemesterService::getCurrentSemester();
 
         $staffs = User::where([ 
             ['role' , '!=' , 'student'], 
@@ -116,50 +138,75 @@ class AttendanceController extends Controller
         return view('attendance.staff.create')->with([ 
             'staffs' => $staffs,
             'semester_id' => $semester_id ,
-            'takenBy_id' => $takenBy_id, // who took the attendance
             'attPresent' => $attPresent,
             'attAbsent' => $attAbsent,
         ]);
         
     }
 
-
-
-
     public function storeCoursesAttendance(Request $request){
 
-        if( SemesterService::isSemesterClosed($request->semester_id) ){
-            return back()->with('semesterClosed');
+        $this->validateAttendanceInput($request);
+
+        if( SemesterService::isSemesterCurrent($request->semester_id) ){
+
+            if( SemesterService::isSemesterLocked($request->semester_id) ){
+                return back()->with('semesterLocked');
+            }
+
+            if( !CourseService::doesCourseBelongToSemester($request->course_id , $request->semester_id) ){
+                return back()->with('courseDoesNotBelongToSemester');
+            }
+
+            if( !CourseService::doesCourseBelongToSection($request->course_id , $request->section_id) ){
+                return back()->with('courseDoesNotBelongToSection');
+            }
+
+            if( !CourseService::doesCourseBelongToTeacher($request->course_id , Auth::user()->id ) ){
+                return back()->with('courseDoesNotBelongToTeacher');
+            }
+
+            AttendanceService::takeCourseAttendance($request);
+            return back()->with('attTaken');
         }
 
-        AttendanceService::takeAttendance($request);
-        return back()->with('attTaken'); 
+        return back()->with('semesterNotCurrent');
     }
 
-    public function storeGeneralStudentAttendance(Request $request){
+    public function storeDailyAttendance(Request $request){
+       
+        $this->validateAttendanceInput($request);
 
-        if( SemesterService::isSemesterClosed($request->semester_id) ){
-            return back()->with('semesterClosed');
+        if( SemesterService::isSemesterCurrent($request->semester_id) ){
+
+            if( SemesterService::isSemesterLocked($request->semester_id) ){
+                return back()->with('semesterLocked');
+            }
+            //check if attendance has been taken today
+            if( AttendanceService::studentsDailyAttCheck($request->section_id) ){
+                return back(); //the msg is already shown when creating the form
+            }
+            AttendanceService::takeStudentDailyAttendance($request);
+            return back()->with('attTaken'); 
         }
         
-        if( AttendanceService::studentsDayAttCheck($request->section_id) ){
-            return back();
-        }
-        AttendanceService::takeAttendance($request);
-        return back()->with('attTaken'); 
+        return back()->with('semesterNotCurrent');   
     }
 
     public function storeStaffAttendance(Request $request){
 
-        if( SemesterService::isSemesterClosed($request->semester_id) ){
-            return back()->with('semesterClosed');
-        }
+        $this->validateAttendanceInput($request);
 
-        if( AttendanceService::staffsDayAttCheck() ){
-            return back();
-        }
+        if( SemesterService::isSemesterCurrent($request->semester_id) ){
 
-        AttendanceService::takeAttendance($request);
+            if( SemesterService::isSemesterLocked($request->semester_id) ){
+                return back()->with('semesterLocked');
+            }
+            if( AttendanceService::staffsDailyAttCheck() ){
+                return back();
+            }
+        }
+        AttendanceService::takeStaffAttendance($request);
         return back()->with('attTaken'); 
     }
 

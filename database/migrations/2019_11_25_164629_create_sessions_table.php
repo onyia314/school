@@ -16,7 +16,8 @@ class CreateSessionsTable extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('session_name');
-            $table->unsignedTinyInteger('current')->default(0); // is it the current session?
+            $table->year('start_year');
+            $table->year('end_year');
             $table->timestamps();
         });
     }

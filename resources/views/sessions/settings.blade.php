@@ -17,11 +17,17 @@
 
             var semester = document.getElementById('semester_name').value;
             var id = document.getElementById('session_id').value;
+            var startOfSemester = document.getElementById('start_date').value;
+            var endOfSemester = document.getElementById('end_date').value;
             var token = document.getElementsByName('_token')[0].value;
+            var semester_status = document.getElementById('status').value;
 
             var data = {
                 semester_name: semester,
                 session_id: id,
+                start_date: startOfSemester,
+                end_date: endOfSemester,
+                status: semester_status,
                 _token: token
             }
            
@@ -33,6 +39,7 @@
 
             
             function myCallback() {
+
                 if (xhr.readyState < 4) {
                      return; // not ready yet
                 }
@@ -43,41 +50,73 @@
                     return;
                 }
 
-                var response = JSON.parse(xhr.responseText);
+                var responses = JSON.parse(xhr.responseText);
 
                 //uncomment this to view the structure of the response
 
-                //console.log(response);
+               // console.log(responses);
                 
-                for(var prop in response){
+                for(var response in responses){
 
-                    switch (prop) {
+                    switch (response) {
+
                         case 'error':
-                            var msg = response.error.name.join();
-                            document.getElementById('msg').innerHTML = msg;
-                            document.getElementById('msg').style.color = 'red';
-                            break;
+
+                            for(var prop in responses.error){
+
+                                switch (prop) {
+                                    case 'semester_name':
+                                    var msg = responses.error.semester_name.join('.')
+                                    document.getElementById('semester_name_msg').innerHTML = msg;
+                                    break;
+
+                                    case 'start_date':
+                                    var msg = responses.error.start_date.join('.')
+                                    document.getElementById('start_date_msg').innerHTML = msg ;
+                                    break;
+
+                                    case 'end_date':
+                                    var msg = responses.error.end_date.join('.')
+                                    document.getElementById('end_date_msg').innerHTML = msg ;
+                                    break;
+
+                                    case 'session_id':
+                                    var msg = responses.error.session_id.join('.')
+                                    document.getElementById('session_id_msg').innerHTML = msg ;
+                                    break;
+
+                                    case 'status':
+                                    var msg = responses.error.status.join('.')
+                                    document.getElementById('status_msg').innerHTML = msg ;
+                                    break;
+                                
+                                    default:
+                                    alert('switch statement doesnt match any result');
+                                    break;
+                                }
+                            }
+
+                            document.getElementById('msg').innerHTML = ''
+                        break;
 
                         case 'success':
-                            var msg = response.success;
+                            var msg = responses.success;
                             document.getElementById('msg').innerHTML = msg;
                             document.getElementById('msg').style.color = 'green';
                             break;
 
                         case 'semester_exists':
-                            var msg = response.semester_exists;
+                            var msg = responses.semester_exists;
                             document.getElementById('msg').innerHTML = msg;
                             document.getElementById('msg').style.color = 'red';
                             break;
                     
                         default:
                             alert('switch statement doesnt match any result');
-                            break;
+                        break;
                     }
                 }
-            }
-
-            
+            }     
        })
     })
 
@@ -106,22 +145,71 @@
                                     <label for="semester_name" class="col-md-4 col-form-label text-md-right">{{ __('add semester') }}</label>
     
                                     <div class="col-md-6">
-                                        <input id="semester_name" name="semester_name" type="text" class="form-control" value="{{ old('semester_name') }}"  autocomplete="semester_name" autofocus placeholder="1st , 2nd , 3rd">  
+                                        <input id="semester_name" name="semester_name" type="text" class="form-control" autocomplete="semester_name" autofocus placeholder="1st , 2nd , 3rd">  
+                                        <span>
+                                            <strong id = "semester_name_msg" style="color:red"></strong>
+                                        </span>
                                     </div>
+                                    
                                 </div>
 
                                 <div class="form-group row">
         
                                         <div class="col-md-6">
                                             <input type="hidden" name = "session_id" id = "session_id" value = "{{$schoolSession->id}}">
+                                            <span>
+                                                <strong id = "session_id_msg" style="color:red"></strong>
+                                            </span>
                                         </div>
+                                        
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="start_date" class="col-md-4 col-form-label text-md-right">{{ __('add start date') }}</label>
+    
+                                    <div class="col-md-6">
+                                        <input name="start_date" id="start_date" type="date" class="form-control">
+                                        <span>
+                                            <strong id = "start_date_msg" style="color:red"></strong>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <label for="end_date" class="col-md-4 col-form-label text-md-right">{{ __('add end date') }}</label>
+    
+                                    <div class="col-md-6">
+                                        <input name="end_date" id="end_date" type="date" class="form-control">
+                                        <span>
+                                            <strong id = "end_date_msg" style="color:red"></strong>
+                                        </span>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="form-group row">
+                                    
+                                    <label for="status" class="col-md-4 col-form-label text-md-right">{{ __('select status') }}</label>
+
+                                    <div class="col-md-6">
+                                        <select name="status" id="status" class="form-control">
+                                            <option value="">status</option>
+                                            <option value="open">open</option>
+                                            <option value="locked">locked</option>
+                                        </select>
+
+                                        <span>
+                                            <strong id = "status_msg" style="color:red"></strong>
+                                        </span>
+                                    </div>
+
                                 </div>
 
                                 <div class="form-group row">
         
                                     <div style="margin-left:auto; margin-right:auto;">
                             
-                                        <span role="alert">
+                                        <span>
                                             <strong id = "msg"></strong>
                                         </span>
                                     
@@ -129,8 +217,6 @@
 
                                  </div>
 
-    
-    
                                 <div class="form-group row mb-0">
                                     <div class="col-md-6 offset-md-4">
                                         <button type="submit" class="btn btn-primary btn-block">

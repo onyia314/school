@@ -44,6 +44,17 @@
            return Course::whereIn('semester_id' , [] )->where(['class_id' => $class_id])->get()->unique('course_name');
        }
 
+       public static function doesCourseBelongToSemester($course_id , $semester_id){
+            return Course::where(['id' => $course_id , 'semester_id' => $semester_id])->count();
+       }
+
+       public static function doesCourseBelongToSection($course_id , $section_id){
+            return Course::where(['id' => $course_id , 'section_id' => $section_id])->count();
+       }
+
+       public static function doesCourseBelongToTeacher($course_id , $teacher_id){
+            return Course::where(['id' => $course_id , 'teacher_id' => $teacher_id])->count();
+       }
 
 
     }

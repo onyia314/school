@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use App\Services\Course\CourseService;
 use App\SchoolSession;
 use App\SchoolClass;
@@ -31,8 +32,8 @@ class CourseController extends Controller
         return view('courses.selectsemester')->with( [ 'currentSession' => $currentSession ] );
     }
 
-    public function teacherCourses($semester_id , $teacher_id){
-        $courses = Course::where( [ 'semester_id' => $semester_id , 'teacher_id' => $teacher_id ])->with( [ 'schoolClass' , 'section' ] )->get();
+    public function teacherCourses($semester_id){
+        $courses = Course::where( [ 'semester_id' => $semester_id , 'teacher_id' => Auth::user()->id ])->with( [ 'schoolClass' , 'section' ] )->get();
         return view('courses.index')->with(['courses' => $courses]);
     }
 

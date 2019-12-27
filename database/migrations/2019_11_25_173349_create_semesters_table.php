@@ -14,11 +14,12 @@ class CreateSemestersTable extends Migration
     public function up()
     {
         Schema::create('semesters', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('id'); //it can't be zero as 0
             $table->string('semester_name');
             $table->unsignedInteger('session_id');
-            $table->enum('status' , ['open' , 'closed'])->default('closed'); //editable?
-            $table->unsignedTinyInteger('current')->default(0); // is the current semester?
+            $table->enum('status' , ['open' , 'locked'])->default('locked'); //editable?
+            $table->dateTime('start_date')->unique();
+            $table->dateTime('end_date')->unique();
             $table->timestamps();
         });
     }

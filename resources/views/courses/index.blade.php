@@ -56,7 +56,14 @@
            @if (Auth::user()->role == 'student')
 
                 @if ( $courses->count() )
-
+                    <div class = "alert alert-success text-center">
+                    {{
+                        $courses->first()->schoolClass->class_name 
+                        . '  ' .$courses->first()->schoolClass->group 
+                        .'  section ' 
+                        .$courses->first()->section->section_name
+                    }}
+                    </div>
                     <div class = "table-responsive">
 
                     <table class="table table-striped">
@@ -65,9 +72,6 @@
                                 <th scope="col">course id</th>
                                 <th scope="col">course name</th>
                                 <th scope="col">course type</th>
-                                <th scope="col">class name</th>
-                                <th scope="col">class group</th>
-                                <th scope="col">section</th>
                                 <th scope="col">time</th>
                                 <th scope="col">teacher</th>
                             </tr>
@@ -79,9 +83,6 @@
                                         <th scope="row">{{$course->id}}</th>
                                         <td>{{$course->course_name}}</td>
                                         <td>{{$course->course_type}}</td>
-                                        <td>{{$course->schoolClass->class_name}}</td>
-                                        <td>{{$course->schoolClass->group}}</td>
-                                        <td>{{$course->section->section_name}}</td>
                                         <td>{{$course->course_time}}</td>
                                         <td>{{$course->teacher->name}}</td>
                                     </tr>   

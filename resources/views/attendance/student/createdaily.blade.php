@@ -72,7 +72,7 @@
                                             @if (!session()->exists('studentsDailyAttTaken') )
                                             <th scope="col">present</th>
                                             @endif
-                                            <th scope="col">total general semester att</th>
+                                            <th scope="col">total possible att for student this semester</th>
                                             <th scope="col">total attended</th>
                                             <th scope="col">total missed</th>
                                             <th scope="col">% attended</th>

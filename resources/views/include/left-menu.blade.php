@@ -97,7 +97,7 @@
 
                         @if (Auth::user()->role == 'student')
                             <li class="nav-item">
-                            <a class="nav-link btn btn-block btn-primary" href="{{route('student.viewcourses')}}"><span
+                            <a class="nav-link btn btn-block btn-primary" href="{{route('student.courses')}}"><span
                                   class="nav-link-text">my courses</span></a>
                             </li>
                         @endif

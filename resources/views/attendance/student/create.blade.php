@@ -83,7 +83,7 @@
                                             <th scope="col">student id</th>
                                             <th scope="col">student name</th>
                                             <th scope="col">present</th>
-                                            <th scope="col">total att for course</th>
+                                            <th scope="col">total possible att for student</th>
                                             <th scope="col">total attended</th>
                                             <th scope="col">% present</th>
                                             <th scope="col">total missed</th>

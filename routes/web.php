@@ -110,8 +110,7 @@ Route::middleware(['auth' , 'teacher'])->group(function(){
 
 //courses for student
 Route::middleware(['auth' , 'student'])->group(function(){
-    Route::get('semester/student/viewcourse' , 'CourseController@indexStudent')->name('student.viewcourses');
-    Route::get('courses/section/{section_id}/semester/{semester_id}/student/{student_id}' , 'CourseController@studentCourses')->name('student.courses');
+    Route::get('courses/student' , 'CourseController@studentCourses')->name('student.courses');
 });
 
 /**

@@ -25,8 +25,8 @@ class AttendanceController extends Controller
             'semester_id' => 'required|integer|exists:semesters,id',
             'section_id' => 'sometimes|required|integer|exists:sections,id',
             'course_id' => 'sometimes|required|integer|exists:courses,id',
-            'students.*' => 'sometimes|required|exists:users,id',
-            'staffs.*' => 'sometimes|required|exists:users,id',
+            'students.*' => 'sometimes|required|integer|exists:users,id',
+            'staffs.*' => 'sometimes|required|integer|exists:users,id',
         ]);
     }
     private function getStudentsSection($section_id){

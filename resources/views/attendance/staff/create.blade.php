@@ -56,7 +56,7 @@
                                                 <th scope="col">present</th>
                                             @endif
                                             
-                                            <th scope="col">total semester attendance</th>
+                                            <th scope="col">total possible att for staff this semester</th>
                                             <th scope="col">total attended</th>
                                             <th scope="col">total missed</th>
                                             <th scope="col">% attended</th>

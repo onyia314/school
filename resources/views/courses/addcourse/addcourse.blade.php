@@ -17,6 +17,9 @@
                 @if( session()->exists('courseExists') )
                 <div class="alert alert-danger text-center">this course name cannot be created more than once for a section in a semester</div>
                 @endif
+                @if( session()->exists('invalidRelationShip') )
+                <div class="alert alert-danger text-center">oops course not added because of invalid selection</div>
+                @endif
 
                 @if ( $suggestedCourses->count() )
 
@@ -145,7 +148,7 @@
                                     <label for="course_name" class="col-md-4 col-form-label text-md-right">{{ __('add course') }}</label>
         
                                     <div class="col-md-6">
-                                        <input name="course_name" id="course_name" type="text" class="form-control @error('course_name') is-invalid @enderror"  value=""  autocomplete="course_name" autofocus placeholder="biology chemistry etc">
+                                    <input name="course_name" id="course_name" type="text" class="form-control @error('course_name') is-invalid @enderror"  value="{{old('course_name')}}"  autocomplete="course_name" autofocus placeholder="biology chemistry etc">
         
                                         @error('course_name')
                                             <span class="invalid-feedback" role="alert">
@@ -158,7 +161,7 @@
                                     <label for="course_time" class="col-md-4 col-form-label text-md-right">{{ __('course time') }}</label>
         
                                     <div class="col-md-6">
-                                        <input name="course_time" id="course_time" type="text" class="form-control @error('course_time') is-invalid @enderror"  value=""  autocomplete="course_time" autofocus placeholder="eg. 11:00am-12:30pm mondays">
+                                    <input name="course_time" id="course_time" type="text" class="form-control @error('course_time') is-invalid @enderror"  value="{{old('course_time')}}"  autocomplete="course_time" autofocus placeholder="eg. 11:00am-12:30pm mondays">
         
                                         @error('course_time')
                                             <span class="invalid-feedback" role="alert">
@@ -175,7 +178,7 @@
                                         <select name="teacher_id" class="form-control @error('teacher_id') is-invalid @enderror">
                                             <option value="">select teacher</option>
                                             @foreach ($teachers as $teacher)
-                                                <option value="{{$teacher->id}}">{{$teacher->name}}</option>                                        
+                                                <option value="{{$teacher->id}}" @if( old('teacher_id') == $teacher->id ) selected  @endif>{{$teacher->name}}</option>                                        
                                             @endforeach
                                         </select>
                                         @error('teacher_id')
@@ -192,8 +195,8 @@
                                     <div class="col-md-6">
                                         <select name="course_type" class="form-control @error('course_type') is-invalid @enderror">
                                                 <option value="">select course type</option>                                        
-                                                <option value="core">core</option>                                        
-                                                <option value="elective">elective</option>                                        
+                                                <option value="core" @if( old('course_type') == 'core' ) selected  @endif >core</option>                                        
+                                                <option value="elective" @if( old('course_type') == 'elective' ) selected  @endif >elective</option>                                        
                                         </select>
                                         @error('course_type')
                                             <span class="invalid-feedback" role="alert">

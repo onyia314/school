@@ -4,32 +4,39 @@
 <div class="container">
 
         <div class="row justify-content-center">
+
+            @include('include.left-menu')
+
             <div class="col-md-8">
 
-                @if( ( session()->exists('userUpdated') ) && ( session()->exists('infoUpdated') ) )
+                @if( ( session()->exists('userUpdated') ) )
                         <div class="alert alert-success text-center">{{ $user->role .' ' .'updated'}}</div>
                 @endif
 
-                @if( ( session()->exists('userUpdated') ) && !( session()->exists('infoUpdated') ) )
-                        <div class="alert alert-danger text-center">{{ $user->role .' ' . 'updated ' .'but biography not updated... please update user biography...if this issue continues contact our support team'}}</div>
+                @if( ( session()->exists('userNotUpdated') ) )
+                        <div class="alert alert-danger text-center">{{ $user->role .' ' .'could not be updated due to system error'}}</div>
                 @endif
+
+                @if($user)
 
                 <div class="card">
                     <div class="card-header text-center">{{ 'Update' . ' ' .$user->role }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route( 'user.update' , ['id' => $user->id , 'role' => $user->role ] )}}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route( 'user.update')}}">
                             @csrf
 
-                            {{--
-                        
-                                updating students does not NECESSARILY require email or phone number 
-                                this is separated using the user->role in the input tag
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <input id="id" type="hidden" class="form-control @error('id') is-invalid @enderror" name="id" value="{{ $user->id }}" required>
 
-                                authentication is done by registration number or email
-
-                            --}}
-
+                                    @error('id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Full Name') }}</label>
 
@@ -79,7 +86,7 @@
                                 <label for="birthday" class="col-md-4 col-form-label text-md-right ">{{ __('birthday') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="birthday" type="date" class="form-control  @error('birthday') is-invalid @enderror" name="birthday" value="{{ $user->birthday }}" required>
+                                <input name="birthday" id="birthday" type="date" class="form-control  @error('birthday') is-invalid @enderror"  required value="{{$user->studentInfo->birthday}}">
                                     @error('birthday')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -141,7 +148,7 @@
 
                                         <select name="religion" id="religion" class = "form-control  @error('religion') is-invalid @enderror" required >
                                             <option value="">select religion</option>
-                                            <option value="christian"  @if( $user->religion == 'christian' ) selected = "selected" @endif>christian</option>
+                                            <option value="christian"  @if( $user->studentInfo->religion == 'christian' ) selected = "selected" @endif>christian</option>
                                             <option value="islam" @if( $user->studentInfo->religion == 'islam' ) selected = "selected" @endif>islam</option>
                                             <option value="others" @if( $user->studentInfo->religion == 'others' ) selected = "selected" @endif>others</option>
                                         </select>
@@ -177,18 +184,24 @@
                             @if( $user->role == 'student')
 
                                 <div class="form-group row">
-                                    <label for="class" class="col-md-4 col-form-label text-md-right">{{ __('class') }}</label>
+                                    <label for="section_id" class="col-md-4 col-form-label text-md-right">{{ __('class-group-section') }}</label>
 
                                     <div class="col-md-6">
 
-                                    <select name="class" id="class" class = "form-control  @error('class') is-invalid @enderror" required>
-                                            <option value="">select class</option>
-                                            <option value="jss1" @if( $user->studentInfo->class == 'jss1' ) selected = "selected" @endif>jss1</option>
-                                            <option value="jss2" @if( $user->studentInfo->class == 'jss2' ) selected = "selected" @endif>jss2</option>
-                                            <option value="jss3" @if( $user->studentInfo->class == 'jss3' ) selected = "selected" @endif>jss3</option>
+                                        <select name="section_id" id="section_id" class = "form-control  @error('section_id') is-invalid @enderror" required>
+                                                <option value="">select class</option>
+                                            
+                                            @foreach ( $sections as $section)
+
+                                                <option value="{{$section->id}}" @if( $user->section->id == $section->id) selected = "selected" @endif>
+                                                    {{$section->schoolClass->class_name .' : ' .$section->schoolClass->group . ' : ' .$section->section_name}}
+                                                </option>
+                                                
+                                            @endforeach
+
                                         </select>
 
-                                        @error('class')
+                                        @error('section_id')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -198,60 +211,20 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="house" class="col-md-4 col-form-label text-md-right">{{ __('house') }}</label>
+                                    <label for="session_id" class="col-md-4 col-form-label text-md-right">{{ __('session') }}</label>
 
                                     <div class="col-md-6">
 
-                                    <select name="house" id="house" class = "form-control  @error('house') is-invalid @enderror" required>
-                                            <option value="">select house</option>
-                                            <option value="jackson"  @if( $user->studentInfo->house == 'jackson' ) selected = "selected" @endif>jackson</option>
-                                            <option value="ibiam"  @if( $user->studentInfo->house == 'ibiam' ) selected = "selected" @endif>ibiam</option>
-                                            <option value="okpara"  @if( $user->studentInfo->house== 'okpara' ) selected = "selected" @endif>okpara</option>
-                                        </select>
-
-                                        @error('house')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="group" class="col-md-4 col-form-label text-md-right">{{ __('group') }}</label>
-
-                                    <div class="col-md-6">
-
-                                    <select name="group" id="group" class = "form-control  @error('group') is-invalid @enderror" value = {{ $user->group }} required>
-                                            <option value="">select group</option>
-                                            <option value="science"  @if( $user->studentInfo->group == 'science' ) selected = "selected" @endif>sciene</option>
-                                            <option value="art"  @if( $user->studentInfo->group == 'art' ) selected = "selected" @endif>art</option>
-                                            <option value="commerce" @if( $user->studentInfo->group == 'commerce' ) selected = "selected" @endif>commerce</option>
-                                        </select>
-
-                                        @error('group')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="session" class="col-md-4 col-form-label text-md-right">{{ __('session') }}</label>
-
-                                    <div class="col-md-6">
-
-                                    <select name="session" id="session" class = "form-control  @error('session') is-invalid @enderror" required>
+                                        <select name="session_id" id="session_id" class = "form-control  @error('session_id') is-invalid @enderror" required>
                                             <option value="">select session</option>
-                                            <option value="2013/2014"  @if( $user->studentInfo->session == '2013/2014' ) selected = "selected" @endif>2013/2014</option>
-                                            <option value="2014/2015"  @if( $user->studentInfo->session == '2014/2015' ) selected = "selected" @endif>2014/2015</option>
-                                            <option value="2015/2016"  @if( $user->studentInfo->session == '2015/2016' ) selected = "selected" @endif>2015/2016</option>
+                                            @foreach ($schoolSessions as $schoolSession)
+                                                <option value="{{$schoolSession->id}}" @if( $user->studentInfo->session_id == $schoolSession->id) selected = "selected" @endif>
+                                                    {{$schoolSession->session_name}}
+                                                </option>
+                                            @endforeach
                                         </select>
 
-                                        @error('session')
+                                        @error('session_id')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -332,6 +305,9 @@
                         </form>
                     </div>
                 </div>
+                @else
+                <h3>oops.. invalid user id</h3>
+                @endif
             </div>
         </div>
 

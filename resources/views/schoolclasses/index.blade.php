@@ -16,7 +16,7 @@
 
                             @foreach ($classes as $class)
 
-                            <li class="nav-item">
+                            <li class="nav-item mb-1">
                             <a class="nav-link btn btn-block btn-primary" href="{{ url('settings/showclass/' .$class->id )}}"><span
                                 class="nav-link-text">{{ $class->id . ' ' .$class->class_name . ' ' .$class->group}}</span></a>
                             </li>

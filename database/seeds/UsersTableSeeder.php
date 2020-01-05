@@ -37,7 +37,7 @@ class UsersTableSeeder extends Seeder
             'image' => '',
         ]);
 
-        DB::table('users')->insert([
+        /* DB::table('users')->insert([
             'name'     => "nkem",
             'email'    => 'nkem@gmail.com',
             'email_verified_at' => now(),
@@ -48,12 +48,12 @@ class UsersTableSeeder extends Seeder
             'active'   => 0,
             'section_id' => 1,
             'image' => '',
-        ]);
+        ]); */
 
 
-        factory(User::Class , 2)->states('admin')->create();
+       /*  factory(User::Class , 2)->states('admin')->create();
         factory(User::Class , 5)->states('teacher')->create();
-        factory(User::Class , 100)->states('student')->create();
+        factory(User::Class , 100)->states('student')->create(); */
 
     }
 }

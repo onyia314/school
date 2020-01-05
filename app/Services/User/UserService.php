@@ -15,7 +15,7 @@
                 'email' => $data['email'],
                 'phone_number' => $data['phone_number'],
                 'password' => Hash::make($data['password']),
-                'section_id' => (int)$data['section_id'],
+                'section_id' => $data['section_id'],
                 'image' => $data['image'],
                 'role' => 'student',
                 'active' => 1,
@@ -38,21 +38,22 @@
              ]);
          }
 
-        public static function updateUser($id , $data){
-
-            return User::where('id' , $id)->update([
+        public static function updateUser($data){
+            
+            return User::where('id' , $data['id'])->update([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'phone_number' =>$data['phone_number'],
+                'section_id' => $data['section_id'],
             ]);
 
         }
 
         public static function updateStudentInfo($data){
-            return StudentInfo::updateOrCreate(['user_id' => $data['user_id'] ], $data);
+            return StudentInfo::updateOrCreate(['user_id' => $data['id'] ], $data);
         }
 
         public static function updateStaffInfo($data){
-            return StaffInfo::updateOrCreate(['user_id' => $data['user_id'] ], $data);
+            return StaffInfo::updateOrCreate(['user_id' => $data['id'] ], $data);
         }
     }

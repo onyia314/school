@@ -34,13 +34,26 @@ class SemesterService{
      * else return 0 as id 
      */
     public static function getCurrentSemester(){
-        $currentSemester = DB::table('semesters')->select('*')->where( DB::raw('now()') , '>=' , DB::raw('start_date') )->where( DB::raw('now()') , '<=' , DB::raw('end_date') )->get();
+        $currentSemester = DB::table('semesters')->select('*')
+        ->where( DB::raw('now()') , '>=' , DB::raw('start_date') )
+        ->where( DB::raw('now()') , '<=' , DB::raw('end_date') )->get();
 
         if( $currentSemester->count() ){
             return $currentSemester->first()->id;
         }
 
         return 0;
+    }
+
+    /** Check if semester belongs to session
+     *  
+     * make sure you have checked the existence of the parameters
+     * of this method before using it,
+     *  as u see we are not checking if $semester is null
+     */
+    public static function doesSemesterBelongToSession($semester_id , $session_id){
+        $semester = Semester::with('schoolSession')->where('id' , $semester_id)->first();
+        return $semester->session_id == $session_id ? true : false;
     }
 
 }

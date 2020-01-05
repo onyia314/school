@@ -19,7 +19,7 @@ class SchoolSessionController extends Controller
     }
 
     public function show($id){
-        $schoolSession = SchoolSession::where('id' , $id)->with('semesters')->first();
+        $schoolSession = SchoolSession::with('semesters')->findOrFail($id);
         return view('sessions.settings')->with('schoolSession' , $schoolSession);
     }
 

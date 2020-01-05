@@ -25,7 +25,7 @@ $factory->define(User::class, function (Faker $faker) {
         'reg_number'=> $faker->unique()->numberBetween(201300000000, 20139999999),
         'role'     => $faker->randomElement(['admin' , 'teacher' , 'student']),
         'active'   => 1,
-        'section_id' => $faker->numberBetween(1 , 18),
+        'section_id' => $faker->numberBetween(1 , 7),
         'image' => '',
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),

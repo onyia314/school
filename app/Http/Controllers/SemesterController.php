@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use App\Rules\DateBetweenStartAndEnd;
 use App\Semester;
 
 class SemesterController extends Controller
@@ -14,8 +15,8 @@ class SemesterController extends Controller
         $validator = Validator::make($request->all() , [
             'semester_name' => 'required|string|max:30',
             'session_id' => 'required|integer|exists:sessions,id',
-            'start_date' => 'required|date|unique:semesters',
-            'end_date' => 'required|date|unique:semesters',
+            'start_date' => ['required','date','unique:semesters', 'before:end_date', new DateBetweenStartAndEnd],
+            'end_date' => ['required','date','unique:semesters', new DateBetweenStartAndEnd],
             'status' => 'required|in:open,locked',
         ]);
 

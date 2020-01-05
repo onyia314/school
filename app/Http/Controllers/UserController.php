@@ -5,34 +5,42 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\User;
+use App\Section;
+use App\SchoolSession;
 
 class UserController extends Controller
 {
 
+    //this is used for updating
+    private function putId($request){
+        return ($request->id) ? ',' .$request->id : ''; 
+    }
+
     public function validateStudent($request){
 
-        $data = $request->validate([
+        return $request->validate([
+            'id' => 'sometimes|required|integer|exists:users', //for editing user 
             'name' => 'required|string|max:255',
-            'email' => 'nullable|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'phone_number' => 'nullable|string|max:50|unique:users',
+            'password' => 'sometimes|required|string|min:6|confirmed',
+            'email' => ['nullable','string','email','max:255' , 'unique:users,email' .$this->putId($request)],
+            'phone_number' => ['nullable','string','max:50','unique:users,phone_number' .$this->putId($request)],
             'birthday' => 'required|date',
             'nationality' => 'required|string|max:100',
             'state_of_origin' => 'required|string|max:100',
             'gender' => 'required|in:male,female',
             'religion' => 'required|string',
             'address' => 'required|string|max:225',
-            'section_id' => 'required|integer',
-            'session_id' => 'required|integer',
+            'section_id' => 'required|integer|exists:sections,id',
+            'session_id' => 'required|integer|exists:sessions,id',
             'father_name' => 'required|string|max:255',
             'father_phone' => '|nullable|required_without:mother_phone|string|max:50',
             'mother_name' => 'required|string|max:255',
             'mother_phone' => 'nullable|required_without:father_phone|string|max:50',
             'image' => 'file|image|max:5036',
         ]);
-
-        return $data;
 
     }
 
@@ -63,79 +71,124 @@ class UserController extends Controller
 
     protected function uploadUserImage($request){
         //check existence of file,upload and get the path
-        if( $request->hasFile('image') ){
-            $path = $request->image->store('uploads' , 'public');
-        }
-        else{
-            $path = '';
-        }
-
-        return $path;
+        return $path = $request->hasFile('image') ? $request->image->store('uploads' , 'public') : '';
     }
 
-
     public function storeStudent(Request $request){
-
-       $data = $this->validateStudent($request);
-       
-       //upload the image and store the path
-       $data['image'] = $this->uploadUserImage($request);
+        $data = $this->validateStudent($request);
+        DB::beginTransaction();
 
         try {
+                //upload the image and store the path
+                $data['image'] = $this->uploadUserImage($request);
+                $userCreated = UserService::storeStudent($data);
+                //remove basic user info from the $data array
+                unset(
+                    $data['name'] ,
+                    $data['email'] ,
+                    $data['password'] ,
+                    $data['phone_number'] , 
+                    $data['image'] ,
+                    $data['section_id']
+                );
+                //add additional info that StudentInfo model needs which are not present in the $request object
+                $data['id'] = $userCreated->id;
+                UserService::updateStudentInfo($data);
+                DB::commit();
+                return back()->with('userRegistered');
 
-            $userCreated = UserService::storeStudent($data);
-            //remove basic user info from the $data array
-            unset($data['name'] , $data['email'] , $data['password'] , $data['phone_number'] , $data['image'] , $data['section_id']);
-            //add additional info that StudentInfo model needs which are not present in the $request object
-            $data['user_id'] = $userCreated->id;
-
-            try {
-               UserService::updateStudentInfo($data);
-               session()->flash('infoRegistered');
-            } catch (\Exception $e) {
+            }catch (\Exception $e) {
                 Log::info( $e->getMessage() );
-            }
-
-        } catch (\Exception $e) {
-            Log::info( $e->getMessage() );
-            //delete the uploaded image if the user record was not persisted
-            Storage::disk('public')->delete('uploads/' .$request->image->hashName());
-            return back()->with('userNotRegistered');
+                //delete the uploaded image (if present ) if the user record was not persisted
+                if($request->image){
+                    if( $request->image->isValid() ){
+                        Storage::disk('public')->delete('uploads/' .$request->image->hashName());
+                    }
+                }
+                DB::rollBack();
+                return back()->with('userNotRegistered');
         }
 
-        return back()->with('userRegistered');
     }
 
     public function storeTeacher(Request $request){
 
         $data = $this->validateStaff($request);
-        
-        //upload the image and store the path
-        $data['image'] = $this->uploadUserImage($request);
- 
+        DB::beginTransaction();
+
          try {
- 
+            //upload the image and store the path
+             $data['image'] = $this->uploadUserImage($request);
              $userCreated = UserService::storeTeacher($data);
              //remove basic user info from the $data array
-             unset($data['name'] , $data['email'] , $data['password'] , $data['phone_number'] , $data['image']);
+             unset(
+                $data['name'] ,
+                $data['email'] , 
+                $data['password'] , 
+                $data['phone_number'] ,
+                $data['image']
+            );
              //add additional info that StaffInfo model needs which are not present in the $request object
-             $data['user_id'] = $userCreated->id;
+             $data['id'] = $userCreated->id;
+             UserService::updateStaffInfo($data);
+             DB::commit();
+             return back()->with('userRegistered');
  
-             try {
-                UserService::updateStaffInfo($data);
-                session()->flash('infoRegistered');
-             } catch (\Exception $e) {
-                 Log::info( $e->getMessage() );
-             }
- 
-         } catch (\Exception $e) {
-             Log::info( $e->getMessage() );
-             //delete the uploaded image if the user record was not persisted
-             Storage::disk('public')->delete('uploads/' .$request->image->hashName());
-             return back()->with('userNotRegistered');
+         }catch (\Exception $e) {
+            Log::info( $e->getMessage() );
+            //delete the uploaded image (if present ) if the user record was not persisted
+            if($request->image){
+                if( $request->image->isValid() ){
+                    Storage::disk('public')->delete('uploads/' .$request->image->hashName());
+                }
+            }
+            DB::rollBack();
+            return back()->with('userNotRegistered');
          }
  
-         return back()->with('userRegistered');
     }
 
-} //class ends
+    public function updateStudent(Request $request){
+        $data = $this->validateStudent($request);
+        DB::beginTransaction();
+        try {
+            UserService::updateUser($data);
+            unset($data['name'] , $data['email'] , $data['phone_number'], $data['section_id']);
+            UserService::updateStudentInfo($data);
+            DB::commit();
+            return back()->with('userUpdated');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage());
+            DB::rollBack();
+            return back()->with('userNotUpdated');
+        }
+    }
+
+    public function indexStudents($active , $searchInput = null){
+        
+        /* if( isset($searchInput) ){
+
+             $students = User::where([ 
+                ['role' , 'student' ],
+                ['active' , $active],
+                ['name' , 'LIKE' , '%' . $searchInput . '%'],
+            ])->with('studentInfo')->paginate(1);
+
+           $view = view('users.students.table-list')
+            ->with(['students' => $students , 'active' => $active])->render(); 
+            return response()->json(['html' => $view]);
+        } */
+
+        $students = User::where(['role' => 'student' , 'active' => $active])->with('studentInfo')->paginate(3);
+        return view('users.students.index')->with(['students' => $students , 'active' => $active]);
+    }
+
+    public function edit($id){
+        $user = User::where('id' , $id)->first();
+        $sections = Section::all();
+        $schoolSessions = SchoolSession::all();
+        return view('users.profile.edit')->with(['user' => $user ,
+         'sections' => $sections , 'schoolSessions' => $schoolSessions]);
+    }
+
+} 

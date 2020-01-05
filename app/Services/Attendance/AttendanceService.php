@@ -76,7 +76,8 @@ class AttendanceService{
     }
 
     public static function studentsDailyAttCheck($section_id){
-        return StudentDailyAttendance::where('section_id' , $section_id)->whereDate('created_at' , Carbon::today() )->count();
+        return StudentDailyAttendance::where('section_id' , $section_id)
+        ->whereDate('created_at' , Carbon::today() )->count();
     } 
 
     public static function staffsDailyAttCheck(){

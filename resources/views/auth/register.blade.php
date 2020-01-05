@@ -11,16 +11,12 @@
             
             <div class="col-md-8">
 
-                @if( ( session()->exists('userRegistered') ) && ( session()->exists('infoRegistered') ) )
+                @if( session()->exists('userRegistered') )
                         <div class="alert alert-success text-center">{{ session('register_role') . ' ' .'registered'}}</div>
                 @endif
 
-                @if( ( session()->exists('userRegistered') ) && !( session()->exists('infoRegistered') ) )
-                        <div class="alert alert-warning text-center">{{ session('register_role') . ' ' . 'registered ' .'but biography not updated... please update user biography...if this issue continues contact our support team'}}</div>
-                @endif
-
                 @if( session()->exists('userNotRegistered') )
-                        <div class="alert alert-danger text-center">{{ session('register_role') . ' not created due to system error try again'}}</div>
+                        <div class="alert alert-danger text-center">{{ session('register_role') . ' not registered due to system error try again'}}</div>
                 @endif
 
                 <div class="card">
@@ -223,7 +219,7 @@
                                     <div class="col-md-6">
 
                                         <select name="section_id" id="section_id" class = "form-control  @error('section_id') is-invalid @enderror" required>
-                                                <option value="">select class</option>
+                                        <option value="{{old('section_id')}}">select class</option>
                                             
                                             @foreach ( $sections as $section)
 
@@ -248,7 +244,7 @@
                                     <div class="col-md-6">
 
                                         <select name="session_id" id="session_id" class = "form-control  @error('session_id') is-invalid @enderror" required>
-                                            <option value="">select session</option>
+                                        <option value="{{old('session_id')}}">select session</option>
                                             @foreach ($schoolSessions as $schoolSession)
                                                 <option value="{{$schoolSession->id}}">{{$schoolSession->session_name}}</option>
                                             @endforeach

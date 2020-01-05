@@ -74,7 +74,7 @@
 
                                                                                 <div class="card">
                                                                                     @foreach ($schoolSession->semesters as $semester)
-                                                                                        <a href="{{route('addcourse' , [ 'class_id' => $schoolClass->id , 'section_id' => $section->id ,'session_id' => $schoolSession->id , 'semester_id' => $semester->id])}}">{{$semester->semester_name}}</a>
+                                                                                        <a href="{{route('addcourse' , [ 'section_id' => $section->id , 'semester_id' => $semester->id ])}}">{{$semester->semester_name}}</a>
                                                                                     @endforeach
                                                                                 </div>
                                                                             </div>

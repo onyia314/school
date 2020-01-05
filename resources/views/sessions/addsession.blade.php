@@ -7,7 +7,7 @@
             <div class="col-md-8">
 
                 @if( session()->exists('sessionAdded') )
-                    <div class="alert alert-success text-center">session added value. click <a href="">here</a> to create semesters for this session {{session('sessionAdded')}}</div>
+                <div class="alert alert-success text-center">session added value. click <a href="{{url('settings/showsession/' .session('sessionAdded') )}}">here</a> to create semesters for this session</div>
                 @endif
 
                 @if( session()->exists('sessionNotAdded') )

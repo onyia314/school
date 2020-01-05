@@ -21,7 +21,7 @@ class CreateStaffInfosTable extends Migration
             $table->string('nationality')->default('');
             $table->string('state_of_origin')->default('');
             $table->string('address')->default('');
-            $table->dateTime('birthday')->default( now() );
+            $table->date('birthday')->default( now() );
             $table->string('qualification')->default('');
             $table->string('next_of_kin')->default('');
             $table->string('next_of_kin_phone')->default('');

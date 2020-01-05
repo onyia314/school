@@ -57,10 +57,13 @@ Route::middleware(['auth' , 'admin.master'])->group(function(){
 
 });
 
-/* Route::middleware(['auth' , 'admin.master'])->group(function(){
-    Route::get('user/edit/{id}' , 'UserController@edit')->name('user.edit');
-    Route::post('user/edit/{id}/{role}' , 'UserController@update')->name('user.update');
-}); */
+Route::middleware(['auth' , 'admin.master'])->group(function(){
+    Route::prefix('users')->group(function(){
+        Route::get('view/students/status/{active}/{searchInput?}' , 'UserController@indexStudents')->name('view.students');
+        Route::get('student/edit/{id}' , 'UserController@edit')->name('user.edit');
+        Route::post('update' , 'UserController@updateStudent')->name('user.update');
+    });
+});
 
 Route::middleware(['auth' , 'admin'])->group(function(){
     Route::get('settings' , function(){
@@ -94,7 +97,7 @@ Route::middleware(['auth' , 'admin'])->group(function(){
          * add courses
          */
         Route::get('section/addcourse' , 'CourseController@indexToSemester')->name('section.addcourse');
-        Route::get('addcourse/class/{class_id}/section/{section_id}/session/{session_id}/semester/{semester_id}' , 'CourseController@addCourse')->name('addcourse');
+        Route::get('addcourse/section/{section_id}/semester/{semester_id}' , 'CourseController@addCourse')->name('addcourse');
         Route::post('addcourse' , 'CourseController@store');
 
     });

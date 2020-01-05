@@ -20,6 +20,11 @@
                                     </li>
 
                                     <li class="nav-item">
+                                    <a class="nav-link btn btn-block" href="{{ url('settings/viewclasses') }}"><span
+                                          class="nav-link-text">create sections</span></a>
+                                    </li>
+
+                                    <li class="nav-item">
                                     <a class="nav-link btn btn-block" href="{{ url('settings/addsession')}}"><span
                                           class="nav-link-text">create session</span></a>
                                     </li>

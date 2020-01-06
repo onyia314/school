@@ -15,6 +15,11 @@
         add.addEventListener('submit' , function(e){
                 e.preventDefault();
 
+                var general = document.getElementsByClassName('general');
+                for(var i = 0; i < general.length ; i++ ){
+                    general[i].innerHTML = '';
+                }
+                
                 document.getElementById('msg').style.color = 'black';
                 document.getElementById('msg').innerHTML = 'please wait.....'
 
@@ -128,7 +133,7 @@
                                         <div class="col-md-6">
                                             <input id="section_name" name="section_name" type="text" class="form-control" value="{{ old('section_name') }}"  autocomplete="section_name" autofocus placeholder="A,B,C...Z">        
                                             <span>
-                                                <strong id = "section_name_msg" style="color:red"></strong>
+                                                <strong  class="general" id = "section_name_msg" style="color:red"></strong>
                                             </span>
                                         </div>
                                     </div>
@@ -138,7 +143,7 @@
                                         <div class="col-md-6">                           
                                             <input type="hidden" name = "class_id" id = "class_id" value = "{{$class->id}}">
                                             <span>
-                                                <strong id = "class_id_msg" style="color:red"></strong>
+                                                <strong class="general" id = "class_id_msg" style="color:red"></strong>
                                             </span>
                                         </div>
                                     </div>
@@ -146,7 +151,7 @@
                                     <div class="form-group row">
                                         <div style="margin-left:auto; margin-right:auto;">
                                             <span role="alert">
-                                                <strong id = "msg"></strong>
+                                                <strong class="general" id = "msg"></strong>
                                             </span>
                                         </div>
                                     </div>

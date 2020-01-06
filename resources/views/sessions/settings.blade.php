@@ -12,6 +12,11 @@
        add.addEventListener('submit' , function(e){
             e.preventDefault();
 
+            var general = document.getElementsByClassName('general');
+            for(var i = 0; i < general.length ; i++ ){
+                general[i].innerHTML = '';
+            }
+            
             document.getElementById('msg').style.color = 'black';
             document.getElementById('msg').innerHTML = 'please wait.....'
 
@@ -147,7 +152,7 @@
                                     <div class="col-md-6">
                                         <input id="semester_name" name="semester_name" type="text" class="form-control" autocomplete="semester_name" autofocus placeholder="1st , 2nd , 3rd">  
                                         <span>
-                                            <strong id = "semester_name_msg" style="color:red"></strong>
+                                            <strong class = "general" id = "semester_name_msg" style="color:red"></strong>
                                         </span>
                                     </div>
                                     
@@ -158,7 +163,7 @@
                                         <div class="col-md-6">
                                             <input type="hidden" name = "session_id" id = "session_id" value = "{{$schoolSession->id}}">
                                             <span>
-                                                <strong id = "session_id_msg" style="color:red"></strong>
+                                                <strong class = "general" id = "session_id_msg" style="color:red"></strong>
                                             </span>
                                         </div>
                                         
@@ -170,7 +175,7 @@
                                     <div class="col-md-6">
                                         <input name="start_date" id="start_date" type="date" class="form-control">
                                         <span>
-                                            <strong id = "start_date_msg" style="color:red"></strong>
+                                            <strong class = "general" id = "start_date_msg" style="color:red"></strong>
                                         </span>
                                     </div>
                                 </div>
@@ -181,7 +186,7 @@
                                     <div class="col-md-6">
                                         <input name="end_date" id="end_date" type="date" class="form-control">
                                         <span>
-                                            <strong id = "end_date_msg" style="color:red"></strong>
+                                            <strong class = "general" id = "end_date_msg" style="color:red"></strong>
                                         </span>
                                     </div>
                                     
@@ -199,7 +204,7 @@
                                         </select>
 
                                         <span>
-                                            <strong id = "status_msg" style="color:red"></strong>
+                                            <strong class = "general" id = "status_msg" style="color:red"></strong>
                                         </span>
                                     </div>
 
@@ -210,7 +215,7 @@
                                     <div style="margin-left:auto; margin-right:auto;">
                             
                                         <span>
-                                            <strong id = "msg"></strong>
+                                            <strong class = "general" id = "msg"></strong>
                                         </span>
                                     
                                     </div>

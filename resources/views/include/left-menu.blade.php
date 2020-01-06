@@ -8,11 +8,6 @@
                         @if(Auth::user()->role == 'admin')
 
                             <li class="nav-item mb-1">
-                            <a class="nav-link btn btn-block btn-primary" href=""><span
-                                  class="nav-link-text">Exams</span></a>
-                            </li>
-
-                            <li class="nav-item mb-1">
                               <div class="dropdown">
                                     <a class="btn btn-block btn-secondary dropdown-toggle block" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       Attendance
@@ -23,11 +18,6 @@
                                     <a class="dropdown-item" href="{{route('create.staff.attendance')}}">staff</a>
                                     </div>
                                   </div>
-                            </li>
-                            
-                            <li class="nav-item mb-1">
-                              <a class="nav-link btn btn-block btn-primary" href=""><span
-                                  class="nav-link-text">Grade/results</span></a>
                             </li>
 
                             <li class="nav-item mb-1">
@@ -47,15 +37,38 @@
                                     </a>
                                   
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkStudents">
-                                    <a class="dropdown-item" href="{{route('view.students' , ['active' => 1] )}}">active students</a>
-                                    <a class="dropdown-item" href="{{route('view.students' , ['active' => 0] )}}">in-active students</a>
+                                    <a class="dropdown-item" href="{{route('view.users' , ['role' => 'student' , 'active' => 1] )}}">active students</a>
+                                    <a class="dropdown-item" href="{{route('view.users' , ['role' => 'student' , 'active' => 0] )}}">in-active students</a>
                                     </div>
                                   </div>
                             </li>
 
-                             <li class="nav-item mb-1">
+                            <li class="nav-item mb-1">
+                              <div class="dropdown">
+                                    <a class="btn btn-block btn-secondary dropdown-toggle block" href="#" role="button" id="dropdownMenuLinkTeachers" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      teachers
+                                    </a>
+                                  
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkTeachers">
+                                    <a class="dropdown-item" href="{{route('view.users' , ['role' => 'teacher' , 'active' => 1] )}}">active teachers</a>
+                                    <a class="dropdown-item" href="{{route('view.users' , ['role' => 'teacher' , 'active' => 0] )}}">in-active teachers</a>
+                                    </div>
+                                  </div>
+                            </li>
+
+                            <li class="nav-item mb-1">
+                              <a class="nav-link btn btn-block btn-primary" href="{{route('settings')}}"><span
+                                    class="nav-link-text">Academic settings</span></a>
+                              </li> 
+
+                            <li class="nav-item mb-1">
                               <a class="nav-link btn btn-block btn-primary" href=""><span
-                                  class="nav-link-text">teachers</span></a>
+                                    class="nav-link-text">Exams</span></a>
+                              </li>
+                            
+                            <li class="nav-item mb-1">
+                              <a class="nav-link btn btn-block btn-primary" href=""><span
+                                  class="nav-link-text">Grade/results</span></a>
                             </li>
 
                             <li class="nav-item mb-1">
@@ -63,13 +76,9 @@
                                   class="nav-link-text">others staff</span></a>
                             </li>                            
                             
-                            <li class="nav-item mb-1">
-                            <a class="nav-link btn btn-block btn-primary" href="{{route('settings')}}"><span
-                                  class="nav-link-text">Academic settings</span></a>
-                            </li> 
 
                             <li class="nav-item mb-1">
-                            <a class="nav-link btn btn-block btn-primary" href="{{ url('fees/viewsessions')}}"><span
+                            <a class="nav-link btn btn-block btn-primary" href=""><span
                                   class="nav-link-text">generate fees</span></a>
                             </li> 
 

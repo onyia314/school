@@ -164,7 +164,7 @@ class UserController extends Controller
         }
     }
 
-    public function indexStudents($active , $searchInput = null){
+    public function index($role , $active , $searchInput = null){
         
         /* if( isset($searchInput) ){
 
@@ -179,8 +179,15 @@ class UserController extends Controller
             return response()->json(['html' => $view]);
         } */
 
-        $students = User::where(['role' => 'student' , 'active' => $active])->with('studentInfo')->paginate(3);
-        return view('users.students.index')->with(['students' => $students , 'active' => $active]);
+        if($role == 'master'){
+            return view('home');
+        }
+
+        $users = User::where([
+            ['role' , $role],
+            ['active' , $active ],
+            ])->paginate(3);
+        return view('users.index')->with(['users' => $users , 'role' => $role , 'active' => $active]);
     }
 
     public function edit($id){

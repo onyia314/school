@@ -59,7 +59,7 @@ Route::middleware(['auth' , 'admin.master'])->group(function(){
 
 Route::middleware(['auth' , 'admin.master'])->group(function(){
     Route::prefix('users')->group(function(){
-        Route::get('view/students/status/{active}/{searchInput?}' , 'UserController@indexStudents')->name('view.students');
+        Route::get('view/{role}/status/{active}/{searchInput?}' , 'UserController@index')->name('view.users');
         Route::get('student/edit/{id}' , 'UserController@edit')->name('user.edit');
         Route::post('update' , 'UserController@updateStudent')->name('user.update');
     });

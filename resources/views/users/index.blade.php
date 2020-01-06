@@ -41,18 +41,22 @@
             <div class="card">
                 <div class="card-header" style="padding-left:0; padding-right:0;">Dashboard</div>
 
-                    @if ( $students->count() )
+                    @if ( $users->count() )
 
-                    <div><input type="text" name="search" id="search" placeholder="search"></div>
+                         <div><input type="text" name="search" id="search" placeholder="search"></div>
 
-                    @include('users.students.table-list')
-                    
+                        @if($role == 'student')
+                            @include('users.students.table-list')
+                        @elseif($role == 'teacher')
+                            @include('users.teachers.table-list')
+                        @endif
+
                     @else
 
                         @if ($active == 1)
-                            <h3>no active student in the school yet</h3>
+                            <h3>no active {{$role}} in the school yet</h3>
                         @elseif($active == 0)
-                            <h3>no in-active student in the school yet</h3>
+                            <h3>no in-active {{$role}} in the school yet</h3>
                         @else
                             <h3>invalid selection</h3>
                         @endif

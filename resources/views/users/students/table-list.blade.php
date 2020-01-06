@@ -26,7 +26,7 @@
         </thead>
 
         <tbody>
-            @foreach ($students as $student)
+            @foreach ($users as $student)
                 <tr>
                     <th scope="row">{{$student->id}}</th>
                     <th scope="row">
@@ -56,4 +56,4 @@
         </tbody>
     </table>
 </div>
-<div>{{$students->links()}}</div>
+<div>{{$users->links()}}</div>

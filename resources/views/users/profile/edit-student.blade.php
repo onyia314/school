@@ -17,13 +17,11 @@
                         <div class="alert alert-danger text-center">{{ $user->role .' ' .'could not be updated due to system error'}}</div>
                 @endif
 
-                @if($user)
-
                 <div class="card">
                     <div class="card-header text-center">{{ 'Update' . ' ' .$user->role }}</div>
 
                     <div class="card-body">
-                        <form method="post" action="{{ route( 'user.update')}}">
+                        <form method="post" action="{{ route( 'student.update')}}">
                             @csrf
 
                             <div class="form-group row">
@@ -305,9 +303,6 @@
                         </form>
                     </div>
                 </div>
-                @else
-                <h3>oops.. invalid user id</h3>
-                @endif
             </div>
         </div>
 

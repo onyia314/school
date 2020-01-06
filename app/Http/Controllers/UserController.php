@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\User\UserService;
-use Illuminate\Support\Facades\log;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\User;
@@ -46,11 +46,12 @@ class UserController extends Controller
 
     public function validateStaff($request){
 
-        $data = $request->validate([
+        return $request->validate([
+            'id' => 'sometimes|required|integer|exists:users', //for editing user 
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'phone_number' => 'required|string|max:50|unique:users',
+            'email' => ['required','string','email','max:255' , 'unique:users,email' .$this->putId($request)],
+            'phone_number' => ['required','string','max:50','unique:users,phone_number' .$this->putId($request)],
+            'password' => 'sometimes|required|string|min:6|confirmed',
             'birthday' => 'required|date',
             'nationality' => 'required|string|max:100',
             'state_of_origin' => 'required|string|max:100',
@@ -66,7 +67,6 @@ class UserController extends Controller
             'image' => 'file|image|max:5036',
         ]);
 
-        return $data;
     }
 
     protected function uploadUserImage($request){
@@ -164,6 +164,23 @@ class UserController extends Controller
         }
     }
 
+    public function updateStaff(Request $request){
+        $data = $this->validateStaff($request);
+        $data['section_id'] = null;
+        DB::beginTransaction();
+        try {
+            UserService::updateUser($data);
+            unset($data['name'] , $data['email'] , $data['phone_number'], $data['section_id']);
+            UserService::updateStaffInfo($data);
+            DB::commit();
+            return back()->with('userUpdated');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage());
+            DB::rollBack();
+            return back()->with('userNotUpdated');
+        }
+    }
+
     public function index($role , $active , $searchInput = null){
         
         /* if( isset($searchInput) ){
@@ -179,7 +196,7 @@ class UserController extends Controller
             return response()->json(['html' => $view]);
         } */
 
-        if($role == 'master'){
+        if($role == 'master' || $role == 'admin'){
             return view('home');
         }
 
@@ -191,11 +208,19 @@ class UserController extends Controller
     }
 
     public function edit($id){
-        $user = User::where('id' , $id)->first();
-        $sections = Section::all();
-        $schoolSessions = SchoolSession::all();
-        return view('users.profile.edit')->with(['user' => $user ,
-         'sections' => $sections , 'schoolSessions' => $schoolSessions]);
+
+        $user = User::where('role' , '!=' , 'master')
+        ->where('role', '!=' , 'admin' )->findOrFail($id);
+
+        if($user->role == 'student'){
+            $sections = Section::all();
+            $schoolSessions = SchoolSession::all();
+            return view('users.profile.edit-student')->with([
+            'user' => $user ,
+            'sections' => $sections , 'schoolSessions' => $schoolSessions]);
+        }
+        
+        return view('users.profile.edit-staff')->with(['user' => $user]);
     }
 
 } 

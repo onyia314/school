@@ -23,7 +23,7 @@ DB_PASSWORD=
 ```
 Run ```composer install```
 
-Generate `APP_KEY` by running ````php artisan key:generate ```
+Generate `APP_KEY` by running ```php artisan key:generate ```
 
 migrate your database ```php artisan migrate```
 
@@ -45,7 +45,35 @@ DB::table('users')->insert([
 
 ```
 edit name ,email ,phone_number , password , reg_number, email_verified_at...
+
 Do not change the other details (role , active , section_id , 'image').
 
 seed the database ```php artisan db:seed```
+
 NOTE : You have to seed the UsersTableSeeder so as to create the master account.
+
+Serve your application with ```php artisan serve```
+
+## Things To Know Before Contributing
+
+### Add Admin and Login as the Admin
+After running the UsersTableSeeder, login withyour email or reg_naumebr.
+
+create admin(s)
+
+login as the admin
+
+### Classes and Sections (Arms) 
+a) go to academic settings link to create a class 
+
+b) After creating a class, you have to create a section for this class (what others may call ARMS).
+
+### School Session and Semesters (Term).
+a)  go to academic settings link to create academic session
+
+b) proceed to create a semester (Term)
+
+### Courses
+a) courses are made per session , per semester , per class , per section.
+
+b) Adding courses for the sections of the same class_id for subsequent semesters does not have to be a pain as the software will suggest these courses.

@@ -13,9 +13,9 @@ class UsersTableSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name'     => "onyia",
-            'email'    => 'onyia314@gmail.com',
+            'email'    => 'youremail@gmail.com',
             'email_verified_at' => now(),
-            'phone_number' => '08103719833',
+            'phone_number' => '070305620763763',
             'password' => bcrypt('password'),
             'reg_number'=> '20131835853',
             'role'     => 'master',
@@ -24,7 +24,7 @@ class UsersTableSeeder extends Seeder
             'image' => '',
         ]);
 
-        DB::table('users')->insert([
+        /* DB::table('users')->insert([
             'name'     => "chioma",
             'email'    => 'chioma@gmail.com',
             'email_verified_at' => now(),
@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
             'active'   => 1,
             'section_id' => null,
             'image' => '',
-        ]);
+        ]); */
 
         /* DB::table('users')->insert([
             'name'     => "nkem",

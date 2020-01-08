@@ -4,6 +4,27 @@
 
             <div class="card-body">
                     <ul class="nav flex-column">
+                        
+                        @if(Auth::user()->role == 'master')
+                              <li class="nav-item mb-1">
+                              <a class="nav-link btn btn-block btn-primary" href="{{url('register/admin')}}"><span
+                                    class="nav-link-text">add admin</span></a>
+                              </li>
+
+                              <li class="nav-item mb-1">
+                                    <div class="dropdown">
+                                          <a class="btn btn-block btn-secondary dropdown-toggle block" href="#" role="button" id="dropdownMenuLinkAdmins" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            view admins
+                                          </a>
+                                        
+                                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkAdmins">
+                                          <a class="dropdown-item" href="{{route('view.users' , ['role' => 'admin' , 'active' => 1] )}}">active admins</a>
+                                          <a class="dropdown-item" href="{{route('view.users' , ['role' => 'admin' , 'active' => 0] )}}">in-active admins</a>
+                                          </div>
+                                        </div>
+                              </li>
+  
+                        @endif
 
                         @if(Auth::user()->role == 'admin')
 

@@ -22,7 +22,18 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-//registration
+//register admin
+Route::middleware(['master'])->group(function(){
+    Route::prefix('register')->group(function(){
+        Route::get('admin' , function(){
+            session(['register_role' => 'admin']);
+            return redirect()->route('register');
+        });
+        Route::post('admin' , 'UserController@storeAdmin');
+    });
+});
+
+//register admin and other staff
 Route::middleware(['auth' , 'admin.master'])->group(function(){
 
     Route::get('/register' , function(){
@@ -57,12 +68,20 @@ Route::middleware(['auth' , 'admin.master'])->group(function(){
 
 });
 
+//editing users 
 Route::middleware(['auth' , 'admin.master'])->group(function(){
     Route::prefix('users')->group(function(){
-        Route::get('view/{role}/status/{active}/{searchInput?}' , 'UserController@index')->name('view.users');
+        Route::get('view/{role}/status/{active}/{searchInput?}' , 'UserController@index')
+        ->name('view.users')->where('role' , '^(?!.*master).*$');
         Route::get('edit/{id}' , 'UserController@edit')->name('user.edit');
         Route::post('update/student' , 'UserController@updateStudent')->name('student.update');
         Route::post('update/staff' , 'UserController@updateStaff')->name('staff.update');
+    });
+});
+
+Route::middleware(['auth' , 'master'])->group(function(){
+    Route::prefix('users')->group(function(){
+        Route::post('update/admin' , 'UserController@updateAdmin')->name('admin.update');
     });
 });
 

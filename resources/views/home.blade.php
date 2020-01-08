@@ -10,14 +10,14 @@
             <div class="card">
             <div class="card-header text-center"><strong>{{ Auth::user()->name .' - ' .Auth::user()->reg_number .' Dashboard'}}</strong></div>
 
-                <div class="card-body">
+                <div class="card-body text-center">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif
 
-                    You are logged in! 
+                    <h3>hello {{Auth::user()->role}}</h3>
                     
                 </div>
             </div>

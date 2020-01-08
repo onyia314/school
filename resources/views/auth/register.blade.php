@@ -4,7 +4,8 @@
 
 <div class="container">
 
-    @if(session()->has('register_role'))
+    @if( session()->has('register_role') )
+    
         <div class="row justify-content-center">
 
             @include('include.left-menu')
@@ -111,6 +112,7 @@
                                 </div>
                             </div>
                                 
+                        @if(session('register_role') != 'admin')
 
                             <div class="form-group row">
                                 <label for="birthday" class="col-md-4 col-form-label text-md-right ">{{ __('birthday') }}</label>
@@ -206,12 +208,12 @@
                                 </div>
     
                             </div>
+
+                        @endif
                             
 
 
                             @if( session('register_role') == 'student') {{-- special student form --}}
-
-                
 
                                 <div class="form-group row">
                                     <label for="section_id" class="col-md-4 col-form-label text-md-right">{{ __('class-group-section') }}</label>
@@ -319,7 +321,7 @@
 
                             @endif {{-- special student form --}}
 
-                            @if( session('register_role') != 'student') {{-- special staff form --}}
+                            @if( session('register_role') != 'student' && session('register_role') != 'admin' ) {{-- special staff form --}}
 
                                 
                                 <div class="form-group row">
@@ -457,6 +459,12 @@
                     <li class="list-group-item">
                         <a href="{{url('register/teacher')}}" class="btn btn-primary btn-lg btn-block  active" role="button" aria-pressed="true">register teacher</a>                        
                     </li>
+
+                    @if(Auth::user()->role == 'master')
+                    <li class="list-group-item">
+                        <a href="{{url('register/admin')}}" class="btn btn-primary btn-lg btn-block  active" role="button" aria-pressed="true">register admin</a>                        
+                    </li>
+                    @endif
                 </ul>
             </div>
         </div>

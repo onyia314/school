@@ -49,6 +49,8 @@
                             @include('users.students.table-list')
                         @elseif($role == 'teacher')
                             @include('users.teachers.table-list')
+                        @elseif($role == 'admin')
+                            @include('users.admin.table-list')
                         @endif
 
                     @else

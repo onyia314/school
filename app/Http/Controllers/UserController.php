@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Section;
@@ -19,7 +20,7 @@ class UserController extends Controller
         return ($request->id) ? ',' .$request->id : ''; 
     }
 
-    public function validateStudent($request){
+    private function validateStudent($request){
 
         return $request->validate([
             'id' => 'sometimes|required|integer|exists:users', //for editing user 
@@ -44,7 +45,7 @@ class UserController extends Controller
 
     }
 
-    public function validateStaff($request){
+    private function validateStaff($request){
 
         return $request->validate([
             'id' => 'sometimes|required|integer|exists:users', //for editing user 
@@ -67,6 +68,17 @@ class UserController extends Controller
             'image' => 'file|image|max:5036',
         ]);
 
+    }
+
+    Private function validateAdmin($request){
+        return $request->validate([
+            'id' => 'sometimes|required|integer|exists:users', //for editing user 
+            'name' => 'required|string|max:255',
+            'email' => ['required','string','email','max:255' , 'unique:users,email' .$this->putId($request)],
+            'phone_number' => ['required','string','max:50','unique:users,phone_number' .$this->putId($request)],
+            'password' => 'sometimes|required|string|min:6|confirmed',
+            'image' => 'file|image|max:5036',
+        ]);
     }
 
     protected function uploadUserImage($request){
@@ -148,6 +160,24 @@ class UserController extends Controller
  
     }
 
+    public function storeAdmin(Request $request){
+        $data = $this->validateAdmin($request);
+        try {
+            $data['image'] = $this->uploadUserImage($request);
+            UserService::storeAdmin($data);
+            return back()->with('userRegistered');
+        } catch (\Exception $e) {
+            Log::info( $e->getMessage() );
+            //delete the uploaded image (if present ) if the user record was not persisted
+            if($request->image){
+                if( $request->image->isValid() ){
+                    Storage::disk('public')->delete('uploads/' .$request->image->hashName());
+                }
+            }
+            return back()->with('userNotRegistered');
+        }
+    }
+
     public function updateStudent(Request $request){
         $data = $this->validateStudent($request);
         DB::beginTransaction();
@@ -181,6 +211,19 @@ class UserController extends Controller
         }
     }
 
+    public function updateAdmin(Request $request){
+        $data = $this->validateAdmin($request);
+        $data['section_id'] = null;
+        try {
+            UserService::updateUser($data);
+            return back()->with('userUpdated');
+        } catch (\Exception $e) {
+            Log::info($e->getMessage());
+            return back()->with('userNotUpdated');
+        }
+    }
+    
+
     public function index($role , $active , $searchInput = null){
         
         /* if( isset($searchInput) ){
@@ -196,10 +239,6 @@ class UserController extends Controller
             return response()->json(['html' => $view]);
         } */
 
-        if($role == 'master' || $role == 'admin'){
-            return view('home');
-        }
-
         $users = User::where([
             ['role' , $role],
             ['active' , $active ],
@@ -208,16 +247,23 @@ class UserController extends Controller
     }
 
     public function edit($id){
+        //get the user to be edited
+        $user = User::where('role' , '!=' , 'master')->findOrFail($id);
 
-        $user = User::where('role' , '!=' , 'master')
-        ->where('role', '!=' , 'admin' )->findOrFail($id);
-
-        if($user->role == 'student'){
+        if( $user->role == 'student' ){
             $sections = Section::all();
             $schoolSessions = SchoolSession::all();
             return view('users.profile.edit-student')->with([
             'user' => $user ,
             'sections' => $sections , 'schoolSessions' => $schoolSessions]);
+        }
+
+        if($user->role == 'admin'){
+            //if it is not master that is trying to edit an admin
+            if(Auth::user()->role != 'master'){
+                abort(403 , 'unauthorised action');
+            }
+            return view('users.profile.edit-admin')->with(['user' => $user]);
         }
         
         return view('users.profile.edit-staff')->with(['user' => $user]);

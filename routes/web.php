@@ -69,20 +69,20 @@ Route::middleware(['auth' , 'admin.master'])->group(function(){
 });
 
 //editing users 
-Route::middleware(['auth' , 'admin.master'])->group(function(){
-    Route::prefix('users')->group(function(){
+Route::prefix('users')->group(function(){
+
+    Route::middleware(['auth' , 'admin.master'])->group(function(){
         Route::get('view/{role}/status/{active}/{searchInput?}' , 'UserController@index')
         ->name('view.users')->where('role' , '^(?!.*master).*$');
         Route::get('edit/{id}' , 'UserController@edit')->name('user.edit');
         Route::post('update/student' , 'UserController@updateStudent')->name('student.update');
         Route::post('update/staff' , 'UserController@updateStaff')->name('staff.update');
     });
-});
 
-Route::middleware(['auth' , 'master'])->group(function(){
-    Route::prefix('users')->group(function(){
+    Route::middleware(['auth' , 'master'])->group(function(){
         Route::post('update/admin' , 'UserController@updateAdmin')->name('admin.update');
     });
+    
 });
 
 Route::middleware(['auth' , 'admin'])->group(function(){

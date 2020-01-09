@@ -1,8 +1,8 @@
 ## School Managenent System
-This school Management system is open source and free for any one. ( Things we do for the love of the community ).
+This school Management system in its initial development stage is open source and free for any one when a stable version is ready. ( Things we do for the love of the community ).
 
 ## CONTRIBUTE
-This school management software is its initial stage of development, and I'll appreciate your contribution. 
+This school management software is in its initial stage of development, and I'll appreciate your contribution. 
 
 Want to contribute? Great, thanks a lot , kindly view the [Contribution guideline](https://github.com/onyia314/school/blob/master/CONTRIBUTING.md)
 
@@ -11,7 +11,7 @@ Want to contribute? Great, thanks a lot , kindly view the [Contribution guidelin
 
 ```git clone https://github.com/onyia314/school```
 
-copy the contents of the  ```.env.example``` to  your ```.env``` and edit APP_NAME , APP_TIMEZONE as you want:
+copy the contents of the  ```.env.example``` to  your ```.env``` and edit APP_TIMEZONE according to your location's timezone. Don't worry about the APP_KEY at this stage just proceed:
 
 ```
 APP_NAME=School
@@ -22,15 +22,15 @@ APP_URL=http://localhost
 APP_TIMEZONE = 'Africa/Lagos'
 
 ```
-And the database details according to your database environment:
+And also edit the database details according to your database environment:
 
 ```
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=school
-DB_USERNAME=root
-DB_PASSWORD=
+DB_USERNAME=yourDBusername
+DB_PASSWORD=yourpassword
 
 ```
 Run ```composer install```
@@ -69,7 +69,7 @@ Serve your application with ```php artisan serve```
 ## Things To Know Before Contributing
 
 ### Add Admin and Login as the Admin
-After running the UsersTableSeeder, login with your email or reg_naumebr.
+After running the UsersTableSeeder, login with your email or reg_number.
 
 create admin(s)
 
@@ -85,7 +85,4 @@ a)  go to academic settings link to create academic session
 
 b) proceed to create a semester (Term)
 
-### Courses
-a) courses are made per session , per semester , per class , per section.
-
-b) Adding courses for the sections of the same class_id for subsequent semesters does not have to be a pain as the software will suggest these courses.
+kindly view the [Contribution guideline](https://github.com/onyia314/school/blob/master/CONTRIBUTING.md) for more guideline on contributing. Thanks.

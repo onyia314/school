@@ -1,6 +1,11 @@
 ## School Managenent System
 This school Management system in its initial development stage is open source and free for any one when a stable version is ready. ( Things we do for the love of the community ).
 
+## Frameworks
+
+- Laravel 5.8
+- Bootstrap v4.1.3
+
 ## CONTRIBUTE
 This school management software is in its initial stage of development, and I'll appreciate your contribution. 
 

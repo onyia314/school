@@ -1,6 +1,18 @@
+## School Managenent System
+This school Management system is open source and free for any one. ( Things we do for the love of the community ).
+
+## CONTRIBUTE
+This school management software is its initial stage of development, and I'll appreciate your contribution. 
+
+Want to contribute? Great, thanks a lot , kindly view the [Contribution guideline](https://github.com/onyia314/school/blob/master/CONTRIBUTING.md)
+
+
 ## Getting Started
+
 ```git clone https://github.com/onyia314/school```
-rename the ```.env.example``` to ```.env``` and edit APP_NAME , APP_TIMEZONE as you want:
+
+copy the contents of the  ```.env.example``` to  your ```.env``` and edit APP_NAME , APP_TIMEZONE as you want:
+
 ```
 APP_NAME=School
 APP_ENV=local
@@ -10,7 +22,7 @@ APP_URL=http://localhost
 APP_TIMEZONE = 'Africa/Lagos'
 
 ```
-And the database varibles according to your database environment:
+And the database details according to your database environment:
 
 ```
 DB_CONNECTION=mysql
@@ -57,7 +69,7 @@ Serve your application with ```php artisan serve```
 ## Things To Know Before Contributing
 
 ### Add Admin and Login as the Admin
-After running the UsersTableSeeder, login withyour email or reg_naumebr.
+After running the UsersTableSeeder, login with your email or reg_naumebr.
 
 create admin(s)
 

@@ -123,7 +123,7 @@ class UserController extends Controller
 
     }
 
-    public function storeTeacher(Request $request){
+    public function storeStaff(Request $request){
 
         $data = $this->validateStaff($request);
         DB::beginTransaction();
@@ -131,7 +131,7 @@ class UserController extends Controller
          try {
             //upload the image and store the path
              $data['image'] = $this->uploadUserImage($request);
-             $userCreated = UserService::storeTeacher($data);
+             $userCreated = UserService::storeStaff($data , $request->session()->get('register_role') );
              //remove basic user info from the $data array
              unset(
                 $data['name'] ,

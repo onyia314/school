@@ -23,7 +23,7 @@
             ]);
         }
 
-        public static function storeTeacher($data){
+        public static function storeStaff($data , $role){
 
             return User::create([
                  'name' => $data['name'],
@@ -31,7 +31,7 @@
                  'phone_number' => $data['phone_number'],
                  'password' => Hash::make($data['password']),
                  'image' => $data['image'],
-                 'role' => 'teacher',
+                 'role' => $role,
                  'active' => 1,
                  'reg_number' => date('Ymd') . User::count() + 1, //remeber to fix duplicate issue that may arise due to this 
                  

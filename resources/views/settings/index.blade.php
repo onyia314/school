@@ -50,13 +50,13 @@
                                     </li>
                                     
                                     <li class="nav-item">
-                                      <a class="nav-link btn btn-block" href=""><span
+                                      <a class="nav-link btn btn-block" href="{{url('register/accountant')}}"><span
                                           class="nav-link-text">add accountant</span></a>
                                     </li>
 
                                     <li class="nav-item">
-                                            <a class="nav-link btn btn-block" href=""><span
-                                                class="nav-link-text">add liberian</span></a>
+                                      <a class="nav-link btn btn-block" href="{{url('register/librarian')}}"><span
+                                          class="nav-link-text">add librarian</span></a>
                                     </li>
 
                                     <li class="nav-item">

@@ -78,6 +78,32 @@
                             </li>
 
                             <li class="nav-item mb-1">
+                              <div class="dropdown">
+                                    <a class="btn btn-block btn-secondary dropdown-toggle block" href="#" role="button" id="dropdownMenuLinkAccountant" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Accountant
+                                    </a>
+                                  
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkAccountant">
+                                    <a class="dropdown-item" href="{{route('view.users' , ['role' => 'accountant' , 'active' => 1] )}}">active Accountant</a>
+                                    <a class="dropdown-item" href="{{route('view.users' , ['role' => 'accountant' , 'active' => 0] )}}">in-active Accountants</a>
+                                    </div>
+                                  </div>
+                            </li>
+
+                            <li class="nav-item mb-1">
+                              <div class="dropdown">
+                                    <a class="btn btn-block btn-secondary dropdown-toggle block" href="#" role="button" id="dropdownMenuLinkLibrarian" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Librarian
+                                    </a>
+                                  
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkLibrarian">
+                                    <a class="dropdown-item" href="{{route('view.users' , ['role' => 'librarian' , 'active' => 1] )}}">active Librarian</a>
+                                    <a class="dropdown-item" href="{{route('view.users' , ['role' => 'librarian' , 'active' => 0] )}}">in-active Librarian</a>
+                                    </div>
+                                  </div>
+                            </li>
+
+                            <li class="nav-item mb-1">
                               <a class="nav-link btn btn-block btn-primary" href="{{route('settings')}}"><span
                                     class="nav-link-text">Academic settings</span></a>
                               </li> 

@@ -60,10 +60,19 @@ Route::middleware(['auth' , 'admin.master'])->group(function(){
             session(['register_role' => 'teacher']);
             return redirect()->route('register');
         });
+        Route::get('accountant' , function(){
+            session(['register_role' => 'accountant']);
+            return redirect()->route('register');
+        });
+        Route::get('librarian' , function(){
+            session(['register_role' => 'librarian']);
+            return redirect()->route('register');
+        });
 
         Route::post('student' , 'UserController@storeStudent');
-        Route::post('teacher' , 'UserController@storeTeacher');
-
+        Route::post('teacher' , 'UserController@storeStaff');
+        Route::post('accountant' , 'UserController@storeStaff');
+        Route::post('librarian' , 'UserController@storeStaff');
     });
 
 });
@@ -159,4 +168,16 @@ Route::prefix('attendance')->group(function(){
         Route::post('daily/student' , 'AttendanceController@storeDailyAttendance')->name('daily.attendance');
     });
 
+});
+
+/**
+ * Fees
+ */
+
+ Route::prefix('fees')->group(function(){
+    Route::middleware(['auth' , 'acountant'])->group(function(){
+        Route::get('view/all' , 'FeeController@index')->name('view.fees');
+        Route::get('create' , 'FeeController@create')->name('create.fees');
+        Route::post('create' , 'FeeController@store')->name('store.fees');
+    });    
 });

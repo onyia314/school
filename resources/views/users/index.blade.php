@@ -39,16 +39,15 @@
         
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header" style="padding-left:0; padding-right:0;">Dashboard</div>
-
+            <div class="card-header text-center" style="padding-left:0; padding-right:0;"><h3>{{$role}}</h3></div>
                     @if ( $users->count() )
 
                          <div><input type="text" name="search" id="search" placeholder="search"></div>
 
                         @if($role == 'student')
                             @include('users.students.table-list')
-                        @elseif($role == 'teacher')
-                            @include('users.teachers.table-list')
+                        @elseif($role == 'teacher' || $role == 'accountant' || $role == 'librarian')
+                            @include('users.staff.table-list')
                         @elseif($role == 'admin')
                             @include('users.admin.table-list')
                         @endif

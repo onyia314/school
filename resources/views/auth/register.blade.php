@@ -26,16 +26,6 @@
                     <div class="card-body">
                         <form method="POST" novalidate action="{{ url('register/' .session('register_role') ) }}" enctype="multipart/form-data">
                             @csrf
-                            
-                        
-                            {{--
-                        
-                                registering students does not NECESSARILY require email or phone number 
-                                this is separated using the register_role session in the input tag
-
-                                authentication is done by registration number or email
-
-                            --}}
 
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Full Name') }}</label>
@@ -55,7 +45,7 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" <?php if( session('register_role') !== 'student'){echo 'required' ;}?> autocomplete="email">
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -70,8 +60,7 @@
                                 <label for="phone_number" class="col-md-4 col-form-label text-md-right">{{ __('phone number') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="phone_number" type="text" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" value="{{ old('phone_number') }}" <?php if( session('register_role') !== 'student'){echo 'required' ;}?>>
-
+                                    <input id="phone_number" type="text" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" value="{{ old('phone_number') }}" required>
 
                                     @error('phone_number')
                                         <span class="invalid-feedback" role="alert">

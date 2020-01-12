@@ -26,8 +26,8 @@ class UserController extends Controller
             'id' => 'sometimes|required|integer|exists:users', //for editing user 
             'name' => 'required|string|max:255',
             'password' => 'sometimes|required|string|min:6|confirmed',
-            'email' => ['nullable','string','email','max:255' , 'unique:users,email' .$this->putId($request)],
-            'phone_number' => ['nullable','string','max:50','unique:users,phone_number' .$this->putId($request)],
+            'email' => ['required','string','email','max:255' , 'unique:users,email' .$this->putId($request)],
+            'phone_number' => ['required','string','max:50','unique:users,phone_number' .$this->putId($request)],
             'birthday' => 'required|date',
             'nationality' => 'required|string|max:100',
             'state_of_origin' => 'required|string|max:100',

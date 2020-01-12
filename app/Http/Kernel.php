@@ -57,6 +57,7 @@ class Kernel extends HttpKernel
         'admin.teacher' => \App\Http\Middleware\CheckAdminOrTeacher::class,
         'admin' => \App\Http\Middleware\CheckAdmin::class,
         'teacher' => \App\Http\Middleware\CheckTeacher::class,
+        'accountant' => \App\Http\Middleware\CheckAccountant::class,
         'student' => \App\Http\Middleware\CheckStudent::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

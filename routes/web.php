@@ -175,9 +175,22 @@ Route::prefix('attendance')->group(function(){
  */
 
  Route::prefix('fees')->group(function(){
-    Route::middleware(['auth' , 'acountant'])->group(function(){
-        Route::get('view/all' , 'FeeController@index')->name('view.fees');
-        Route::get('create' , 'FeeController@create')->name('create.fees');
-        Route::post('create' , 'FeeController@store')->name('store.fees');
+    Route::middleware(['auth'])->group(function(){
+        Route::get('section/view' , 'FeeController@selectSectionAndSemester')->name('section.semester.view.fee');
+        Route::get('view/section/{section_id}/semester/{semester_id}' , 'FeeController@index')->name('view.fee');
+    });    
+    Route::middleware(['auth' , 'accountant'])->group(function(){
+        Route::get('section/create' , 'FeeController@selectSectionAndSemester')->name('section.semester.create.fee');
+        Route::get('create/section/{section_id}/semester/{semester_id}' , 'FeeController@create')->name('create.fee');
+        Route::post('store' , 'FeeController@store')->name('store.fee');
     });    
 });
+
+
+/**
+ * payment
+ */
+Route::middleware(['auth'])->group(function(){
+    Route::get('pay' , 'PaymentController@initialisePaystack');
+    Route::get('verify-payment' , 'PaymentController@verifyPayment');
+}); 

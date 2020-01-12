@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\User\UserService;
+use App\Services\StudentSection\StudentSectionService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -94,6 +95,9 @@ class UserController extends Controller
                 //upload the image and store the path
                 $data['image'] = $this->uploadUserImage($request);
                 $userCreated = UserService::storeStudent($data);
+                //add additional info that StudentInfo model needs which are not present in the $request object
+                $data['id'] = $userCreated->id;
+                StudentSectionService::createStudentSection($data);
                 //remove basic user info from the $data array
                 unset(
                     $data['name'] ,
@@ -103,8 +107,6 @@ class UserController extends Controller
                     $data['image'] ,
                     $data['section_id']
                 );
-                //add additional info that StudentInfo model needs which are not present in the $request object
-                $data['id'] = $userCreated->id;
                 UserService::updateStudentInfo($data);
                 DB::commit();
                 return back()->with('userRegistered');
@@ -183,6 +185,7 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             UserService::updateUser($data);
+            StudentSectionService::updateStudentSection($data);
             unset($data['name'] , $data['email'] , $data['phone_number'], $data['section_id']);
             UserService::updateStudentInfo($data);
             DB::commit();

@@ -17,11 +17,9 @@ class CreatePaymentsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('student_id');
             $table->unsignedInteger('fee_id');
-            $table->decimal('fee_amount' , 15 , 2);
             $table->decimal('amount_paid' , 15 , 2);
-            $table->decimal('balance' , 15 , 2);
-            $table->enum('payment_mode' , ['paystack' , 'cash']);
-            $table->string('reference');
+            $table->enum('payment_mode' , ['online' , 'cash']);
+            $table->string('reference')->unique();
             $table->unsignedInteger('class_id');
             $table->unsignedInteger('section_id');
             $table->unsignedInteger('session_id');

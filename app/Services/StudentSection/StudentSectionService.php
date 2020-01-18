@@ -20,4 +20,16 @@ class StudentSectionService{
         'section_id' => $data['section_id'] ,
         ]);
     }
+
+    public static function getStudentSections($student_id){
+        return StudentSection::where('student_id' , $student_id)->get();
+    }
+
+    public static function hasStudentBeenInSection($student_id , $section_id , $session_id){
+        return StudentSection::where([
+        'student_id' => $student_id , 
+        'section_id' => $section_id , 
+        'session_id' => $session_id ,
+        ])->exists();
+    }
 }

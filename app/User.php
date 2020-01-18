@@ -50,7 +50,7 @@ class User extends Authenticatable
     }
 
     public function payments(){
-        return $this->hasMany('App\Payment');
+        return $this->hasMany('App\Payment' , 'student_id');
     }
 
     public function attendances(){

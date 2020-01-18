@@ -13,6 +13,10 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    
+    'paystack' => [
+        'key' => env('APP_PAYSTACK_KEY' , 'sk_test_b6c0b49254032fd6dd4af7595629c42e1cf760d1'),
+    ],
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),

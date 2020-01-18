@@ -171,18 +171,17 @@
 
                         @if (Auth::user()->role == 'student')
                             <li class="nav-item mb-1">
+                            <a class="nav-link btn btn-block btn-primary" href=""><span
+                                  class="nav-link-text">Attendance</span></a>
+                            </li>
+                            <li class="nav-item mb-1">
                             <a class="nav-link btn btn-block btn-primary" href="{{route('student.courses')}}"><span
                                   class="nav-link-text">my courses</span></a>
                             </li>
 
-                            <li>
-                              <a class="nav-link btn btn-block btn-primary" href="{{route('section.semester.view.fee')}}"><span
-                                    class="nav-link-text">view fee</span></a>
-                              </li>
-
-                            <li>
-                              <a class="nav-link btn btn-block btn-primary" href=""><span
-                                    class="nav-link-text">demo pay</span></a>
+                              <li>
+                                    <a class="nav-link btn btn-block btn-primary" href="{{route('student.section.view.fee')}}"><span
+                                          class="nav-link-text">fees</span></a>
                               </li>
 
                         @endif

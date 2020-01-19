@@ -42,6 +42,9 @@
 
                                     @if(Auth::user()->role == 'accountant')
                                     <th scope="col">edit details</th>
+                                    @endif
+
+                                    @if(Auth::user()->role == 'accountant' || Auth::user()->role == 'admin' )
                                     <th scope="col">payments</th>
                                     @endif
 
@@ -65,8 +68,11 @@
                                             <th scope="row">{{$fee->id}}</th>
 
                                             @if(Auth::user()->role == 'accountant')
-                                        <td><a class = "btn btn-primary" href="{{route('edit.fee' , ['fee_id' => $fee->id ])}}">edit</a></td>
-                                        <td><a class = "btn btn-primary" href="{{route('view.payments' , ['fee_id' => $fee->id])}}">view payments</a></td>
+                                            <td><a class = "btn btn-primary" href="{{route('edit.fee' , ['fee_id' => $fee->id ])}}">edit</a></td>
+                                            @endif
+
+                                            @if(Auth::user()->role == 'accountant' || Auth::user()->role == 'admin' )
+                                            <td><a class = "btn btn-primary" href="{{route('view.payments' , ['fee_id' => $fee->id])}}">view payments</a></td>
                                             @endif
 
                                             <td>{{$fee->fee_name}}</td>

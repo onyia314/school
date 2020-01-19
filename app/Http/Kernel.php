@@ -55,6 +55,7 @@ class Kernel extends HttpKernel
         'master' => \App\Http\Middleware\CheckMaster::class,
         'admin.master' => \App\Http\Middleware\CheckAdminOrMaster::class,
         'admin.teacher' => \App\Http\Middleware\CheckAdminOrTeacher::class,
+        'admin.accountant' => \App\Http\Middleware\CheckAdminOrAccountant::class,
         'admin' => \App\Http\Middleware\CheckAdmin::class,
         'teacher' => \App\Http\Middleware\CheckTeacher::class,
         'accountant' => \App\Http\Middleware\CheckAccountant::class,

@@ -75,7 +75,11 @@
                                                                                 <div class="card">
                                                                                     @foreach ($schoolSession->semesters as $semester)
                                                                                 <strong>{{$semester->semester_name}}</strong>
+
+                                                                                        @if(Auth::user()->role == 'accountant')
                                                                                         <a href="{{route('create.fee' , [ 'section_id' => $section->id , 'semester_id' => $semester->id ])}}">add fee</a>
+                                                                                        @endif
+                                                                                        
                                                                                         <a href="{{route('view.fee' , [ 'section_id' => $section->id , 'semester_id' => $semester->id ])}}">view fee</a>
                                                                                     @endforeach
                                                                                 </div>

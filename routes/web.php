@@ -176,16 +176,22 @@ Route::prefix('attendance')->group(function(){
 
  Route::prefix('fees')->group(function(){
 
+    //view list of fees
     Route::middleware(['auth'])->group(function(){
         Route::get('view/section/{section_id}/semester/{semester_id}' , 'FeeController@index')->name('view.fee');
     });
 
+    //get the sections a student has been in
     Route::middleware(['auth' , 'student'])->group(function(){
         Route::get('student/sections' , 'FeeController@studentSections')->name('student.section.view.fee');
     });    
 
-    Route::middleware(['auth' , 'accountant'])->group(function(){
+    //select section and semester to view or add fee
+    Route::middleware(['auth' , 'admin.accountant'])->group(function(){
         Route::get('section/view' , 'FeeController@selectSectionAndSemester')->name('section.semester.view.fee');
+    });
+
+    Route::middleware(['auth' , 'accountant'])->group(function(){
         Route::get('section/create' , 'FeeController@selectSectionAndSemester')->name('section.semester.create.fee');
         Route::get('create/section/{section_id}/semester/{semester_id}' , 'FeeController@create')->name('create.fee');
         Route::get('edit/{fee_id}' , 'FeeController@edit')->name('edit.fee');
@@ -203,6 +209,6 @@ Route::middleware(['auth'])->group(function(){
     Route::get('verify-payment' , 'PaymentController@verifyPayment');
 });
 
-Route::middleware(['auth' , 'accountant'])->group(function(){
+Route::middleware(['auth' , 'admin.accountant'])->group(function(){
     Route::get('payments/fee/{fee_id}' , 'PaymentController@index')->name('view.payments');
 });

@@ -19,4 +19,8 @@ class Section extends Model
     public function courses(){
         return $this->hasMany('App\Course');
     }
+    
+    public function fees(){
+        return $this->hasMany('App\Fee');
+    }
 }

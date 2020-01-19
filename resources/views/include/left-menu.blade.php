@@ -104,6 +104,11 @@
                             </li>
 
                             <li class="nav-item mb-1">
+                            <a class="nav-link btn btn-block btn-primary" href="{{route('section.semester.view.fee')}}"><span
+                                    class="nav-link-text">fees</span></a>
+                              </li>
+
+                            <li class="nav-item mb-1">
                               <a class="nav-link btn btn-block btn-primary" href="{{route('settings')}}"><span
                                     class="nav-link-text">Academic settings</span></a>
                               </li> 
@@ -122,12 +127,6 @@
                               <a class="nav-link btn btn-block btn-primary" href=""><span
                                   class="nav-link-text">others staff</span></a>
                             </li>                            
-                            
-
-                            <li class="nav-item mb-1">
-                            <a class="nav-link btn btn-block btn-primary" href=""><span
-                                  class="nav-link-text">generate fees</span></a>
-                            </li> 
 
                             <li class="nav-item mb-1">
                               <a class="nav-link btn btn-block btn-primary" href=""><span

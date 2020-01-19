@@ -80,11 +80,16 @@
 
                                             @if(Auth::user()->role == 'student')
 
-                                                @if( $fee->payment )
+                                                @if( $fee->payments->count() )
+
+                                                    @foreach ($fee->payments as $payment)
+
                                                     <td> <button class="btn btn-success">paid</button></td>
-                                                    <td>{{$fee->payment->reference}}</td>
-                                                    <td>{{$fee->payment->amount_paid}}</td>
-                                                    <td>{{$fee->payment->created_at}}</td>
+                                                    <td>{{$payment->reference}}</td>
+                                                    <td>{{$payment->amount_paid}}</td>
+                                                    <td>{{$payment->created_at}}</td>        
+                                                    @endforeach
+                                                
                                                 @else
 
                                                     <td scope="col">

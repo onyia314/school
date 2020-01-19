@@ -46,7 +46,7 @@ class FeeController extends Controller
             }
 
             $fees = Fee::with([
-                'payment' => function($query){ $query->where('student_id' , Auth::user()->id ); },
+                'payments' => function($query){ $query->where('student_id' , Auth::user()->id ); },
                 ])
             ->where(['section_id'=> $section->id , 'semester_id' => $semester->id])->get();
 

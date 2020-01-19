@@ -24,7 +24,14 @@ class SemesterService{
 
     //check if a given semester is ongoing
     public static function isSemesterCurrent($semester_id){
-        return ($semester_id == self::getCurrentSemester() ) ? true : false;
+        return ($semester_id == self::getCurrentSemesterId() ) ? true : false;
+    }
+
+
+    public static function getCurrentSemester(){
+        return  DB::table('semesters')->select('*')
+        ->where( DB::raw('now()') , '>=' , DB::raw('start_date') )
+        ->where( DB::raw('now()') , '<=' , DB::raw('end_date') )->first();
     }
 
     /**
@@ -33,13 +40,13 @@ class SemesterService{
      * 
      * else return 0 as id 
      */
-    public static function getCurrentSemester(){
-        $currentSemester = DB::table('semesters')->select('*')
-        ->where( DB::raw('now()') , '>=' , DB::raw('start_date') )
-        ->where( DB::raw('now()') , '<=' , DB::raw('end_date') )->get();
 
-        if( $currentSemester->count() ){
-            return $currentSemester->first()->id;
+    public static function getCurrentSemesterId(){
+        
+        $currentSemester = self::getCurrentSemester();
+
+        if( $currentSemester ){
+            return $currentSemester->id;
         }
 
         return 0;

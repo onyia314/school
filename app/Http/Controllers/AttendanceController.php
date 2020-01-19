@@ -91,7 +91,7 @@ class AttendanceController extends Controller
         //admin does not explicitly select semester for student daily attendance,
         // we use current time to match the the start_date
         //and end_date of the semester
-        $semester_id = SemesterService::getCurrentSemester();
+        $semester_id = SemesterService::getCurrentSemesterId();
 
         foreach($sections as $section){
             foreach($section->users as $student){
@@ -121,7 +121,7 @@ class AttendanceController extends Controller
         // total attendace present and total attendance absent keyed with the id of the staff 
         $attPresent = [];
         $attAbsent =[];
-        $semester_id = SemesterService::getCurrentSemester();
+        $semester_id = SemesterService::getCurrentSemesterId();
 
         $staffs = User::where([ 
             ['role' , '!=' , 'student'], 

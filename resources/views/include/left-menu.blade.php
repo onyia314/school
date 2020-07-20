@@ -113,7 +113,7 @@
                                     class="nav-link-text">Academic settings</span></a>
                               </li> 
 
-                            <li class="nav-item mb-1">
+                          {{--   <li class="nav-item mb-1">
                               <a class="nav-link btn btn-block btn-primary" href=""><span
                                     class="nav-link-text">Exams</span></a>
                               </li>
@@ -147,7 +147,7 @@
                               <a class="nav-link btn btn-block btn-primary" href=""><span
                                   class="nav-link-text">library</span></a>
                             </li>
-
+ --}}
                         @endif
 
                         @if (Auth::user()->role == 'teacher')

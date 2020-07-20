@@ -34,12 +34,12 @@ class FeeController extends Controller
         $semester = Semester::with('schoolSession')->findOrFail($semester_id);
 
         //make sure the student views and pays for only fees of sections he has ever been
-        //in a given academic session
+        //in a given semester
 
         if(Auth::user()->role == 'student'){
 
             if( !StudentSectionService::hasStudentBeenInSection(
-                 Auth::user()->id , $section_id , $semester->schoolSession->id) 
+                 Auth::user()->id , $section_id , $semester->id) 
             )
             {
                 abort(403 , 'you were never in this section in the session of the selected semester');
@@ -68,15 +68,11 @@ class FeeController extends Controller
 
     public function studentSections(){
         $studentSections = StudentSectionService::getStudentSections(Auth::user()->id);
-        $sections = Section::whereIn( 'id' , $studentSections->pluck('section_id')->toArray() )
-                            ->with('schoolClass')->get();
-        $schoolSessions = SchoolSession::whereIn( 'id' , $studentSections->pluck('session_id')->toArray() )
-                            ->with('semesters')->get();
         return view('fees.student.selectsectionandsemester')->with([ 
-            'sections' => $sections ,
-            'schoolSessions' => $schoolSessions,
+            'studentSections' => $studentSections,
             ]);
     }
+    
     public function selectSectionAndSemester(){
         $schoolSessions = SchoolSession::with('semesters')->get();
         $schoolClasses = SchoolClass::with('sections')->get();

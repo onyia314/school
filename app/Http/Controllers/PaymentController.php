@@ -31,8 +31,8 @@ class PaymentController extends Controller
             ])->exists();
     }
 
-    private function studentHasPaidForFee( $fee_id ){
-        return Payment::where(['fee_id' => $fee_id , 'student_id' => Auth::user()->id, ])->exists();
+    private function studentHasPaidForFee( $fee_id , $student_id){
+        return Payment::where(['fee_id' => $fee_id , 'student_id' => $student_id, ])->exists();
     }
 
     private function isValueGivenToRef($reference){
@@ -60,13 +60,13 @@ class PaymentController extends Controller
         }
 
         if( !StudentSectionService::hasStudentBeenInSection(
-            Auth::user()->id , $section->id , $semester->schoolSession->id) 
+            Auth::user()->id , $section->id , $semester->id) 
         )
         {
-           abort(403 , 'you were never in this section in the session of the selected semester');
+           abort(403 , 'you were never in this section in the selected semester');
         }
 
-        if( $this->studentHasPaidForFee( $data['fee_id'] ) ){
+        if( $this->studentHasPaidForFee( $data['fee_id'] , Auth::user()->id ) ){
             return back()->with('feeAlreadyPaid');
         }
 

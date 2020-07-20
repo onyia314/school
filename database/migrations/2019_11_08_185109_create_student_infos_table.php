@@ -22,7 +22,6 @@ class CreateStudentInfosTable extends Migration
             $table->string('state_of_origin');
             $table->string('address');
             $table->date('birthday');
-            $table->unsignedInteger('session_id'); //the session the student was registered
             $table->string('father_name');
             $table->string('father_phone')->nullable();
             $table->string('mother_name');

@@ -40,7 +40,7 @@ Route::middleware(['auth' , 'admin.master'])->group(function(){
 
         if( session()->has('register_role') && session('register_role') == 'student' ){
             $sections = \App\Section::has('schoolClass')->with('schoolClass')->get();
-            $schoolSessions = \App\SchoolSession::all();
+            $schoolSessions = \App\SchoolSession::with('semesters')->get();
             return view('auth.register')->with(['sections' => $sections , 'schoolSessions' => $schoolSessions]);
         }
 
@@ -77,7 +77,7 @@ Route::middleware(['auth' , 'admin.master'])->group(function(){
 
 });
 
-//editing users 
+//users 
 Route::prefix('users')->group(function(){
 
     Route::middleware(['auth' , 'admin.master'])->group(function(){
@@ -92,6 +92,13 @@ Route::prefix('users')->group(function(){
         Route::post('update/admin' , 'UserController@updateAdmin')->name('admin.update');
     });
     
+});
+
+
+//promote section students
+Route::middleware(['auth' , 'admin'])->group(function(){
+    Route::get('promote-students/section/{section_id}' , 'PromotionController@create')->name('promote.students.create');
+    Route::post('promote-students' , 'PromotionController@store')->name('promote.students');
 });
 
 Route::middleware(['auth' , 'admin'])->group(function(){

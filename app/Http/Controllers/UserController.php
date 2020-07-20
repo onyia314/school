@@ -35,8 +35,8 @@ class UserController extends Controller
             'gender' => 'required|in:male,female',
             'religion' => 'required|string',
             'address' => 'required|string|max:225',
-            'section_id' => 'required|integer|exists:sections,id',
-            'session_id' => 'required|integer|exists:sessions,id',
+            'section_id' => 'sometimes|required|integer|exists:sections,id',
+            'semester_id' => 'sometimes|required|integer|exists:semesters,id',
             'father_name' => 'required|string|max:255',
             'father_phone' => '|nullable|required_without:mother_phone|string|max:50',
             'mother_name' => 'required|string|max:255',
@@ -97,6 +97,7 @@ class UserController extends Controller
                 $userCreated = UserService::storeStudent($data);
                 //add additional info that StudentInfo model needs which are not present in the $request object
                 $data['id'] = $userCreated->id;
+                $data['status'] = 'registered';
                 StudentSectionService::createStudentSection($data);
                 //remove basic user info from the $data array
                 unset(
@@ -105,7 +106,9 @@ class UserController extends Controller
                     $data['password'] ,
                     $data['phone_number'] , 
                     $data['image'] ,
-                    $data['section_id']
+                    $data['section_id'],
+                    $data['semester_id'],
+                    $data['status'],
                 );
                 UserService::updateStudentInfo($data);
                 DB::commit();
@@ -185,8 +188,7 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             UserService::updateUser($data);
-            StudentSectionService::updateStudentSection($data);
-            unset($data['name'] , $data['email'] , $data['phone_number'], $data['section_id']);
+            unset($data['name'] , $data['email'] , $data['phone_number'] );
             UserService::updateStudentInfo($data);
             DB::commit();
             return back()->with('userUpdated');
@@ -199,11 +201,10 @@ class UserController extends Controller
 
     public function updateStaff(Request $request){
         $data = $this->validateStaff($request);
-        $data['section_id'] = null;
         DB::beginTransaction();
         try {
             UserService::updateUser($data);
-            unset($data['name'] , $data['email'] , $data['phone_number'], $data['section_id']);
+            unset($data['name'] , $data['email'] , $data['phone_number']);
             UserService::updateStaffInfo($data);
             DB::commit();
             return back()->with('userUpdated');
@@ -216,7 +217,6 @@ class UserController extends Controller
 
     public function updateAdmin(Request $request){
         $data = $this->validateAdmin($request);
-        $data['section_id'] = null;
         try {
             UserService::updateUser($data);
             return back()->with('userUpdated');
@@ -254,11 +254,7 @@ class UserController extends Controller
         $user = User::where('role' , '!=' , 'master')->findOrFail($id);
 
         if( $user->role == 'student' ){
-            $sections = Section::all();
-            $schoolSessions = SchoolSession::all();
-            return view('users.profile.edit-student')->with([
-            'user' => $user ,
-            'sections' => $sections , 'schoolSessions' => $schoolSessions]);
+            return view('users.profile.edit-student' , ['user' => $user]);
         }
 
         if($user->role == 'admin'){

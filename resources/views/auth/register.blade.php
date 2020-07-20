@@ -230,18 +230,22 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="session_id" class="col-md-4 col-form-label text-md-right">{{ __('session') }}</label>
+                                    <label for="semester_id" class="col-md-4 col-form-label text-md-right">{{ __('semester') }}</label>
 
                                     <div class="col-md-6">
 
-                                        <select name="session_id" id="session_id" class = "form-control  @error('session_id') is-invalid @enderror" required>
-                                        <option value="{{old('session_id')}}">select session</option>
+                                        <select name="semester_id" id="semester_id" class = "form-control  @error('semester_id') is-invalid @enderror" required>
+                                        <option value="{{old('semester_id')}}">select semester</option>
                                             @foreach ($schoolSessions as $schoolSession)
-                                                <option value="{{$schoolSession->id}}">{{$schoolSession->session_name}}</option>
+                                             <optgroup label="{{$schoolSession->session_name}}">
+                                                @foreach ($schoolSession->semesters as $semester)
+                                                 <option value="{{$semester->id}}">{{$semester->semester_name .' ' .$schoolSession->session_name}}</option>
+                                                @endforeach
+                                            </optgroup>
                                             @endforeach
                                         </select>
 
-                                        @error('session_id')
+                                        @error('semester_id')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

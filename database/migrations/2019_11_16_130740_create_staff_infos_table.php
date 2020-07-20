@@ -16,18 +16,18 @@ class CreateStaffInfosTable extends Migration
         Schema::create('staff_infos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('user_id');
-            $table->string('religion')->default('');
-            $table->enum('gender' , ['male' , 'female'])->default('male');
-            $table->string('nationality')->default('');
-            $table->string('state_of_origin')->default('');
-            $table->string('address')->default('');
-            $table->date('birthday')->default( now() );
-            $table->string('qualification')->default('');
-            $table->string('next_of_kin')->default('');
-            $table->string('next_of_kin_phone')->default('');
-            $table->string('referee')->default('');
-            $table->string('referee_phone')->default('');
-            $table->string('previous')->default('');
+            $table->string('religion');
+            $table->enum('gender' , ['male' , 'female']);
+            $table->string('nationality');
+            $table->string('state_of_origin');
+            $table->string('address');
+            $table->date('birthday');
+            $table->string('qualification');
+            $table->string('next_of_kin');
+            $table->string('next_of_kin_phone');
+            $table->string('referee');
+            $table->string('referee_phone');
+            $table->string('previous');
             $table->timestamps();
         });
     }

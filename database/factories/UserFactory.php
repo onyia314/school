@@ -16,7 +16,7 @@ use Faker\Generator as Faker;
 |
 */
 
-/* $factory->define(User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
@@ -25,7 +25,9 @@ use Faker\Generator as Faker;
         'reg_number'=> $faker->unique()->numberBetween(201300000000, 20139999999),
         'role'     => $faker->randomElement(['admin' , 'teacher' , 'student']),
         'active'   => 1,
-        'section_id' => $faker->numberBetween(1 , 7),
+        'section_id' => 1,
+        'semester_id'=> 1,
+       // 'section_id' => $faker->numberBetween(1 , 7),
         'image' => '',
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
@@ -42,4 +44,4 @@ $factory->state(User::class , 'teacher' , [
 ]);
 $factory->state(User::class , 'student' , [
         'role' => 'student',
-]); */
+]);

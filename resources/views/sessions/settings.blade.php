@@ -173,7 +173,7 @@
                                     <label for="start_date" class="col-md-4 col-form-label text-md-right">{{ __('add start date') }}</label>
     
                                     <div class="col-md-6">
-                                        <input name="start_date" id="start_date" type="date" class="form-control">
+                                        <input name="start_date" id="start_date" type="date" class="form-control" placeholder="yyyy-mm-dd">
                                         <span>
                                             <strong class = "general" id = "start_date_msg" style="color:red"></strong>
                                         </span>
@@ -184,7 +184,7 @@
                                     <label for="end_date" class="col-md-4 col-form-label text-md-right">{{ __('add end date') }}</label>
     
                                     <div class="col-md-6">
-                                        <input name="end_date" id="end_date" type="date" class="form-control">
+                                        <input name="end_date" id="end_date" type="date" class="form-control" placeholder="yyyy-mm-dd">
                                         <span>
                                             <strong class = "general" id = "end_date_msg" style="color:red"></strong>
                                         </span>

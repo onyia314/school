@@ -29,13 +29,8 @@ class AttendanceController extends Controller
             'staffs.*' => 'sometimes|required|integer|exists:users,id',
         ]);
     }
-    private function getStudentsSection($section_id){
-        return Section::where('id' , $section_id)->has('users')->with([
-            'schoolClass' ,
-            'users' => function($query){
-                    $query->where(['role' => 'student' , 'active' => 1]);
-                 },
-        ])->get();
+    private function getSectionStudents($section_id){
+        return SectionService::getSectionStudents($section_id);
     }
 
     //to select the section for student daily attendance
@@ -51,7 +46,7 @@ class AttendanceController extends Controller
         $attPresent = [];
         $attAbsent =[];
 
-        $sections = $this->getStudentsSection($section_id);
+        $sections = $this->getSectionStudents($section_id);
 
         foreach($sections as $section){
             foreach($section->users as $student){
@@ -87,7 +82,7 @@ class AttendanceController extends Controller
 
         $attPresent = [];
         $attAbsent =[];
-        $sections = $this->getStudentsSection($section_id);
+        $sections = $this->getSectionStudents($section_id);
         //admin does not explicitly select semester for student daily attendance,
         // we use current time to match the the start_date
         //and end_date of the semester

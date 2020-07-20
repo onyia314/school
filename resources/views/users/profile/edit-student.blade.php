@@ -182,56 +182,6 @@
                             @if( $user->role == 'student')
 
                                 <div class="form-group row">
-                                    <label for="section_id" class="col-md-4 col-form-label text-md-right">{{ __('class-group-section') }}</label>
-
-                                    <div class="col-md-6">
-
-                                        <select name="section_id" id="section_id" class = "form-control  @error('section_id') is-invalid @enderror" required>
-                                                <option value="">select class</option>
-                                            
-                                            @foreach ( $sections as $section)
-
-                                                <option value="{{$section->id}}" @if( $user->section->id == $section->id) selected = "selected" @endif>
-                                                    {{$section->schoolClass->class_name .' : ' .$section->schoolClass->group . ' : ' .$section->section_name}}
-                                                </option>
-                                                
-                                            @endforeach
-
-                                        </select>
-
-                                        @error('section_id')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="session_id" class="col-md-4 col-form-label text-md-right">{{ __('session') }}</label>
-
-                                    <div class="col-md-6">
-
-                                        <select name="session_id" id="session_id" class = "form-control  @error('session_id') is-invalid @enderror" required>
-                                            <option value="">select session</option>
-                                            @foreach ($schoolSessions as $schoolSession)
-                                                <option value="{{$schoolSession->id}}" @if( $user->studentInfo->session_id == $schoolSession->id) selected = "selected" @endif>
-                                                    {{$schoolSession->session_name}}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
-                                        @error('session_id')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
                                     <label for="father_name" class="col-md-4 col-form-label text-md-right">{{ __('father\'s name') }}</label>
 
                                     <div class="col-md-6">

@@ -24,7 +24,7 @@ class UsersTableSeeder extends Seeder
             'image' => '',
         ]);
 
-        /* DB::table('users')->insert([
+        DB::table('users')->insert([
             'name'     => "chioma",
             'email'    => 'chioma@gmail.com',
             'email_verified_at' => now(),
@@ -35,25 +35,50 @@ class UsersTableSeeder extends Seeder
             'active'   => 1,
             'section_id' => null,
             'image' => '',
-        ]); */
+        ]);
 
-        /* DB::table('users')->insert([
-            'name'     => "nkem",
-            'email'    => 'nkem@gmail.com',
+        DB::table('users')->insert([
+            'name'     => "miss temitope",
+            'email'    => 'temi@example.com',
             'email_verified_at' => now(),
-            'phone_number' => null,
+            'phone_number' => '0703035855',
             'password' => bcrypt('password'),
             'reg_number'=> '20131835855',
-            'role'     => 'student',
-            'active'   => 0,
-            'section_id' => 1,
+            'role'     => 'teacher',
+            'active'   => 1,
+            'section_id' => null,
             'image' => '',
-        ]); */
+        ]);
 
+        DB::table('users')->insert([
+            'name'     => "mr luke shaw",
+            'email'    => 'luke@example.com',
+            'email_verified_at' => now(),
+            'phone_number' => '0703035855647',
+            'password' => bcrypt('password'),
+            'reg_number'=> '20131835856',
+            'role'     => 'teacher',
+            'active'   => 1,
+            'section_id' => null,
+            'image' => '',
+        ]);
 
-       /*  factory(User::Class , 2)->states('admin')->create();
+        DB::table('users')->insert([
+            'name'     => "uba smart",
+            'email'    => 'smart@example.com',
+            'email_verified_at' => now(),
+            'phone_number' => '07030358557565',
+            'password' => bcrypt('password'),
+            'reg_number'=> '20131835857',
+            'role'     => 'accountant',
+            'active'   => 1,
+            'section_id' => null,
+            'image' => '',
+        ]);
+
+       // factory(User::Class , 2)->states('admin')->create();
         factory(User::Class , 5)->states('teacher')->create();
-        factory(User::Class , 100)->states('student')->create(); */
+        factory(User::Class , 100)->states('student')->create();
 
     }
 }

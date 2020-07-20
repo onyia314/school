@@ -23,4 +23,8 @@ class Section extends Model
     public function fees(){
         return $this->hasMany('App\Fee');
     }
+    
+    public function studentSections(){
+        return $this->hasMany('App\StudentSection');
+    }
 }

@@ -16,6 +16,7 @@
                 'phone_number' => $data['phone_number'],
                 'password' => Hash::make($data['password']),
                 'section_id' => $data['section_id'],
+                'semester_id' => $data['semester_id'],
                 'image' => $data['image'],
                 'role' => 'student',
                 'active' => 1,
@@ -34,7 +35,6 @@
                  'role' => $role,
                  'active' => 1,
                  'reg_number' => date('Ymd') . User::count() + 1, //remeber to fix duplicate issue that may arise due to this 
-                 
              ]);
          }
 
@@ -58,7 +58,6 @@
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'phone_number' =>$data['phone_number'],
-                'section_id' => $data['section_id'],
             ]);
 
         }

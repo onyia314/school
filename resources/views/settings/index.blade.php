@@ -15,6 +15,11 @@
                         <ul class="nav flex-column">
 
                                     <li class="nav-item">
+                                    <a class="nav-link btn btn-block" href=""><span
+                                          class="nav-link-text">promote student</span></a>
+                                    </li>
+                                    
+                                    <li class="nav-item">
                                     <a class="nav-link btn btn-block" href="{{ url('settings/addclass') }}"><span
                                           class="nav-link-text">create class</span></a>
                                     </li>

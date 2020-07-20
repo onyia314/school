@@ -19,4 +19,13 @@ class SectionService{
         $section  = Section::with('schoolClass')->where('id' , $section_id)->first();
         return $section->class_id == $class_id ? true : false;
     }
+
+    public static function getSectionStudents($section_id){
+        return Section::where('id' , $section_id)->has('users')->with([
+            'schoolClass' ,
+            'users' => function($query){
+                    $query->where(['role' => 'student' , 'active' => 1]);
+                 },
+        ])->get();
+    }
 }
